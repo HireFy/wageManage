@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cobcap.wageManager.dao.DeptDao">
+    <resultMap id="deptMap" type="Dept">
+        <id column="d_id" property="id"/>
+        <result column="d_name" property="name"/>
+        <result column="d_fathrt_id" property="fatherId"/>
+    </resultMap>
+
+    <select id="getById" resultMap="deptMap">
+        select * from dept where d_id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into dept (d_name, d_fathrt_id) values (#{name}, #{fatherId})
+    </insert>
+
+    <update id="updateById">
+        update dept
+        <set>
+            <if test="name != null"> d_name = #{name},</if>
+            <if test="fatherId != null">d_fathrt_id = #{fatherId}</if>
+        </set>
+        where d_id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from dept where d_id = #{id}
+    </delete>
+
+    <select id="getDepts" resultMap="deptMap">
+        select * from dept limit #{offset}, #{size}
+    </select>
+
+    <select id="isNameExist" resultType="Boolean">
+        select
+        case when count(*) = 0
+        then 0 else 1 end
+        from dept
+        where d_name=#{name}
+    </select>
+
+</mapper>

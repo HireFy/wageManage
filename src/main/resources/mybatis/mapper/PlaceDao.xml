@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cobcap.wageManager.dao.PlaceDao">
+    <resultMap id="placeMap" type="Place">
+        <id column="pl_id" property="id"/>
+        <result column="pl_name" property="name"/>
+        <result column="pl_salary" property="salary"/>
+        <result column="pl_dept_id" property="deptId"/>
+    </resultMap>
+
+    <select id="getById" resultMap="placeMap">
+        select * from place where pl_id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into place (pl_name, pl_salary, pl_dept_id) values (#{name}, #{salary}, #{deptId})
+    </insert>
+
+    <update id="updateById">
+        update place
+        <set>
+            <if test="name != null"> pl_name = #{name},</if>
+            <if test="salary != null">pl_salary = #{salary},</if>
+            <if test="deptId != null">pl_dept_id = #{deptId}</if>
+        </set>
+        where pl_id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from place where pl_id = #{id}
+    </delete>
+
+    <select id="getPlaces" resultMap="placeMap">
+        select * from place limit #{offset}, #{size}
+    </select>
+
+    <select id="isNameExist" resultType="Boolean">
+        select
+        case when count(*) = 0
+        then 0 else 1 end
+        from place
+        where pl_name=#{name}
+    </select>
+
+    <select id="getSalaryByPlaceId" resultType="BigDecimal">
+        select pl_salary from place where pl_id = 1
+    </select>
+</mapper>

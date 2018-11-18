@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cobcap.wageManager.dao.PersonDao">
+    <resultMap id="personMap" type="Person">
+        <id column="p_id" property="id"/>
+        <result column="p_name" property="name"/>
+        <result column="p_salary" property="salary"/>
+        <result column="p_place_id" property="placeId"/>
+    </resultMap>
+
+    <select id="getById" resultMap="personMap">
+        select * from person where p_id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into person (p_name, p_salary, p_place_id) values (#{name}, #{salary}, #{placeId})
+    </insert>
+
+    <update id="updateById">
+        update person
+        <set>
+            <if test="name != null"> p_name = #{name},</if>
+            <if test="salary != null">p_salary = #{salary},</if>
+            <if test="placeId != null">p_place_id = #{placeId}</if>
+        </set>
+        where p_id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from person where p_id = #{id}
+    </delete>
+
+    <select id="getPersons" resultMap="personMap">
+        select * from person limit #{offset}, #{size}
+    </select>
+
+    <select id="isNameExist" resultType="Boolean">
+        select
+        case when count(*) = 0
+        then 0 else 1 end
+        from person
+        where p_name=#{name}
+    </select>
+</mapper>
