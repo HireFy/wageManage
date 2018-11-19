@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cobcap.wageManager.dao.BonusDao">
+    <resultMap id="bonusMap" type="Bonus">
+        <id column="b_id" property="id"/>
+        <result column="p_id" property="personId"/>
+        <result column="rate" property="rate"/>
+    </resultMap>
+
+    <select id="getById" resultMap="bonusMap">
+        select * from bonus where a_id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into bonus (p_id, rate) values (#{personId}, #{rate})
+    </insert>
+
+    <update id="updateById">
+        update bonus
+        <set>
+            <if test="personId != null"> p_id = #{personId},</if>
+            <if test="rate != null"> rate = #{rate}</if>
+        </set>
+        where a_id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from bonus where a_id = #{id}
+    </delete>
+
+    <select id="getAttendances" resultMap="bonusMap">
+        select * from bonus limit #{offset}, #{size}
+    </select>
+
+    <insert id="insertBounses" useGeneratedKeys="true" keyProperty="id">
+        insert into bonus (p_id, rate) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.personId}, #{item.rate})
+        </foreach>
+    </insert>
+</mapper>

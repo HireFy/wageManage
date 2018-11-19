@@ -42,4 +42,16 @@
         from person
         where p_name=#{name}
     </select>
+
+    <select id="getAllId" resultType="Integer">
+        select p_id from person
+    </select>
+
+    <select id="getBaseSalary" resultType="BigDecimal">
+        select pl_salary from person, place where p_id=#{id} and p_place_id = pl_id
+    </select>
+
+    <select id="getRate" resultType="Float">
+        select rate from bonus where bonus.p_id = #{id}
+    </select>
 </mapper>

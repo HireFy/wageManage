@@ -17,4 +17,8 @@ public interface PersonService {
     Boolean isNameExist(String name);
 
     List<Person> getPersons(int pageNum, int pageSize);
+
+    void generatePerson();
+
+    void generateSalary();
 }

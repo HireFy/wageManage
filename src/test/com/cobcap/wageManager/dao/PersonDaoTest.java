@@ -18,8 +18,8 @@ public class PersonDaoTest {
 
     @Test
     public void getById() {
-        assertNotNull(personDao.getById(4));
-        System.out.println(personDao.getById(4));
+        assertNotNull(personDao.getById(1));
+        System.out.println(personDao.getById(1));
     }
 
     @Test
@@ -48,5 +48,20 @@ public class PersonDaoTest {
     @Test
     public void getPersons() {
         assertNotNull(personDao.getPersons(0, 5));
+    }
+
+    @Test
+    public void getAllId() {
+        System.out.println(personDao.getAllId());
+    }
+
+    @Test
+    public void getBaseSalary() {
+        System.out.println(personDao.getBaseSalary(5));
+    }
+
+    @Test
+    public void getRate() {
+        System.out.println(personDao.getRate(3));
     }
 }

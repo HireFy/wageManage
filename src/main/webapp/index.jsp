@@ -2,19 +2,51 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()
-            +":"+request.getServerPort()+path+"/";
+    String basePath = request.getScheme() + "://" + request.getServerName()
+            + ":" + request.getServerPort() + path + "/";
 %>
+<!DOCTYPE html>
 <html>
 <head>
-    <!-- 引入Vue -->
-    <script src="//cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
-    <!-- 引入样式 -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/at-ui-style/css/at.min.css">
-    <!-- 引入组件库 -->
-    <script src="//cdn.jsdelivr.net/npm/at-ui/dist/at.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.23/css/uikit.min.css"/>
+
+    <!-- UIkit JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.23/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.23/js/uikit-icons.min.js"></script>
+    <link rel="stylesheet" href="/css/index.css">
+    <title></title>
 </head>
 <body>
-<h2>Hello World!</h2>
+<div id="main">
+    <table class="uk-table uk-table-hover uk-table-divider">
+        <thead>
+        <tr>
+            <th>Table Heading</th>
+            <th>Table Heading</th>
+            <th>Table Heading</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Table Data</td>
+            <td>Table Data</td>
+            <td>Table Data</td>
+        </tr>
+        <tr>
+            <td>Table Data</td>
+            <td>Table Data</td>
+            <td>Table Data</td>
+        </tr>
+        <tr>
+            <td>Table Data</td>
+            <td>Table Data</td>
+            <td>Table Data</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
