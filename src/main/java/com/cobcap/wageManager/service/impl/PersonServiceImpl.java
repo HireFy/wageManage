@@ -53,6 +53,15 @@ public class PersonServiceImpl implements PersonService {
         return personDao.getPersons((pageNum-1)*pageSize, pageSize);
     }
 
+    public int getPageCount(int pageSize) {
+        int totalCount = personDao.getTotalCount();
+        int pageCount = totalCount / pageSize;
+        if (totalCount % pageSize != 0) {
+            pageCount += 1;
+        }
+        return pageCount;
+    }
+
     /*生成person*/
     public void generatePerson() {
         Person person;

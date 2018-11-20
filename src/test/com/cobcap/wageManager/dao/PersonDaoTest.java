@@ -64,4 +64,9 @@ public class PersonDaoTest {
     public void getRate() {
         System.out.println(personDao.getRate(3));
     }
+
+    @Test
+    public void getPageCount() {
+        System.out.println(personDao.getTotalCount());
+    }
 }

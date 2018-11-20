@@ -17,4 +17,6 @@ public interface BonusDao {
     List<Bonus> getBounses(@Param("offset") int offset, @Param("size") int size);
 
     Boolean insertBounses(List<Bonus> bonusList);
+
+    int getTotalCount();
 }

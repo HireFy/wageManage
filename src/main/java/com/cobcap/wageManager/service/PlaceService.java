@@ -21,4 +21,6 @@ public interface PlaceService {
     BigDecimal getSalaryByPlaceId(Integer id);
 
     List<Place> getPlaces(int pageNum, int pageSize);
+
+    int getPageCount(int pageSize);
 }

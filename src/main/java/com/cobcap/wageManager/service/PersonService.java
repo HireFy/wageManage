@@ -18,6 +18,8 @@ public interface PersonService {
 
     List<Person> getPersons(int pageNum, int pageSize);
 
+    int getPageCount(int pageSize);
+
     void generatePerson();
 
     void generateSalary();

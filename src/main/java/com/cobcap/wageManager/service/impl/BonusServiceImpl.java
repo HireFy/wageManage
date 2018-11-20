@@ -41,6 +41,16 @@ public class BonusServiceImpl implements BonusService {
         return bonusDao.getBounses((pageNum - 1) * pageSize, pageSize);
     }
 
+    @Override
+    public int getPageCount(int pageSize) {
+        int totalCount = bonusDao.getTotalCount();
+        int pageCount = totalCount / pageSize;
+        if (totalCount % pageSize != 0) {
+            pageCount += 1;
+        }
+        return pageCount;
+    }
+
     /*生成随机的奖金增幅*/
     public Boolean insertRandomBonus(List<Integer> personIds) {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");

@@ -21,4 +21,6 @@ public interface PlaceDao {
     BigDecimal getSalaryByPlaceId(Integer id);
 
     List<Place> getPlaces(@Param("offset") int offset, @Param("size") int size);
+
+    int getTotalCount();
 }

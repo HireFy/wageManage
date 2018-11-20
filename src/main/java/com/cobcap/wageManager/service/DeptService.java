@@ -16,4 +16,6 @@ public interface DeptService {
     Boolean isNameExist(String name);
 
     List<Dept> getDepts(int pageNum, int pageSize);
+
+    int getPageCount(int pageSize);
 }

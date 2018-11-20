@@ -6,6 +6,7 @@ import com.cobcap.wageManager.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.management.PlatformLoggingMXBean;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -17,27 +18,27 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public Place getById(Integer id) {
-        return null;
+        return placeDao.getById(id);
     }
 
     @Override
     public Boolean deleteById(Integer id) {
-        return null;
+        return placeDao.deleteById(id);
     }
 
     @Override
     public Boolean updateById(Place place) {
-        return null;
+        return placeDao.updateById(place);
     }
 
     @Override
     public Boolean insert(Place place) {
-        return null;
+        return placeDao.insert(place);
     }
 
     @Override
     public Boolean isNameExist(String name) {
-        return null;
+        return placeDao.isNameExist(name);
     }
 
     @Override
@@ -46,7 +47,17 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
+    public int getPageCount(int pageSize) {
+        int totalCount = placeDao.getTotalCount();
+        int pageCount = totalCount / pageSize;
+        if (totalCount % pageSize != 0) {
+            pageCount += 1;
+        }
+        return pageCount;
+    }
+
+    @Override
     public List<Place> getPlaces(int pageNum, int pageSize) {
-        return null;
+        return placeDao.getPlaces((pageNum - 1) * pageSize, pageSize);
     }
 }

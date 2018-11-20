@@ -17,4 +17,6 @@ public interface BonusService {
     List<Bonus> getBounses(int pageNum, int pageSize);
 
     Boolean insertRandomBonus(List<Integer> personIds);
+
+    int getPageCount(int pageSize);
 }

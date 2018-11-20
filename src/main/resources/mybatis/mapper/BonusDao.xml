@@ -29,7 +29,7 @@
         delete from bonus where a_id = #{id}
     </delete>
 
-    <select id="getAttendances" resultMap="bonusMap">
+    <select id="getBounses" resultMap="bonusMap">
         select * from bonus limit #{offset}, #{size}
     </select>
 
@@ -39,4 +39,8 @@
             (#{item.personId}, #{item.rate})
         </foreach>
     </insert>
+
+    <select id="getTotalCount" resultType="int">
+        select count(*) from bonus
+    </select>
 </mapper>

@@ -40,6 +40,16 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
+    public int getPageCount(int pageSize) {
+        int totalCount = deptDao.getTotalCount();
+        int pageCount = totalCount / pageSize;
+        if (totalCount % pageSize != 0) {
+            pageCount += 1;
+        }
+        return pageCount;
+    }
+
+    @Override
     public List<Dept> getDepts(int pageNum, int pageSize) {
         return deptDao.getDepts((pageNum - 1) * pageSize, pageSize);
     }

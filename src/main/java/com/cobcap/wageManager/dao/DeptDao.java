@@ -17,4 +17,6 @@ public interface DeptDao {
     Boolean isNameExist(String name);
 
     List<Dept> getDepts(@Param("offset") int offset, @Param("size") int size);
+
+    int getTotalCount();
 }
