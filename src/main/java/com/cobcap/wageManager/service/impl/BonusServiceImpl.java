@@ -42,6 +42,11 @@ public class BonusServiceImpl implements BonusService {
     }
 
     @Override
+    public float getRateByPersonId(Integer id) {
+        return bonusDao.getRateByPersonId(id);
+    }
+
+    @Override
     public int getPageCount(int pageSize) {
         int totalCount = bonusDao.getTotalCount();
         int pageCount = totalCount / pageSize;

@@ -19,4 +19,6 @@ public interface BonusService {
     Boolean insertRandomBonus(List<Integer> personIds);
 
     int getPageCount(int pageSize);
+
+    float getRateByPersonId(Integer id);
 }

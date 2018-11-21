@@ -43,4 +43,8 @@
     <select id="getTotalCount" resultType="int">
         select count(*) from bonus
     </select>
+
+    <select id="getRateByPersonId" resultType="float">
+        select rate from bonus where bonus.p_id = #{id}
+    </select>
 </mapper>

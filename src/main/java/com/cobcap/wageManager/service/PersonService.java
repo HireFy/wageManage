@@ -23,4 +23,6 @@ public interface PersonService {
     void generatePerson();
 
     void generateSalary();
+
+    Boolean update(Person person);
 }

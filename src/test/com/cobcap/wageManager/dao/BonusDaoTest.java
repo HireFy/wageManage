@@ -64,4 +64,9 @@ public class BonusDaoTest {
         DecimalFormat decimalFormat=new DecimalFormat("0.00");
         System.out.println(decimalFormat.format(0 + (float)Math.random()*1.00));
     }
+
+    @Test
+    public void getRateByPersonId() {
+        System.out.println(attendanceDao.getRateByPersonId(112));
+    }
 }

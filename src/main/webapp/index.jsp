@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%
     String path = request.getContextPath();
@@ -26,7 +25,6 @@
 <nav class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-left">
         <div id="navbar">
-            <%--<navbar></navbar>--%>
             <ul class="uk-navbar-nav">
                 <li @click="navId = 0" :class="{'uk-active':navId === 0}"><a href="#">人员</a></li>
                 <li @click="navId = 1" :class="{'uk-active':navId === 1}"><a href="#">部门</a></li>
@@ -36,6 +34,26 @@
         </div>
     </div>
 </nav>
+
+
+<!-- This is the modal -->
+<div id="mymodal" uk-modal>
+    <person-modal :id="id"
+                  :name="name"
+                  :salary="salary"
+                  :datatype="dataType"
+                  :selectvalue="placeSelectValue"
+                  @on-select-value-change="onSelectValueChange"
+                  @on-name-change="onNameChange"
+    ></person-modal>
+    <div id="deleteModal" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <span class=".uk-text-danger">确认删除吗?</span>
+            <button class="uk-button uk-button-danger uk-align-right uk-modal-close" @click="deleteData">确认</button>
+        </div>
+    </div>
+</div>
+
 <div id="main">
     <div id="my-table">
         <table class="uk-table uk-table-hover uk-table-divider">
@@ -44,24 +62,24 @@
             <thead is="place-head" v-if="navIdInTb === 2"></thead>
             <thead is="bonus-head" v-if="navIdInTb === 3"></thead>
             <tbody>
-            <tr v-for="data in datas" v-if="navIdInTb === 0">
+            <tr v-for="data in datas" v-if="navIdInTb === 0" @click="showmodal">
                 <td>{{data.id}}</td>
                 <td>{{data.name}}</td>
                 <td>{{data.salary}}</td>
                 <td>{{data.placeId}}</td>
             </tr>
-            <tr v-for="data in datas" v-if="navIdInTb === 1">
+            <tr v-for="data in datas" v-if="navIdInTb === 1" @click="showmodal">
                 <td>{{data.id}}</td>
                 <td>{{data.name}}</td>
                 <td>{{data.fatherId}}</td>
             </tr>
-            <tr v-for="data in datas" v-if="navIdInTb === 2">
+            <tr v-for="data in datas" v-if="navIdInTb === 2" @click="showmodal">
                 <td>{{data.id}}</td>
                 <td>{{data.name}}</td>
                 <td>{{data.salary}}</td>
                 <td>{{data.deptId}}</td>
             </tr>
-            <tr v-for="data in datas" v-if="navIdInTb === 3">
+            <tr v-for="data in datas" v-if="navIdInTb === 3" @click="showmodal">
                 <td>{{data.id}}</td>
                 <td>{{data.personId}}</td>
                 <td>{{data.rate}}</td>
@@ -70,15 +88,17 @@
         </table>
     </div>
     <div id="pagenation">
-    <ul class="uk-pagination uk-flex-center" uk-margin>
-        <li @click="goPrev" :class="{'uk-disabled': currentPage - 1 === 0}"><a href="#"><span uk-pagination-previous></span></a></li>
-        <li v-for="(page, index) in pages"
-            :class="{'uk-active': currentPage === index + 1}"
-            @click="focusCurrent">
-            <a href="#">{{index + 1}}</a>
-        </li>
-        <li @click="toNext" :class="{'uk-disabled': currentPage === pages}"><a href="#"><span uk-pagination-next></span></a></li>
-    </ul>
+        <ul class="uk-pagination uk-flex-center" uk-margin>
+            <li @click="goPrev" :class="{'uk-disabled': currentPage - 1 === 0}"><a href="#"><span
+                    uk-pagination-previous></span></a></li>
+            <li v-for="(page, index) in pages"
+                :class="{'uk-active': currentPage === index + 1}"
+                @click="focusCurrent">
+                <a href="#">{{index + 1}}</a>
+            </li>
+            <li @click="toNext" :class="{'uk-disabled': currentPage === pages}"><a href="#"><span
+                    uk-pagination-next></span></a></li>
+        </ul>
     </div>
 </div>
 </body>

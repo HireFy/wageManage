@@ -44,7 +44,7 @@
     </select>
 
     <select id="getSalaryByPlaceId" resultType="BigDecimal">
-        select pl_salary from place where pl_id = 1
+        select pl_salary from place where pl_id = #{id}
     </select>
 
     <select id="getTotalCount" resultType="int">

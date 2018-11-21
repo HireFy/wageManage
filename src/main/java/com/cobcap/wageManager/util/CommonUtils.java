@@ -7,6 +7,7 @@ import com.cobcap.wageManager.service.impl.PersonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Random;
 
 
@@ -46,6 +47,11 @@ public class CommonUtils {
         }
 
         return name;
+    }
+
+    /*根据职位底薪和奖金计算薪资*/
+    public static BigDecimal getSalary(BigDecimal baseSalary, float rate) {
+        return BigDecimal.valueOf(baseSalary.floatValue() + baseSalary.floatValue() * rate);
     }
 
 

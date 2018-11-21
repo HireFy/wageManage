@@ -2,6 +2,8 @@ package com.cobcap.wageManager.service.impl;
 
 import com.cobcap.wageManager.dao.PersonDao;
 import com.cobcap.wageManager.pojo.Person;
+import com.cobcap.wageManager.pojo.Place;
+import com.cobcap.wageManager.service.BonusService;
 import com.cobcap.wageManager.service.PersonService;
 import com.cobcap.wageManager.service.PlaceService;
 import com.cobcap.wageManager.util.CommonUtils;
@@ -19,6 +21,9 @@ public class PersonServiceImpl implements PersonService {
 
     @Autowired
     private PlaceService placeService;
+
+    @Autowired
+    private BonusService bonusService;
 
     @Override
     public Person getById(Integer id) {
@@ -73,6 +78,16 @@ public class PersonServiceImpl implements PersonService {
         }
     }
 
+
+    /*更新person，同时根据职位的改变重新计算薪资*/
+    @Override
+    public Boolean update(Person person) {
+        person.setSalary(CommonUtils.getSalary(
+                placeService.getSalaryByPlaceId(person.getPlaceId()),
+                bonusService.getRateByPersonId(person.getId())));
+        return this.updateById(person);
+    }
+
     /*生成person的salary*/
     @Override
     public void generateSalary() {
@@ -82,7 +97,7 @@ public class PersonServiceImpl implements PersonService {
             Integer id = person.getId();
             BigDecimal baseSalary = personDao.getBaseSalary(id);
             Float rate = personDao.getRate(id);
-            person.setSalary(BigDecimal.valueOf(baseSalary.floatValue() + (baseSalary.floatValue() * rate)));
+            person.setSalary(CommonUtils.getSalary(baseSalary, rate));
             this.updateById(person);
         }
     }

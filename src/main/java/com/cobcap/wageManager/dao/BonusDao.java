@@ -19,4 +19,6 @@ public interface BonusDao {
     Boolean insertBounses(List<Bonus> bonusList);
 
     int getTotalCount();
+
+    float getRateByPersonId(Integer id);
 }
