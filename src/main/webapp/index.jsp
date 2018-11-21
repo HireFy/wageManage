@@ -26,10 +26,14 @@
     <div class="uk-navbar-left">
         <div id="navbar">
             <ul class="uk-navbar-nav">
-                <li @click="navId = 0" :class="{'uk-active':navId === 0}"><a href="#">人员</a></li>
-                <li @click="navId = 1" :class="{'uk-active':navId === 1}"><a href="#">部门</a></li>
-                <li @click="navId = 2" :class="{'uk-active':navId === 2}"><a href="#">职位</a></li>
-                <li @click="navId = 3" :class="{'uk-active':navId === 3}"><a href="#">奖金</a></li>
+                <li @click="navId = 0" :class="{'uk-active':navId === 0}">
+                    <a href="#">人员</a></li>
+                <li @click="navId = 1" :class="{'uk-active':navId === 1}">
+                    <a href="#">部门</a></li>
+                <li @click="navId = 2" :class="{'uk-active':navId === 2}">
+                    <a href="#">职位</a></li>
+                <li @click="navId = 3" :class="{'uk-active':navId === 3}">
+                    <a href="#">奖金</a></li>
             </ul>
         </div>
     </div>
@@ -37,19 +41,34 @@
 
 
 <!-- This is the modal -->
-<div id="mymodal" uk-modal>
-    <person-modal :id="id"
-                  :name="name"
-                  :salary="salary"
-                  :datatype="dataType"
-                  :selectvalue="placeSelectValue"
-                  @on-select-value-change="onSelectValueChange"
-                  @on-name-change="onNameChange"
-    ></person-modal>
+<div id="mainModal" uk-modal>
+    <div id="personMo" uk-modal>
+        <person-modal :id="id"
+                      :name="name"
+                      :salary="salary"
+                      :datatype="dataType"
+                      :selectvalue="placeSelectValue"
+                      @on-select-value-change="onSelectValueChange"
+                      @on-name-change="onNameChange"
+        ></person-modal>
+    </div>
+
+    <div id="deptMo" uk-modal>
+        <dept-modal :id="id"
+                    :name="name"
+                    :fatherid="fatherId"
+                    @on-name-change="onNameChange"
+                    @on-fatherid-change="onFatherIdChange"
+        ></dept-modal>
+    </div>
+
+
+    <%--删除提示modal--%>
     <div id="deleteModal" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
             <span class=".uk-text-danger">确认删除吗?</span>
-            <button class="uk-button uk-button-danger uk-align-right uk-modal-close" @click="deleteData">确认</button>
+            <button class="uk-button uk-button-danger uk-align-right uk-modal-close"
+                    @click="deleteData">确认</button>
         </div>
     </div>
 </div>
@@ -102,5 +121,6 @@
     </div>
 </div>
 </body>
+<script src="${basePath}/js/component.js"></script>
 <script src="${basePath}/js/index.js"></script>
 </html>
