@@ -40,6 +40,9 @@ Vue.component('bonus-head', {
         '    </thead>'
 })
 
+
+
+/*person的模态(modal)框*/
 Vue.component('person-modal', {
     props: ['id', 'name', 'salary', 'selectvalue','datatype'],
     data: function () {
@@ -92,7 +95,7 @@ Vue.component('person-modal', {
         '                </div>\n' +
         '            </div>\n' +
         '            <div class="uk-margin">\n' +
-        '                <label class="uk-form-label" for="form-stacked-select">Select</label>\n' +
+        '                <label class="uk-form-label" for="form-stacked-select">职位</label>\n' +
         '                <div class="uk-form-controls">\n' + '<select class="uk-select" id="form-stacked-select" v-model="childSelectVal">\n' +
         '    <option value="1">架构师</option>\n' +
         '    <option value="2">前端工程师</option>\n' +
@@ -119,7 +122,7 @@ Vue.component('person-modal', {
         '    </div>'
 })
 
-
+/*dept的模态(modal)框*/
 Vue.component('dept-modal',{
     props:['id', 'name', 'fatherid'],
     data:function(){
@@ -175,5 +178,76 @@ Vue.component('dept-modal',{
         '\n' +
         '</form>\n'  + '<button class="uk-button uk-button-danger" @click="deleteData">删除</button>' +
         '<button class="uk-button uk-button-primary uk-align-right" @click="update">修改</button>' +
+        '</div>'
+})
+
+/*place的模态(modal)框*/
+Vue.component('place-modal',{
+    props:['id', 'name', 'salary', 'deptid'],
+    data:function(){
+        return{
+            childName:this.name,
+            childDeptId:this.deptId
+        }
+    },
+    methods:{
+        deleteData:function () {
+            deleteAlert()
+        },
+        update:function () {
+            data = JSON.stringify({
+                id:this.id,
+                name:this.name,
+                deptId:this.childDeptId
+            })
+            update(vm.dataType[vm.navIdInTb], data)
+        }
+    },
+    watch:{
+        name:function (val) {
+            this.childName = val
+        },
+        deptid:function (val) {
+            this.childDeptId = val
+        },
+        childName:function (val) {
+            this.$emit('on-name-change', val)
+        },
+        childDeptId:function (val) {
+            this.$emit('on-deptid-change', val)
+        }
+    },
+    template:'<div class="uk-modal-dialog uk-modal-body">\n' +
+        '    <h2 class="uk-modal-title">{{id}}</h2>\n' +
+        '    <form class="uk-form-stacked">\n' +
+        '\n' +
+        '    <div class="uk-margin">\n' +
+        '        <label class="uk-form-label" for="form-stacked-text">职位</label>\n' +
+        '        <div class="uk-form-controls">\n' +
+        '            <input v-model="childName" class="uk-input" id="form-stacked-text" type="text" placeholder="">\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '\n' +
+        '     <div class="uk-margin">\n' +
+        '        <label class="uk-form-label" for="form-stacked-text">基本薪资</label>\n' +
+        '        <div class="uk-form-controls">\n' +
+        '            <input :value="salary" class="uk-input" disabled="disabled" id="form-stacked-text" type="text" placeholder="">\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '\n' +
+        '     <div class="uk-margin">\n' +
+        '        <label class="uk-form-label" for="select-dept">所属部门</label>\n' +
+        '        <div class="uk-form-controls">\n' +
+        '            <select class="uk-select" id="select-dept" v-model="childDeptId">\n' +
+        '                <option value="1">技术部门</option>\n' +
+        '                <option value="2">产品部门</option>\n' +
+        '                <option value="3">运营部门</option>\n' +
+        '            </select>\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '\n' +
+        '</form>\n' +
+        '<button class="uk-button uk-button-danger" @click="deleteData">删除</button>\n' +
+        '<button class="uk-button uk-button-primary uk-align-right" @click="update">修改</button>\n' +
         '</div>'
 })

@@ -187,6 +187,13 @@
             <version>5.0.9.RELEASE</version>
             <scope>compile</scope>
         </dependency>
+
+        <!--sqlserver驱动-->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>7.0.0.jre8</version>
+        </dependency>
     </dependencies>
 
     <build>

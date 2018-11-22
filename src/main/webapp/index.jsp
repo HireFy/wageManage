@@ -62,6 +62,17 @@
         ></dept-modal>
     </div>
 
+    <div id="placeMo" uk-modal>
+        <place-modal :id="id"
+                     :name="name"
+                     :salary="salary"
+                     :deptid="deptId"
+                     @on-name-change="onNameChange"
+                     @on-deptid-change="onDeptIdChange"
+        >
+        </place-modal>
+    </div>
+
 
     <%--删除提示modal--%>
     <div id="deleteModal" uk-modal>

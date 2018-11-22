@@ -169,17 +169,28 @@ var vm = new Vue({
                     dataArr.push(data)
                 }
             }
+            /*当前nav的值为人员*/
             if(this.navIdInTb === 0) {
                 modal.id = dataArr[0]
                 modal.name = dataArr[1]
                 modal.salary = dataArr[2]
                 modal.placeSelectValue = dataArr[3]
             }
+            /*当前nav的值为部门*/
             if(this.navIdInTb === 1){
                 modal.id = dataArr[0]
                 modal.name = dataArr[1]
                 modal.fatherId = dataArr[2]
             }
+            /*当前nav的值为职位*/
+            if(this.navIdInTb === 2){
+                modal.id = dataArr[0]
+                modal.name = dataArr[1]
+                modal.salary = dataArr[2]
+                modal.deptId = dataArr[3]
+            }
+            /*当前nav的值为奖金*/
+            /*...*/
             console.log('modal.placeSelectValue: ' + modal.placeSelectValue)
         },
         refreshCurrentPage:function () {
@@ -212,6 +223,7 @@ var modal = new Vue({
         navId: vm.navIdInTb,
         placeSelectValue: '',
         fatherId:0,
+        deptId:0,
         dataType:vm.dataType[this.navId],
         modalType:{
             0:'#personMo',
@@ -231,6 +243,9 @@ var modal = new Vue({
         },
         onFatherIdChange:function(val){
             this.fatherId = val
+        },
+        onDeptIdChange:function(val){
+            this.deptId = val
         },
         deleteData:function () {
             deleteData(this.dataType, this.id)
