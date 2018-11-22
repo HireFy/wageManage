@@ -9,7 +9,7 @@
     </resultMap>
 
     <select id="getById" resultMap="bonusMap">
-        select * from bonus where a_id = #{id}
+        select * from bonus where b_id = #{id}
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
@@ -22,11 +22,11 @@
             <if test="personId != null"> p_id = #{personId},</if>
             <if test="rate != null"> rate = #{rate}</if>
         </set>
-        where a_id = #{id}
+        where b_id = #{id}
     </update>
 
     <delete id="deleteById">
-        delete from bonus where a_id = #{id}
+        delete from bonus where b_id = #{id}
     </delete>
 
     <select id="getBounses" resultMap="bonusMap">
@@ -46,5 +46,9 @@
 
     <select id="getRateByPersonId" resultType="float">
         select rate from bonus where bonus.p_id = #{id}
+    </select>
+
+    <select id="getPersonByBonusId" resultMap="com.cobcap.wageManager.dao.PersonDao.personMap">
+        select person.* from person,bonus where b_id = #{id} and bonus.p_id = person.p_id
     </select>
 </mapper>

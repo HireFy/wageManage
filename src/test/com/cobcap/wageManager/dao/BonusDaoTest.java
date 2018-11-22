@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.text.DecimalFormat;
@@ -31,7 +32,7 @@ public class BonusDaoTest {
 
     @Test
     public void deleteById() {
-        assertEquals(true, attendanceDao.deleteById(1));
+        assertEquals(true, attendanceDao.deleteById(244));
     }
 
     @Test
@@ -68,5 +69,10 @@ public class BonusDaoTest {
     @Test
     public void getRateByPersonId() {
         System.out.println(attendanceDao.getRateByPersonId(112));
+    }
+
+    @Test
+    public void getPersonByBonusId() {
+        System.out.println(attendanceDao.getPersonByBonusId(152));
     }
 }

@@ -1,6 +1,7 @@
 package com.cobcap.wageManager.dao;
 
 import com.cobcap.wageManager.pojo.Bonus;
+import com.cobcap.wageManager.pojo.Person;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface BonusDao {
     int getTotalCount();
 
     float getRateByPersonId(Integer id);
+
+    Person getPersonByBonusId(Integer id);
 }

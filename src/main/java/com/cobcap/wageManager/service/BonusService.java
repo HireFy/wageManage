@@ -21,4 +21,8 @@ public interface BonusService {
     int getPageCount(int pageSize);
 
     float getRateByPersonId(Integer id);
+
+    Boolean update(Bonus bonus);
+
+    Boolean delete(Integer id);
 }

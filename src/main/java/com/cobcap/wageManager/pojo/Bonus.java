@@ -12,6 +12,10 @@ public class Bonus {
 
     }
 
+    public Bonus(Integer id) {
+        this.id = id;
+    }
+
     public Bonus(Integer id, Integer personId, Float rate) {
         this.id = id;
         this.personId = personId;

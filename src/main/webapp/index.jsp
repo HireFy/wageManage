@@ -73,11 +73,20 @@
         </place-modal>
     </div>
 
+    <div id="bonusMo" uk-modal>
+        <bonus-modal :id="id"
+                     :name="name"
+                     :rate="rate"
+                     @on-name-change="onNameChange"
+                     @on-rate-change="onRateChange"
+        >
+        </bonus-modal>
+    </div>
 
     <%--删除提示modal--%>
     <div id="deleteModal" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
-            <span class=".uk-text-danger">确认删除吗?</span>
+            <span class=".uk-text-danger">{{deleteInfo}}</span>
             <button class="uk-button uk-button-danger uk-align-right uk-modal-close"
                     @click="deleteData">确认</button>
         </div>

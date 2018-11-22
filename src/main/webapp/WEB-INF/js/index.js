@@ -175,12 +175,14 @@ var vm = new Vue({
                 modal.name = dataArr[1]
                 modal.salary = dataArr[2]
                 modal.placeSelectValue = dataArr[3]
+                modal.deleteInfo='确认删除吗？'
             }
             /*当前nav的值为部门*/
             if(this.navIdInTb === 1){
                 modal.id = dataArr[0]
                 modal.name = dataArr[1]
                 modal.fatherId = dataArr[2]
+                modal.deleteInfo='确认删除吗？'
             }
             /*当前nav的值为职位*/
             if(this.navIdInTb === 2){
@@ -188,27 +190,36 @@ var vm = new Vue({
                 modal.name = dataArr[1]
                 modal.salary = dataArr[2]
                 modal.deptId = dataArr[3]
+                modal.deleteInfo='确认删除吗？'
             }
             /*当前nav的值为奖金*/
-            /*...*/
-            console.log('modal.placeSelectValue: ' + modal.placeSelectValue)
+            if (this.navIdInTb === 3) {
+                modal.id = dataArr[0]
+                modal.name = dataArr[1]
+                modal.rate = dataArr[2]
+                modal.deleteInfo='确认删除吗？相关联的人员也会删除！'
+            }
+            console.log('modal.placeSelectValue: ' + modal.placeSelectValue);
         },
         refreshCurrentPage:function () {
             getData(this.currentPage, this.dataType[this.navIdInTb], this.datas)
         }
     },
     watch: {
+        /*当nav改变时，标签页也改变，应重设currentpage为1*/
         navIdInTb: function (val, oldVal) {
+            this.currentPage = 1
             datatypeComment = this.dataType[this.navIdInTb]
-            getData(1, datatypeComment, this.datas)
+            getData(this.currentPage, datatypeComment, this.datas)
             getPageCount(datatypeComment)
             modal.dataType = datatypeComment
             pagenation.pages = pageCount
+            pagenation.currentPage = this.currentPage
             modal.navId = val
         },
         currentPage: function (val) {
             getData(val, this.dataType[this.navIdInTb], this.datas)
-            console.log(vm.datas)
+            console.log("currentPage改变获取的值： "+vm.datas)
         }
     }
 })
@@ -224,6 +235,8 @@ var modal = new Vue({
         placeSelectValue: '',
         fatherId:0,
         deptId:0,
+        rate:0,
+        deleteInfo:'确认删除吗?',
         dataType:vm.dataType[this.navId],
         modalType:{
             0:'#personMo',
@@ -246,6 +259,9 @@ var modal = new Vue({
         },
         onDeptIdChange:function(val){
             this.deptId = val
+        },
+        onRateChange:function(val){
+            this.rate = val
         },
         deleteData:function () {
             deleteData(this.dataType, this.id)

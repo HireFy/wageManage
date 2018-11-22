@@ -251,3 +251,63 @@ Vue.component('place-modal',{
         '<button class="uk-button uk-button-primary uk-align-right" @click="update">修改</button>\n' +
         '</div>'
 })
+
+
+/*bonus的模态框*/
+Vue.component('bonus-modal', {
+    props:['id', 'name', 'rate'],
+    data:function(){
+        return {
+            childName:this.name,
+            childRate:this.rate
+        }
+    },
+    watch:{
+        name:function (val) {
+            this.childName = this.name
+        },
+        rate:function (val) {
+            this.childRate = this.rate
+        },
+        childName:function (val) {
+            this.$emit('on-name-change', val)
+        },
+        childRate:function (val) {
+            this.$emit('on-rate-change', val)
+        }
+    },
+    methods:{
+        deleteData:function () {
+            deleteAlert()
+        },
+        update:function () {
+            data = JSON.stringify({
+                id:this.id,
+                name:this.name,
+                rate:this.childRate
+            })
+            update(vm.dataType[vm.navIdInTb], data)
+        }
+    },
+    template:'<div class="uk-modal-dialog uk-modal-body">\n' +
+        '    <h2 class="uk-modal-title">{{id}}</h2>\n' +
+        '    <form class="uk-form-stacked">\n' +
+        '\n' +
+        '        <div class="uk-margin">\n' +
+        '            <label class="uk-form-label" for="form-stacked-text">姓名</label>\n' +
+        '            <div class="uk-form-controls">\n' +
+        '                <input v-model="childName" class="uk-input" id="form-stacked-text" type="text" placeholder="">\n' +
+        '            </div>\n' +
+        '        </div>\n' +
+        '\n' +
+        '        <div class="uk-margin">\n' +
+        '            <label class="uk-form-label" for="form-stacked-text">奖金</label>\n' +
+        '            <div class="uk-form-controls">\n' +
+        '                <input v-model="childRate" class="uk-input" id="form-stacked-text" type="text" placeholder="">\n' +
+        '            </div>\n' +
+        '        </div>\n' +
+        '    </form>\n' +
+        '<button class="uk-button uk-button-danger" @click="deleteData">删除</button>\n' +
+        '<button class="uk-button uk-button-primary uk-align-right" @click="update">修改</button>\n' +
+        '</div>'
+})
