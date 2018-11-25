@@ -5,7 +5,7 @@
     <resultMap id="deptMap" type="Dept">
         <id column="d_id" property="id"/>
         <result column="d_name" property="name"/>
-        <result column="d_fathrt_id" property="fatherId"/>
+        <result column="d_father_id" property="fatherId"/>
     </resultMap>
 
     <select id="getById" resultMap="deptMap">
@@ -13,14 +13,14 @@
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into dept (d_name, d_fathrt_id) values (#{name}, #{fatherId})
+        insert into dept (d_name, d_father_id) values (#{name}, #{fatherId})
     </insert>
 
     <update id="updateById">
         update dept
         <set>
             <if test="name != null"> d_name = #{name},</if>
-            <if test="fatherId != null">d_fathrt_id = #{fatherId}</if>
+            <if test="fatherId != null">d_father_id = #{fatherId}</if>
         </set>
         where d_id = #{id}
     </update>
