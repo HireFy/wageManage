@@ -32,7 +32,10 @@
     </delete>
 
     <select id="getPlaces" resultMap="placeMap">
-        select * from place limit #{offset}, #{size}
+        select top ${size} * from dbo.place
+        where pl_id not in (
+          select top ${offset} pl_id from dbo.dept
+        )
     </select>
 
     <select id="isNameExist" resultType="Boolean">

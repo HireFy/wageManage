@@ -18,8 +18,8 @@ public class PersonDaoTest {
 
     @Test
     public void getById() {
-        assertNotNull(personDao.getById(1));
-        System.out.println(personDao.getById(1));
+        assertNotNull(personDao.getById(2));
+        System.out.println(personDao.getById(2));
     }
 
     @Test
@@ -29,13 +29,13 @@ public class PersonDaoTest {
 
     @Test
     public void updateById() {
-        Person person = new Person(4, "fjw", null, null);
+        Person person = new Person(2, "fjw", null, null);
         assertEquals(true, personDao.updateById(person));
     }
 
     @Test
     public void insert() {
-        Person person = new Person("quod", 2);
+        Person person = new Person("quod", 4);
         assertEquals(true, personDao.insert(person));
     }
 

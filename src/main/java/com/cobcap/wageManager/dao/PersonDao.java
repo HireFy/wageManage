@@ -27,4 +27,6 @@ public interface PersonDao {
     Float getRate(Integer id);
 
     int getTotalCount();
+
+    List<Integer> getPersonIdPageNation(@Param("offset") int offset, @Param("size") int size);
 }

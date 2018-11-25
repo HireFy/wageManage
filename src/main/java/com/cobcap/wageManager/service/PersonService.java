@@ -20,7 +20,7 @@ public interface PersonService {
 
     int getPageCount(int pageSize);
 
-    void generatePerson();
+    void generatePerson(int num, int min, int max);
 
     void generateSalary();
 

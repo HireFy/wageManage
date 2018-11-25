@@ -18,7 +18,7 @@ public class DeptDaoTest {
 
     @Test
     public void getById() {
-        System.out.println(deptDao.getById(1));
+        System.out.println(deptDao.getById(2));
     }
 
     @Test
@@ -30,12 +30,11 @@ public class DeptDaoTest {
     public void updateById() {
         Dept dept = new Dept(1, "后端部门", null);
         System.out.println(deptDao.updateById(dept));
-
     }
 
     @Test
     public void insert() {
-        Dept dept = new Dept("技术部门");
+        Dept dept = new Dept("产品部门");
         assertEquals(true, deptDao.insert(dept));
     }
 

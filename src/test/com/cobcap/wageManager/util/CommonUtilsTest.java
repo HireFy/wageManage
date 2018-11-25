@@ -9,7 +9,7 @@ public class CommonUtilsTest {
     @Test
     public void getName() {
         CommonUtils com = new CommonUtils();
-        System.out.println(1 + (int) (Math.random() * 3));
+        System.out.println(CommonUtils.getRandomName());
     }
 
 }

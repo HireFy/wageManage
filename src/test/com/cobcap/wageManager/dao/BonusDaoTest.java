@@ -5,12 +5,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -43,7 +40,7 @@ public class BonusDaoTest {
 
     @Test
     public void insert() {
-        Bonus att = new Bonus(4, (float) 0.50);
+        Bonus att = new Bonus(2, (float) 0.50);
         assertEquals(true, attendanceDao.insert(att));
     }
 
@@ -68,11 +65,11 @@ public class BonusDaoTest {
 
     @Test
     public void getRateByPersonId() {
-        System.out.println(attendanceDao.getRateByPersonId(112));
+        System.out.println(attendanceDao.getRateByPersonId(2));
     }
 
     @Test
     public void getPersonByBonusId() {
-        System.out.println(attendanceDao.getPersonByBonusId(152));
+        System.out.println(attendanceDao.getPersonByBonusId(1));
     }
 }

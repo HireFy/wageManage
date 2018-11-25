@@ -2,7 +2,6 @@ package com.cobcap.wageManager.service.impl;
 
 import com.cobcap.wageManager.dao.PersonDao;
 import com.cobcap.wageManager.pojo.Person;
-import com.cobcap.wageManager.pojo.Place;
 import com.cobcap.wageManager.service.BonusService;
 import com.cobcap.wageManager.service.PersonService;
 import com.cobcap.wageManager.service.PlaceService;
@@ -68,11 +67,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     /*生成person*/
-    public void generatePerson() {
+    public void generatePerson(int num, int min, int max) {
         Person person;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < num; i++) {
             String name = CommonUtils.getRandomName();
-            int placeId = 1 + (int) (Math.random() * 16);
+            int placeId = min + (int) (Math.random() * (max - min + 1));
             person = new Person(name, placeId);
             personDao.insert(person);
         }
@@ -91,7 +90,7 @@ public class PersonServiceImpl implements PersonService {
     /*生成person的salary*/
     @Override
     public void generateSalary() {
-        List<Person> personList = this.getPersons(1, 100);
+        List<Person> personList = this.getPersons(1, 2010);
 
         for (Person person : personList) {
             Integer id = person.getId();

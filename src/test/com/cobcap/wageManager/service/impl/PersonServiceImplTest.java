@@ -28,7 +28,7 @@ public class PersonServiceImplTest {
     /*生成person*/
     @Test
     public void generatePerson() {
-        personService.generatePerson();
+        personService.generatePerson(2000, 6, 21);
     }
 
     /*生成person对应薪酬*/

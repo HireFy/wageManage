@@ -2,7 +2,6 @@ package com.cobcap.wageManager.controller;
 
 import com.cobcap.wageManager.pojo.Bonus;
 import com.cobcap.wageManager.service.BonusService;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -21,23 +21,23 @@ public class PlaceDaoTest {
 
     @Test
     public void getById() {
-        System.out.println(placeDao.getById(1));
+        System.out.println(placeDao.getById(2));
     }
 
     @Test
     public void deleteById() {
-        assertEquals(true, placeDao.deleteById(1));
+        assertEquals(true, placeDao.deleteById(3));
     }
 
     @Test
     public void updateById() {
-        Place place = new Place(1, null, BigDecimal.valueOf(40000.00), null);
+        Place place = new Place(2, null, BigDecimal.valueOf(40000.00), null);
         assertEquals(true, placeDao.updateById(place));
     }
 
     @Test
     public void insert() {
-        Place place = new Place("技术主管", BigDecimal.valueOf(20000.00), 1);
+        Place place = new Place("财务主管", BigDecimal.valueOf(20000.00), 2);
         assertEquals(true, placeDao.insert(place));
     }
 

@@ -90,7 +90,7 @@ public class BonusServiceImpl implements BonusService {
         /*根据bonus id 获取 person*/
         Person person = bonusDao.getPersonByBonusId(bonus.getId());
         person.setSalary(CommonUtils.getSalary(
-                placeService.getSalaryByPlaceId(person.getPlaceId()),bonus.getRate()));
+                placeService.getSalaryByPlaceId(person.getPlaceId()), bonus.getRate()));
         personService.updateById(person);
 
         return this.updateById(bonus);
