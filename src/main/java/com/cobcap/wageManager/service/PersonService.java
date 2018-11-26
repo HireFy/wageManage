@@ -20,9 +20,11 @@ public interface PersonService {
 
     int getPageCount(int pageSize);
 
-    void generatePerson(int num, int min, int max);
+    void generatePerson(int dataSize);
 
-    void generateSalary();
+    void generateSalary(int pageNum, int pageSize);
 
     Boolean update(Person person);
+
+    List<Integer> getPersonIdPageNation(int pageNum, int pageSize);
 }

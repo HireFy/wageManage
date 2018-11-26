@@ -51,4 +51,9 @@ public class PlaceDaoTest {
     public void getPlaces() {
         assertNotNull(placeDao.getPlaces(0, 5));
     }
+
+    @Test
+    public void getAllIds(){
+        System.out.println(placeDao.getAllIds());
+    }
 }

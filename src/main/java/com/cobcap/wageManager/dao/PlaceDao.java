@@ -23,4 +23,6 @@ public interface PlaceDao {
     List<Place> getPlaces(@Param("offset") int offset, @Param("size") int size);
 
     int getTotalCount();
+
+    List<Integer> getAllIds();
 }

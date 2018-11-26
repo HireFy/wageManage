@@ -28,13 +28,13 @@ public class PersonServiceImplTest {
     /*生成person*/
     @Test
     public void generatePerson() {
-        personService.generatePerson(2000, 6, 21);
+        personService.generatePerson(2000);
     }
 
     /*生成person对应薪酬*/
     @Test
     public void generateSalary() {
-        personService.generateSalary();
+        personService.generateSalary(1, 2010);
     }
 
 }

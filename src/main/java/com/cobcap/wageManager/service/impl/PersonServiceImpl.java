@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class PersonServiceImpl implements PersonService {
@@ -54,7 +55,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<Person> getPersons(int pageNum, int pageSize) {
-        return personDao.getPersons((pageNum-1)*pageSize, pageSize);
+        return personDao.getPersons((pageNum - 1) * pageSize, pageSize);
     }
 
     public int getPageCount(int pageSize) {
@@ -66,17 +67,28 @@ public class PersonServiceImpl implements PersonService {
         return pageCount;
     }
 
-    /*生成person*/
-    public void generatePerson(int num, int min, int max) {
+
+    /**
+     * 生成person
+     * @param dataSize 生成person的数据量
+     */
+    public void generatePerson(int dataSize) {
         Person person;
-        for (int i = 0; i < num; i++) {
+        List<Integer> placeIds = placeService.getAllIds();
+        Random random = new Random();
+        for (int i = 0; i < dataSize; i++) {
             String name = CommonUtils.getRandomName();
-            int placeId = min + (int) (Math.random() * (max - min + 1));
+            int placeId = placeIds.get(random.nextInt(placeIds.size()));
             person = new Person(name, placeId);
             personDao.insert(person);
         }
     }
 
+
+    @Override
+    public List<Integer> getPersonIdPageNation(int pageNum, int pageSize) {
+        return personDao.getPersonIdPageNation((pageNum - 1) * pageSize, pageSize);
+    }
 
     /*更新person，同时根据职位的改变重新计算薪资*/
     @Override
@@ -89,14 +101,22 @@ public class PersonServiceImpl implements PersonService {
 
     /*生成person的salary*/
     @Override
-    public void generateSalary() {
-        List<Person> personList = this.getPersons(1, 2010);
+    public void generateSalary(int pageNum, int pageSize) {
+        List<Person> personList = this.getPersons(pageNum, pageSize);
 
         for (Person person : personList) {
             Integer id = person.getId();
             BigDecimal baseSalary = personDao.getBaseSalary(id);
             Float rate = personDao.getRate(id);
-            person.setSalary(CommonUtils.getSalary(baseSalary, rate));
+            try {
+                person.setSalary(CommonUtils.getSalary(baseSalary, rate));
+            } catch (Exception e) {
+                System.out.println("person id: " + id);
+                System.out.println("baseSalary: " + baseSalary);
+                System.out.println("rate: " + rate);
+
+                e.printStackTrace();
+            }
             this.updateById(person);
         }
     }

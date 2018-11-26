@@ -23,4 +23,6 @@ public interface PlaceService {
     List<Place> getPlaces(int pageNum, int pageSize);
 
     int getPageCount(int pageSize);
+
+    List<Integer> getAllIds();
 }

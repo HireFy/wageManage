@@ -47,6 +47,11 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
+    public List<Integer> getAllIds() {
+        return placeDao.getAllIds();
+    }
+
+    @Override
     public int getPageCount(int pageSize) {
         int totalCount = placeDao.getTotalCount();
         int pageCount = totalCount / pageSize;
