@@ -62,6 +62,11 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
+    public String getPlaceNameById(Integer id) {
+        return placeDao.getPlaceNameById(id);
+    }
+
+    @Override
     public List<Place> getPlaces(int pageNum, int pageSize) {
         return placeDao.getPlaces((pageNum - 1) * pageSize, pageSize);
     }

@@ -1,6 +1,7 @@
 package com.cobcap.wageManager.service;
 
 import com.cobcap.wageManager.pojo.Person;
+import com.cobcap.wageManager.vo.PersonVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -27,4 +28,6 @@ public interface PersonService {
     Boolean update(Person person);
 
     List<Integer> getPersonIdPageNation(int pageNum, int pageSize);
+
+    List<PersonVo> getPersonVos(int pageNum, int pageSize);
 }

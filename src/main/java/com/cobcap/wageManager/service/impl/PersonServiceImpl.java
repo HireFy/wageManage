@@ -6,10 +6,13 @@ import com.cobcap.wageManager.service.BonusService;
 import com.cobcap.wageManager.service.PersonService;
 import com.cobcap.wageManager.service.PlaceService;
 import com.cobcap.wageManager.util.CommonUtils;
+import com.cobcap.wageManager.vo.PersonVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -58,6 +61,7 @@ public class PersonServiceImpl implements PersonService {
         return personDao.getPersons((pageNum - 1) * pageSize, pageSize);
     }
 
+
     public int getPageCount(int pageSize) {
         int totalCount = personDao.getTotalCount();
         int pageCount = totalCount / pageSize;
@@ -84,6 +88,11 @@ public class PersonServiceImpl implements PersonService {
         }
     }
 
+
+    @Override
+    public List<PersonVo> getPersonVos(int pageNum, int pageSize) {
+        return this.transFormData(this.getPersons(pageNum, pageSize));
+    }
 
     @Override
     public List<Integer> getPersonIdPageNation(int pageNum, int pageSize) {
@@ -119,5 +128,23 @@ public class PersonServiceImpl implements PersonService {
             }
             this.updateById(person);
         }
+    }
+
+    /*转换person到personVo*/
+    public PersonVo transFormData(Person person) {
+        PersonVo vo = new PersonVo();
+        BeanUtils.copyProperties(person, vo);
+
+        vo.setPlaceName(placeService.getPlaceNameById(vo.getPlaceId()));
+
+        return vo;
+    }
+
+    public List<PersonVo> transFormData(List<Person> personList) {
+        List<PersonVo> personVoList = new ArrayList<>();
+        for (Person person : personList) {
+            personVoList.add(this.transFormData(person));
+        }
+        return personVoList;
     }
 }

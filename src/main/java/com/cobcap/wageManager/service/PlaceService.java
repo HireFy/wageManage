@@ -25,4 +25,6 @@ public interface PlaceService {
     int getPageCount(int pageSize);
 
     List<Integer> getAllIds();
+
+    String getPlaceNameById(Integer id);
 }

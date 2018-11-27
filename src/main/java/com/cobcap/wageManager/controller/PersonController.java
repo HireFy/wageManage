@@ -3,6 +3,7 @@ package com.cobcap.wageManager.controller;
 
 import com.cobcap.wageManager.pojo.Person;
 import com.cobcap.wageManager.service.PersonService;
+import com.cobcap.wageManager.vo.PersonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +20,10 @@ public class PersonController {
 
     /*根据请求路径参数num获取指定页数的person数据*/
     @RequestMapping(value = {"/page", "/page/{num}"})
-    public List<Person> getPersons (@PathVariable(required = false) Integer num) {
+    public List<PersonVo> getPersons (@PathVariable(required = false) Integer num) {
         if(num == null)
             num = 1;
-        return personService.getPersons(num, pageSize);
+        return personService.getPersonVos(num, pageSize);
     }
 
     /*获取总的person数据页数*/

@@ -57,4 +57,8 @@
     <select id="getAllIds" resultType="int">
         select pl_id from place
     </select>
+
+    <select id="getPlaceNameById" resultType="String">
+        select pl_name from dbo.place where pl_id = #{id}
+    </select>
 </mapper>

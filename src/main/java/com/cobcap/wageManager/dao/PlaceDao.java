@@ -25,4 +25,6 @@ public interface PlaceDao {
     int getTotalCount();
 
     List<Integer> getAllIds();
+
+    String getPlaceNameById(Integer id);
 }

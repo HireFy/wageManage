@@ -105,7 +105,7 @@
                 <td>{{data.id}}</td>
                 <td>{{data.name}}</td>
                 <td>{{data.salary}}</td>
-                <td>{{data.placeId}}</td>
+                <td>{{data.placeName}}</td>
             </tr>
             <tr v-for="data in datas" v-if="navIdInTb === 1" @click="showmodal">
                 <td>{{data.id}}</td>
