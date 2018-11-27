@@ -19,4 +19,6 @@ public interface DeptDao {
     List<Dept> getDepts(@Param("offset") int offset, @Param("size") int size);
 
     int getTotalCount();
+
+    String getDeptNameById(Integer id);
 }

@@ -30,4 +30,6 @@ public interface PersonService {
     List<Integer> getPersonIdPageNation(int pageNum, int pageSize);
 
     List<PersonVo> getPersonVos(int pageNum, int pageSize);
+
+    String getNameById(Integer id);
 }

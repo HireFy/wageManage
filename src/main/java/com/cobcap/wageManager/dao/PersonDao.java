@@ -29,4 +29,6 @@ public interface PersonDao {
     int getTotalCount();
 
     List<Integer> getPersonIdPageNation(@Param("offset") int offset, @Param("size") int size);
+
+    String getNameById(Integer id);
 }

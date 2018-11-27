@@ -1,6 +1,7 @@
 package com.cobcap.wageManager.service;
 
 import com.cobcap.wageManager.pojo.Place;
+import com.cobcap.wageManager.vo.PlaceVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
@@ -27,4 +28,6 @@ public interface PlaceService {
     List<Integer> getAllIds();
 
     String getPlaceNameById(Integer id);
+
+    List<PlaceVo> getPlaceVos(int pageNum, int pageSize);
 }

@@ -2,6 +2,7 @@ package com.cobcap.wageManager.controller;
 
 import com.cobcap.wageManager.pojo.Bonus;
 import com.cobcap.wageManager.service.BonusService;
+import com.cobcap.wageManager.vo.BonusVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,10 +21,10 @@ public class BonusController {
     private BonusService bonusService;
 
     @RequestMapping(value = {"/page", "/page/{num}"})
-    public List<Bonus> getBonuses(@PathVariable(required = false) Integer num) {
+    public List<BonusVo> getBonuses(@PathVariable(required = false) Integer num) {
         if(num == null)
             num = 1;
-        return bonusService.getBounses(num, pageSize);
+        return bonusService.getBonusVos(num, pageSize);
     }
 
     @RequestMapping("/pageCount")

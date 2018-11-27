@@ -116,12 +116,12 @@
                 <td>{{data.id}}</td>
                 <td>{{data.name}}</td>
                 <td>{{data.salary}}</td>
-                <td>{{data.deptId}}</td>
+                <td>{{data.deptName}}</td>
             </tr>
             <tr v-for="data in datas" v-if="navIdInTb === 3" @click="showmodal">
                 <td>{{data.id}}</td>
-                <td>{{data.personId}}</td>
-                <td>{{data.rate}}</td>
+                <td>{{data.personName}}</td>
+                <td>{{data.rateFormat}}</td>
             </tr>
             </tbody>
         </table>

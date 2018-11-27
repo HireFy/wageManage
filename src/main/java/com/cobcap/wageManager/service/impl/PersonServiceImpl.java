@@ -90,6 +90,11 @@ public class PersonServiceImpl implements PersonService {
 
 
     @Override
+    public String getNameById(Integer id) {
+        return personDao.getNameById(id);
+    }
+
+    @Override
     public List<PersonVo> getPersonVos(int pageNum, int pageSize) {
         return this.transFormData(this.getPersons(pageNum, pageSize));
     }

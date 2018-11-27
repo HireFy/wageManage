@@ -48,4 +48,8 @@
         select count(*) from dept
     </select>
 
+    <select id="getDeptNameById" resultType="String">
+        select d_name from dbo.dept where d_id = #{id}
+    </select>
+
 </mapper>

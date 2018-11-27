@@ -1,13 +1,17 @@
 package com.cobcap.wageManager.service.impl;
 
+import com.cobcap.wageManager.dao.DeptDao;
 import com.cobcap.wageManager.dao.PlaceDao;
 import com.cobcap.wageManager.pojo.Place;
 import com.cobcap.wageManager.service.PlaceService;
+import com.cobcap.wageManager.vo.PlaceVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.management.PlatformLoggingMXBean;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,6 +19,9 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Autowired
     private PlaceDao placeDao;
+
+    @Autowired
+    private DeptDao deptDao;
 
     @Override
     public Place getById(Integer id) {
@@ -62,6 +69,11 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
+    public List<PlaceVo> getPlaceVos(int pageNum, int pageSize) {
+        return this.transFormData(this.getPlaces(pageNum, pageSize));
+    }
+
+    @Override
     public String getPlaceNameById(Integer id) {
         return placeDao.getPlaceNameById(id);
     }
@@ -69,5 +81,24 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public List<Place> getPlaces(int pageNum, int pageSize) {
         return placeDao.getPlaces((pageNum - 1) * pageSize, pageSize);
+    }
+
+
+    /*Place转换placeVo*/
+    public PlaceVo transFormData(Place place) {
+        PlaceVo vo = new PlaceVo();
+        BeanUtils.copyProperties(place, vo);
+
+        vo.setDeptName(deptDao.getDeptNameById(vo.getDeptId()));
+
+        return vo;
+    }
+
+    public List<PlaceVo> transFormData(List<Place> places) {
+        List<PlaceVo> placeVos = new ArrayList<>();
+        for (Place place : places) {
+            placeVos.add(this.transFormData(place));
+        }
+        return placeVos;
     }
 }

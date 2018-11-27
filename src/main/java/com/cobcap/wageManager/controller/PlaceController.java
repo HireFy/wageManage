@@ -2,6 +2,7 @@ package com.cobcap.wageManager.controller;
 
 import com.cobcap.wageManager.pojo.Place;
 import com.cobcap.wageManager.service.PlaceService;
+import com.cobcap.wageManager.vo.PlaceVo;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,10 +22,10 @@ public class PlaceController {
     private PlaceService placeService;
 
     @RequestMapping(value = {"/page", "/page/{num}"})
-    public List<Place> getPlaces(@PathVariable(required = false) Integer num) {
+    public List<PlaceVo> getPlaces(@PathVariable(required = false) Integer num) {
         if(num == null)
             num = 1;
-        return placeService.getPlaces(num, pageSize);
+        return placeService.getPlaceVos(num, pageSize);
     }
 
     @RequestMapping("/pageCount")

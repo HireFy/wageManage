@@ -68,4 +68,8 @@
     <select id="getTotalCount" resultType="int">
         select count(*) from person
     </select>
+
+    <select id="getNameById" resultType="String">
+        select p_name from dbo.person where p_id = #{id}
+    </select>
 </mapper>

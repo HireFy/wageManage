@@ -7,9 +7,12 @@ import com.cobcap.wageManager.service.BonusService;
 import com.cobcap.wageManager.service.PersonService;
 import com.cobcap.wageManager.service.PlaceService;
 import com.cobcap.wageManager.util.CommonUtils;
+import com.cobcap.wageManager.vo.BonusVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +69,34 @@ public class BonusServiceImpl implements BonusService {
         return pageCount;
     }
 
+
+    @Override
+    public List<BonusVo> getBonusVos(int pageNum, int pageSize) {
+        return this.transFormData(this.getBounses(pageNum, pageSize));
+    }
+
+    /**
+     * 转换bonus到bonusVo
+     * @param bonus
+     * @return
+     */
+    public BonusVo transFormData(Bonus bonus) {
+        BonusVo vo = new BonusVo();
+        BeanUtils.copyProperties(bonus, vo);
+
+        vo.setPersonName(personService.getNameById(vo.getPersonId()));
+        vo.setRateFormat(new BigDecimal(vo.getRate()).setScale(2, BigDecimal.ROUND_CEILING).floatValue() + "%");
+
+        return vo;
+    }
+
+    public List<BonusVo> transFormData(List<Bonus> bonuses) {
+        List<BonusVo> bonusVos = new ArrayList<>();
+        for (Bonus bonus : bonuses) {
+            bonusVos.add(this.transFormData(bonus));
+        }
+        return bonusVos;
+    }
 
     /**
      * 删除一个奖金表的时候，这个人也应该级联删除

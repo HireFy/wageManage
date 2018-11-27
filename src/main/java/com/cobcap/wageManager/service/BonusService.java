@@ -1,6 +1,7 @@
 package com.cobcap.wageManager.service;
 
 import com.cobcap.wageManager.pojo.Bonus;
+import com.cobcap.wageManager.vo.BonusVo;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface BonusService {
     Boolean update(Bonus bonus);
 
     Boolean delete(Integer id);
+
+    List<BonusVo> getBonusVos(int pageNum, int pageSize);
 }
