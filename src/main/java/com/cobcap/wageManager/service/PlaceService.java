@@ -30,4 +30,6 @@ public interface PlaceService {
     String getPlaceNameById(Integer id);
 
     List<PlaceVo> getPlaceVos(int pageNum, int pageSize);
+
+    List<Place> getAllPlaces();
 }

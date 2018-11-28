@@ -69,6 +69,11 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
+    public List<Place> getAllPlaces() {
+        return placeDao.getAllPlaces();
+    }
+
+    @Override
     public List<PlaceVo> getPlaceVos(int pageNum, int pageSize) {
         return this.transFormData(this.getPlaces(pageNum, pageSize));
     }

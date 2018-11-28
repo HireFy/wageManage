@@ -61,4 +61,8 @@
     <select id="getPlaceNameById" resultType="String">
         select pl_name from dbo.place where pl_id = #{id}
     </select>
+
+    <select id="getAllPlaces" resultMap="placeMap">
+        select * from dbo.place
+    </select>
 </mapper>

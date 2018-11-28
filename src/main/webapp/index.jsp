@@ -47,6 +47,7 @@
                       :name="name"
                       :salary="salary"
                       :datatype="dataType"
+                      :person_places="places"
                       :selectvalue="placeSelectValue"
                       @on-select-value-change="onSelectValueChange"
                       @on-name-change="onNameChange"

@@ -27,4 +27,6 @@ public interface PlaceDao {
     List<Integer> getAllIds();
 
     String getPlaceNameById(Integer id);
+
+    List<Place> getAllPlaces();
 }

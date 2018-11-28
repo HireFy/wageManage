@@ -44,11 +44,12 @@ Vue.component('bonus-head', {
 
 /*person的模态(modal)框*/
 Vue.component('person-modal', {
-    props: ['id', 'name', 'salary', 'selectvalue','datatype'],
+    props: ['id', 'name', 'salary', 'selectvalue','datatype', 'person_places'],
     data: function () {
         return {
             childSelectVal: this.selectvalue,
-            childName: this.name
+            childName: this.name,
+            childPlaces:this.person_places
         }
     },
     watch: {
@@ -97,22 +98,8 @@ Vue.component('person-modal', {
         '            <div class="uk-margin">\n' +
         '                <label class="uk-form-label" for="form-stacked-select">职位</label>\n' +
         '                <div class="uk-form-controls">\n' + '<select class="uk-select" id="form-stacked-select" v-model="childSelectVal">\n' +
-        '    <option value="1">架构师</option>\n' +
-        '    <option value="2">前端工程师</option>\n' +
-        '    <option value="3">Java工程师</option>\n' +
-        '    <option value="4">Python工程师</option>\n' +
-        '    <option value="5">测试工程师</option>\n' +
-        '    <option value="6">运维工程师</option>\n' +
-        '    <option value="7">产品经理</option>\n' +
-        '    <option value="8">产品助理</option>\n' +
-        '    <option value="9">设计师</option>\n' +
-        '    <option value="10">产品运营</option>\n' +
-        '    <option value="11">活动策划</option>\n' +
-        '    <option value="12">会员运营</option>\n' +
-        '    <option value="13">数据运营</option>\n' +
-        '    <option value="14">媒体运营</option>\n' +
-        '    <option value="15">内容策划</option>\n' +
-        '    <option value="16">编辑</option>\n' +
+        '    <option v-for="place in childPlaces" :value="place.id">{{place.name}}</option>\n' +
+        '  \n' +
         '</select>' +
         '                </div>\n' +
         '            </div>\n' +
@@ -251,7 +238,6 @@ Vue.component('place-modal',{
         '<button class="uk-button uk-button-primary uk-align-right" @click="update">修改</button>\n' +
         '</div>'
 })
-
 
 /*bonus的模态框*/
 Vue.component('bonus-modal', {

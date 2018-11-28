@@ -46,6 +46,38 @@ function getData(num, dataType, datalist) {
 }
 
 
+var Places;
+/**
+ * 从数据库获取Place信息，生成id和name对应的Place对象
+ */
+function generatePlaceObject() {
+    $.ajax({
+        type:"post",
+        url:"/place/all",
+        dataType:"json",
+        async: false,
+        success:function (data) {
+            Places = data
+        }
+    })
+}
+generatePlaceObject()
+
+/**
+ * 根据placeName查找placeId
+ * @param name
+ * @returns {*}
+ */
+function getPlaceIdByName(name) {
+    for (i in Places) {
+        if (Places[i]['name'] === name) {
+            return Places[i]['id']
+        }
+    }
+}
+
+
+
 /**
  * 执行更新，自动刷新当前页 提示修改成功或失败
  * @param dataType
@@ -53,19 +85,19 @@ function getData(num, dataType, datalist) {
  */
 function update(dataType, data) {
     $.ajax({
-        type:"post",
-        url:"/"+ dataType + "/update",
-        dataType:"json",
-        contentType:"application/json",
-        data:data,
-        error:function(error){
+        type: "post",
+        url: "/" + dataType + "/update",
+        dataType: "json",
+        contentType: "application/json",
+        data: data,
+        error: function (error) {
             vm.refreshCurrentPage()
             UIkit.modal.dialog('<div class="uk-alert-danger" uk-alert>\n' +
                 '    <a class="uk-alert-close" uk-close></a>\n' +
                 '    <p>更新操作失败</p>\n' +
                 '</div>');
         },
-        success:function (data) {
+        success: function (data) {
             vm.refreshCurrentPage()
             UIkit.modal.dialog('<div class="uk-alert-success" uk-alert>\n' +
                 '    <a class="uk-alert-close" uk-close></a>\n' +
@@ -75,11 +107,14 @@ function update(dataType, data) {
         }
     })
 }
+/**
+ * 根据placeName查找placeId
+ */
 
 /**
  * 提示删除信息
  */
-function deleteAlert(){
+function deleteAlert() {
     UIkit.modal("#deleteModal").show();
 }
 
@@ -89,22 +124,25 @@ function deleteAlert(){
  * @param id
  */
 function deleteData(dataType, id) {
-        $.ajax({
-            type: "post",
-            url: "/" + dataType + "/delete/" + id,
-            dataType: "json",
-            success: function () {
-                vm.refreshCurrentPage()
-                console.log("刷新页面操作已完成")
-                UIkit.modal.dialog('<div class="uk-alert-success" uk-alert>\n' +
-                    '    <a class="uk-alert-close" uk-close></a>\n' +
-                    '    <p>删除操作已生效</p>\n' +
-                    '</div>');
-            }
-        })
+    $.ajax({
+        type: "post",
+        url: "/" + dataType + "/delete/" + id,
+        dataType: "json",
+        success: function () {
+            vm.refreshCurrentPage()
+            console.log("刷新页面操作已完成")
+            UIkit.modal.dialog('<div class="uk-alert-success" uk-alert>\n' +
+                '    <a class="uk-alert-close" uk-close></a>\n' +
+                '    <p>删除操作已生效</p>\n' +
+                '</div>');
+        }
+    })
 }
 
 
+/**
+ * 分页操作
+ */
 var pagenation = new Vue({
     el: '#pagenation',
     data: {
@@ -151,11 +189,11 @@ var vm = new Vue({
         navIdInTb: navbar.navId,
         currentPage: pagenation.currentPage,
         datas: datalist,
-        dataType:{
-            0:'person',
-            1:'dept',
-            2:'place',
-            3:'bonus'
+        dataType: {
+            0: 'person',
+            1: 'dept',
+            2: 'place',
+            3: 'bonus'
         }
     },
     methods: {
@@ -169,39 +207,41 @@ var vm = new Vue({
                     dataArr.push(data)
                 }
             }
+
             /*当前nav的值为人员*/
-            if(this.navIdInTb === 0) {
+            if (this.navIdInTb === 0) {
                 modal.id = dataArr[0]
                 modal.name = dataArr[1]
                 modal.salary = dataArr[2]
-                modal.placeSelectValue = dataArr[3]
-                modal.deleteInfo='确认删除吗？'
+
+                modal.placeSelectValue = getPlaceIdByName(dataArr[3])
+                modal.deleteInfo = '确认删除吗？'
             }
             /*当前nav的值为部门*/
-            if(this.navIdInTb === 1){
+            if (this.navIdInTb === 1) {
                 modal.id = dataArr[0]
                 modal.name = dataArr[1]
                 modal.fatherId = dataArr[2]
-                modal.deleteInfo='确认删除吗？'
+                modal.deleteInfo = '确认删除吗？'
             }
             /*当前nav的值为职位*/
-            if(this.navIdInTb === 2){
+            if (this.navIdInTb === 2) {
                 modal.id = dataArr[0]
                 modal.name = dataArr[1]
                 modal.salary = dataArr[2]
                 modal.deptId = dataArr[3]
-                modal.deleteInfo='确认删除吗？'
+                modal.deleteInfo = '确认删除吗？'
             }
             /*当前nav的值为奖金*/
             if (this.navIdInTb === 3) {
                 modal.id = dataArr[0]
                 modal.name = dataArr[1]
                 modal.rate = dataArr[2]
-                modal.deleteInfo='确认删除吗？相关联的人员也会删除！'
+                modal.deleteInfo = '确认删除吗？相关联的人员也会删除！'
             }
             console.log('modal.placeSelectValue: ' + modal.placeSelectValue);
         },
-        refreshCurrentPage:function () {
+        refreshCurrentPage: function () {
             getData(this.currentPage, this.dataType[this.navIdInTb], this.datas)
         }
     },
@@ -219,7 +259,7 @@ var vm = new Vue({
         },
         currentPage: function (val) {
             getData(val, this.dataType[this.navIdInTb], this.datas)
-            console.log("currentPage改变获取的值： "+vm.datas)
+            console.log("currentPage改变获取的值： " + vm.datas)
         }
     }
 })
@@ -231,18 +271,19 @@ var modal = new Vue({
         id: 0,
         name: '',
         salary: 0,
+        places:Places,
         navId: vm.navIdInTb,
         placeSelectValue: '',
-        fatherId:0,
-        deptId:0,
-        rate:0,
-        deleteInfo:'确认删除吗?',
-        dataType:vm.dataType[this.navId],
-        modalType:{
-            0:'#personMo',
-            1:'#deptMo',
-            2:'#placeMo',
-            3:'#bonusMo'
+        fatherId: 0,
+        deptId: 0,
+        rate: 0,
+        deleteInfo: '确认删除吗?',
+        dataType: vm.dataType[this.navId],
+        modalType: {
+            0: '#personMo',
+            1: '#deptMo',
+            2: '#placeMo',
+            3: '#bonusMo'
         }
     },
     methods: {
@@ -254,16 +295,16 @@ var modal = new Vue({
         onNameChange: function (val) {
             this.name = val
         },
-        onFatherIdChange:function(val){
+        onFatherIdChange: function (val) {
             this.fatherId = val
         },
-        onDeptIdChange:function(val){
+        onDeptIdChange: function (val) {
             this.deptId = val
         },
-        onRateChange:function(val){
+        onRateChange: function (val) {
             this.rate = val
         },
-        deleteData:function () {
+        deleteData: function () {
             deleteData(this.dataType, this.id)
         }
     }

@@ -42,4 +42,10 @@ public class PlaceController {
     public Boolean updatePlace(@RequestBody Place place) {
         return placeService.updateById(place);
     }
+
+
+    @RequestMapping("/all")
+    public List<Place> getAllPlaces() {
+        return placeService.getAllPlaces();
+    }
 }
