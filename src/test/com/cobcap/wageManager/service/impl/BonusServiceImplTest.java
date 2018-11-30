@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +67,18 @@ public class BonusServiceImplTest {
     public void delete(){
         Bonus bonus = new Bonus(241);
         System.out.println(bonusService.delete(223));
+    }
+
+
+    @Test
+    public void testFloatFormat() {
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
+        Float rate = Float.valueOf(decimalFormat.format(
+                0 + (float) Math.random() * 1.00));
+
+
+        System.out.println(new BigDecimal(rate).setScale(2, BigDecimal.ROUND_CEILING).floatValue() * 100 + "%");
     }
 
 }

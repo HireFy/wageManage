@@ -77,6 +77,7 @@ public class BonusServiceImpl implements BonusService {
 
     /**
      * 转换bonus到bonusVo
+     *
      * @param bonus
      * @return
      */
@@ -85,7 +86,7 @@ public class BonusServiceImpl implements BonusService {
         BeanUtils.copyProperties(bonus, vo);
 
         vo.setPersonName(personService.getNameById(vo.getPersonId()));
-        vo.setRateFormat(new BigDecimal(vo.getRate()).setScale(2, BigDecimal.ROUND_CEILING).floatValue() + "%");
+        vo.setRateFormat(new BigDecimal(vo.getRate()).setScale(2, BigDecimal.ROUND_CEILING).floatValue() * 100 + "%");
 
         return vo;
     }
@@ -102,6 +103,7 @@ public class BonusServiceImpl implements BonusService {
      * 删除一个奖金表的时候，这个人也应该级联删除
      * 数据库表设置了级联删除，删除person的时候,
      * 这个person的bonus就会跟着一起删除
+     *
      * @param id
      * @return
      */
@@ -114,6 +116,7 @@ public class BonusServiceImpl implements BonusService {
     /**
      * 更新bonus时候，当bonus的rate更改了，
      * 当前这个person的薪资也应随着一起修改
+     *
      * @param bonus
      * @return
      */
