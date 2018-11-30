@@ -22,59 +22,121 @@
     <title>login</title>
 </head>
 <body>
-<div class="uk-flex uk-flex-center">
+<div class="uk-flex uk-flex-center" style="margin-top: 120px">
     <div id="loginBox" class="uk-card uk-card-default uk-card-body uk-width-1-2@m">
-        <form class="uk-form-stacked" action="/login" method="post" id="login_form">
+        <form class="uk-form-stacked" id="login_form">
             <div class="uk-margin">
                 <label class="uk-form-label" for="num">编号</label>
                 <div class="uk-form-controls">
-                    <input class="uk-input" :class="{'uk-form-danger' : isExistInvalidChar}" id="num" name="num" type="text" placeholder="员工编号" v-model="num" >
+                    <input class="uk-input" id="num" name="num" type="text" placeholder="员工编号"
+                           v-model="num"
+                           :class="{'uk-form-danger' : isExistInvalidChar || !isNumOk}"
+                           @blur="numBlur">
                 </div>
             </div>
 
             <div class="uk-margin">
                 <label class="uk-form-label" for="pass">密码</label>
                 <div class="uk-form-controls">
-                    <input class="uk-input" id="pass" name="pass" type="password" placeholder="密码" v-model="pass">
+                    <input class="uk-input" id="pass" name="pass" type="password" placeholder="密码"
+                           v-model="pass"
+                           :class="{'uk-form-danger' : !isPassOk}"
+                           @blur="passBlur">
                 </div>
             </div>
         </form>
         <div class="uk-button-group" style="width: 100%;">
             <button class="uk-button uk-button-text uk-width-1-1 uk-margin-small-bottom">现在注册</button>
-            <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom" :disabled="isExistInvalidChar" @click="login">登录</button>
+            <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom"
+                    :disabled="isDisabled"
+                    @click="login"
+                    @keyup.enter="login">登录
+            </button>
         </div>
     </div>
 </div>
 </body>
+
 <script>
-    var login  = new Vue({
-        el:"#loginBox",
-        data:{
-            num:'',
-            pass:'',
-            isExistInvalidChar:false
+    function check(num, pass) {
+        $.ajax({
+            type: "post",
+            url: "/person/check",
+            data: {
+                "num": num,
+                "pass": pass
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    window.location.href = "/person/"+num
+                } else {
+                    UIkit.modal.dialog('<div class="uk-alert-danger" uk-alert>\n' +
+                        '    <a class="uk-alert-close" uk-close></a>\n' +
+                        '    <p>编号或密码错误</p>\n' +
+                        '</div>');
+                }
+            }
+        })
+    }
+</script>
+
+<script>
+    var login = new Vue({
+        el: "#loginBox",
+        data: {
+            num: '',
+            pass: '',
+            isExistInvalidChar: false,
+            isPassOk: true,
+            isNumOk: true,
+            isDisabled: false,
         },
-        watch:{
-            num:function (val) {
+        watch: {
+            num: function (val) {
                 /*如果不全是数字，isExistInvalidChar返回true*/
-                for(var i = 0; i < val.length; i++){
+                for (var i = 0; i < val.length; i++) {
                     if (isNaN(parseInt(val.charAt(i)))) {
                         this.isExistInvalidChar = true
                         return
                     }
                 }
                 this.isExistInvalidChar = false
+
+                /*如果输入值时不为空,设定isNumOk不为空*/
+                if (val != "") {
+                    this.isNumOk = true
+                }
+            },
+            pass: function (val) {
+                /*如果输入值时不为空,设定isPassOk不为空*/
+                if (val != "") {
+                    this.isPassOk = true
+                }
             }
         },
-        methods:{
-            login:function () {
-                /*设置提交的表单的值num和pass*/
-                login_form.num.value = this.num
-                login_form.pass.value = this.pass
-
-                /*提交表单*/
-                login_form.submit()
-            }
+        methods: {
+            login: function () {
+                check(this.num, this.pass)
+            },
+            numBlur: function () {
+                if (this.num == "") {
+                    this.isNumOk = false
+                    this.isDisabled = true
+                } else {
+                    this.isNumOk = true
+                    this.isDisabled = false
+                }
+            },
+            passBlur: function () {
+                if (this.pass == "") {
+                    this.isPassOk = false
+                    this.isDisabled = true
+                } else {
+                    this.isPassOk = true
+                    this.isDisabled = false
+                }
+            },
         }
     })
 </script>

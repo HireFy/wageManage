@@ -32,4 +32,9 @@ public interface PersonService {
     List<PersonVo> getPersonVos(int pageNum, int pageSize);
 
     String getNameById(Integer id);
+
+    /*检验编号和密码是否正确*/
+    Boolean isPassRight(Integer num, String pass);
+
+    PersonVo transFormData(Person person);
 }

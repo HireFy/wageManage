@@ -90,6 +90,20 @@ public class PersonServiceImpl implements PersonService {
 
 
     @Override
+    public Boolean isPassRight(Integer num, String pass) {
+        Person person = this.getById(num);
+
+        if (person == null) {
+            return false;
+        }
+
+        if (person.getPass().equals(pass)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public String getNameById(Integer id) {
         return personDao.getNameById(id);
     }

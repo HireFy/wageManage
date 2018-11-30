@@ -27,11 +27,11 @@
         <div id="navbar">
             <ul class="uk-navbar-nav">
                 <li @click="navId = 0" :class="{'uk-active':navId === 0}">
-                    <a href="#"><span :class="{'uk-text-large':navId === 0}">人员</span></a></li>
+                    <a><span :class="{'uk-text-large':navId === 0}">人员</span></a></li>
                 <li @click="navId = 1" :class="{'uk-active':navId === 1}">
-                    <a href="#"><span :class="{'uk-text-large':navId === 1}">部门</span></a></li>
+                    <a><span :class="{'uk-text-large':navId === 1}">部门</span></a></li>
                 <li @click="navId = 2" :class="{'uk-active':navId === 2}">
-                    <a href="#"><span :class="{'uk-text-large':navId === 2}">职位</span></a></li>
+                    <a><span :class="{'uk-text-large':navId === 2}">职位</span></a></li>
                 <li @click="navId = 3" :class="{'uk-active':navId === 3}">
                     <a href="#"><span :class="{'uk-text-large':navId === 3}">奖金</span></a></li>
             </ul>

@@ -4,9 +4,11 @@ package com.cobcap.wageManager.controller;
 import com.cobcap.wageManager.pojo.Person;
 import com.cobcap.wageManager.service.PersonService;
 import com.cobcap.wageManager.vo.PersonVo;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -42,6 +44,30 @@ public class PersonController {
     @RequestMapping("/delete/{id}")
     public Boolean deletePerson(@PathVariable Integer id) {
         return personService.deleteById(id);
+    }
+
+
+    /*检验编号和密码是否正确*/
+    @RequestMapping("/check")
+    public Boolean checkNumAndPass(@RequestParam("num") String num,
+                                   @RequestParam("pass") String pass, HttpSession session) {
+
+        Boolean flag = false;
+
+        /*管理员账号*/
+        if (num.equals("0000") && pass.equals("1111")) {
+            flag = true;
+        }else {
+            /*普通账号*/
+            flag = personService.isPassRight(Integer.valueOf(num), pass);
+        }
+
+
+        if (flag) {
+            session.setAttribute("num", num);
+        }
+
+        return flag;
     }
 
 }

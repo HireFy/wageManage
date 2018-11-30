@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
@@ -79,6 +80,11 @@ public class BonusServiceImplTest {
 
 
         System.out.println(new BigDecimal(rate).setScale(2, BigDecimal.ROUND_CEILING).floatValue() * 100 + "%");
+    }
+
+    @Test
+    public void trest() {
+        System.out.println("1111".equals("1111"));
     }
 
 }
