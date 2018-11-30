@@ -3,6 +3,7 @@ Vue.component('person-head', {
         '        <tr>\n' +
         '            <th>id</th>\n' +
         '            <th>姓名</th>\n' +
+        '            <th>密码</th>\n' +
         '            <th>薪资</th>\n' +
         '            <th>职位</th>\n' +
         '        </tr>\n' +
@@ -41,15 +42,15 @@ Vue.component('bonus-head', {
 })
 
 
-
 /*person的模态(modal)框*/
 Vue.component('person-modal', {
-    props: ['id', 'name', 'salary', 'selectvalue','datatype', 'person_places'],
+    props: ['id', 'name', 'salary', 'selectvalue', 'datatype', 'person_places', 'pass'],
     data: function () {
         return {
             childSelectVal: this.selectvalue,
             childName: this.name,
-            childPlaces:this.person_places
+            childPlaces: this.person_places,
+            childPass: this.pass,
         }
     },
     watch: {
@@ -65,18 +66,25 @@ Vue.component('person-modal', {
         childSelectVal: function (val) {
             console.log("子组件内的变化: " + val)
             this.$emit('on-select-value-change', val)
+        },
+        pass: function (val) {
+            this.childPass = val
+        },
+        childPass: function (val) {
+            this.$emit('on-pass-change', val)
         }
     },
-    methods:{
-        update:function () {
+    methods: {
+        update: function () {
             data = JSON.stringify({
-                id:this.id,
-                name:this.name,
-                placeId:this.childSelectVal
+                id: this.id,
+                name: this.name,
+                placeId: this.childSelectVal,
+                pass: this.pass
             })
             update(vm.dataType[vm.navIdInTb], data)
         },
-        deleteData:function () {
+        deleteData: function () {
             deleteAlert();
         }
     },
@@ -87,6 +95,12 @@ Vue.component('person-modal', {
         '                <label class="uk-form-label" for="form-stacked-text">姓名</label>\n' +
         '                <div class="uk-form-controls">\n' +
         '                    <input v-model="childName" class="uk-input" id="form-stacked-text" type="text" :placeholder="name">\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="uk-margin">\n' +
+        '                <label class="uk-form-label" for="form-pass-text">密码</label>\n' +
+        '                <div class="uk-form-controls">\n' +
+        '                    <input v-model="childPass" class="uk-input" id="form-pass-text" type="text" :placeholder="pass">\n' +
         '                </div>\n' +
         '            </div>\n' +
         '            <div class="uk-margin">\n' +
@@ -110,42 +124,42 @@ Vue.component('person-modal', {
 })
 
 /*dept的模态(modal)框*/
-Vue.component('dept-modal',{
-    props:['id', 'name', 'fatherid'],
-    data:function(){
-        return{
+Vue.component('dept-modal', {
+    props: ['id', 'name', 'fatherid'],
+    data: function () {
+        return {
             childName: this.name,
-            childFatherId:this.fatherid
+            childFatherId: this.fatherid
         }
     },
-    watch:{
-        name:function (val) {
+    watch: {
+        name: function (val) {
             this.childName = val
         },
-        fatherid:function (val) {
+        fatherid: function (val) {
             this.childFatherId = val
         },
-        childName:function (val) {
+        childName: function (val) {
             this.$emit('on-name-change', val)
         },
-        childFatherId:function (val) {
+        childFatherId: function (val) {
             this.$emit('on-fatherid-change', val)
         }
     },
-    methods:{
-        deleteData:function () {
+    methods: {
+        deleteData: function () {
             deleteAlert();
         },
-        update:function () {
+        update: function () {
             data = JSON.stringify({
-                id:this.id,
-                name:this.name,
-                fatherId:this.childFatherId
+                id: this.id,
+                name: this.name,
+                fatherId: this.childFatherId
             })
             update(vm.dataType[vm.navIdInTb], data)
         }
     },
-    template:'<div class="uk-modal-dialog uk-modal-body">\n' +
+    template: '<div class="uk-modal-dialog uk-modal-body">\n' +
         '    <h2 class="uk-modal-title">{{id}}</h2>\n' +
         '    <form class="uk-form-stacked">\n' +
         '\n' +
@@ -163,48 +177,48 @@ Vue.component('dept-modal',{
         '        </div>\n' +
         '    </div>\n' +
         '\n' +
-        '</form>\n'  + '<button class="uk-button uk-button-danger" @click="deleteData">删除</button>' +
+        '</form>\n' + '<button class="uk-button uk-button-danger" @click="deleteData">删除</button>' +
         '<button class="uk-button uk-button-primary uk-align-right" @click="update">修改</button>' +
         '</div>'
 })
 
 /*place的模态(modal)框*/
-Vue.component('place-modal',{
-    props:['id', 'name', 'salary', 'deptid'],
-    data:function(){
-        return{
-            childName:this.name,
-            childDeptId:this.deptId
+Vue.component('place-modal', {
+    props: ['id', 'name', 'salary', 'deptid'],
+    data: function () {
+        return {
+            childName: this.name,
+            childDeptId: this.deptId
         }
     },
-    methods:{
-        deleteData:function () {
+    methods: {
+        deleteData: function () {
             deleteAlert()
         },
-        update:function () {
+        update: function () {
             data = JSON.stringify({
-                id:this.id,
-                name:this.name,
-                deptId:this.childDeptId
+                id: this.id,
+                name: this.name,
+                deptId: this.childDeptId
             })
             update(vm.dataType[vm.navIdInTb], data)
         }
     },
-    watch:{
-        name:function (val) {
+    watch: {
+        name: function (val) {
             this.childName = val
         },
-        deptid:function (val) {
+        deptid: function (val) {
             this.childDeptId = val
         },
-        childName:function (val) {
+        childName: function (val) {
             this.$emit('on-name-change', val)
         },
-        childDeptId:function (val) {
+        childDeptId: function (val) {
             this.$emit('on-deptid-change', val)
         }
     },
-    template:'<div class="uk-modal-dialog uk-modal-body">\n' +
+    template: '<div class="uk-modal-dialog uk-modal-body">\n' +
         '    <h2 class="uk-modal-title">{{id}}</h2>\n' +
         '    <form class="uk-form-stacked">\n' +
         '\n' +
@@ -241,41 +255,41 @@ Vue.component('place-modal',{
 
 /*bonus的模态框*/
 Vue.component('bonus-modal', {
-    props:['id', 'name', 'rate'],
-    data:function(){
+    props: ['id', 'name', 'rate'],
+    data: function () {
         return {
-            childName:this.name,
-            childRate:this.rate
+            childName: this.name,
+            childRate: this.rate
         }
     },
-    watch:{
-        name:function (val) {
+    watch: {
+        name: function (val) {
             this.childName = this.name
         },
-        rate:function (val) {
+        rate: function (val) {
             this.childRate = this.rate
         },
-        childName:function (val) {
+        childName: function (val) {
             this.$emit('on-name-change', val)
         },
-        childRate:function (val) {
+        childRate: function (val) {
             this.$emit('on-rate-change', val)
         }
     },
-    methods:{
-        deleteData:function () {
+    methods: {
+        deleteData: function () {
             deleteAlert()
         },
-        update:function () {
+        update: function () {
             data = JSON.stringify({
-                id:this.id,
-                name:this.name,
-                rate:this.childRate
+                id: this.id,
+                name: this.name,
+                rate: this.childRate
             })
             update(vm.dataType[vm.navIdInTb], data)
         }
     },
-    template:'<div class="uk-modal-dialog uk-modal-body">\n' +
+    template: '<div class="uk-modal-dialog uk-modal-body">\n' +
         '    <h2 class="uk-modal-title">{{id}}</h2>\n' +
         '    <form class="uk-form-stacked">\n' +
         '\n' +

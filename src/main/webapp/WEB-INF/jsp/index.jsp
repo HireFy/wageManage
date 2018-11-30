@@ -27,13 +27,13 @@
         <div id="navbar">
             <ul class="uk-navbar-nav">
                 <li @click="navId = 0" :class="{'uk-active':navId === 0}">
-                    <a href="#">人员</a></li>
+                    <a href="#"><span :class="{'uk-text-large':navId === 0}">人员</span></a></li>
                 <li @click="navId = 1" :class="{'uk-active':navId === 1}">
-                    <a href="#">部门</a></li>
+                    <a href="#"><span :class="{'uk-text-large':navId === 1}">部门</span></a></li>
                 <li @click="navId = 2" :class="{'uk-active':navId === 2}">
-                    <a href="#">职位</a></li>
+                    <a href="#"><span :class="{'uk-text-large':navId === 2}">职位</span></a></li>
                 <li @click="navId = 3" :class="{'uk-active':navId === 3}">
-                    <a href="#">奖金</a></li>
+                    <a href="#"><span :class="{'uk-text-large':navId === 3}">奖金</span></a></li>
             </ul>
         </div>
     </div>
@@ -45,11 +45,13 @@
         <person-modal :id="id"
                       :name="name"
                       :salary="salary"
+                      :pass="pass"
                       :datatype="dataType"
                       :person_places="places"
                       :selectvalue="placeSelectValue"
                       @on-select-value-change="onSelectValueChange"
                       @on-name-change="onNameChange"
+                      @on-pass-change="onPassChange"
         ></person-modal>
     </div>
 
@@ -95,46 +97,49 @@
 </div>
 
 <div id="main">
-    <div id="my-table">
-        <table class="uk-table uk-table-hover uk-table-divider">
-            <thead is="person-head" v-if="navIdInTb === 0"></thead>
-            <thead is="dept-head" v-if="navIdInTb === 1"></thead>
-            <thead is="place-head" v-if="navIdInTb === 2"></thead>
-            <thead is="bonus-head" v-if="navIdInTb === 3"></thead>
-            <tbody>
-            <tr v-for="data in datas" v-if="navIdInTb === 0" @click="showmodal">
-                <td>{{data.id}}</td>
-                <td>{{data.name}}</td>
-                <td>{{data.salary}}</td>
-                <td>{{data.placeName}}</td>
-            </tr>
-            <tr v-for="data in datas" v-if="navIdInTb === 1" @click="showmodal">
-                <td>{{data.id}}</td>
-                <td>{{data.name}}</td>
-                <td>{{data.fatherId}}</td>
-            </tr>
-            <tr v-for="data in datas" v-if="navIdInTb === 2" @click="showmodal">
-                <td>{{data.id}}</td>
-                <td>{{data.name}}</td>
-                <td>{{data.salary}}</td>
-                <td>{{data.deptName}}</td>
-            </tr>
-            <tr v-for="data in datas" v-if="navIdInTb === 3" @click="showmodal">
-                <td>{{data.id}}</td>
-                <td>{{data.personName}}</td>
-                <td>{{data.rateFormat}}</td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="uk-flex uk-flex-center">
+        <div id="my-table" class="uk-card uk-card-default uk-card-body uk-width-1-2@m">
+            <table class="uk-table uk-table-hover uk-table-divider">
+                <thead is="person-head" v-if="navIdInTb === 0"></thead>
+                <thead is="dept-head" v-if="navIdInTb === 1"></thead>
+                <thead is="place-head" v-if="navIdInTb === 2"></thead>
+                <thead is="bonus-head" v-if="navIdInTb === 3"></thead>
+                <tbody>
+                <tr v-for="data in datas" v-if="navIdInTb === 0" @click="showmodal">
+                    <td>{{data.id}}</td>
+                    <td>{{data.name}}</td>
+                    <td>{{data.pass}}</td>
+                    <td>{{data.salary}}</td>
+                    <td>{{data.placeName}}</td>
+                </tr>
+                <tr v-for="data in datas" v-if="navIdInTb === 1" @click="showmodal">
+                    <td>{{data.id}}</td>
+                    <td>{{data.name}}</td>
+                    <td>{{data.fatherId}}</td>
+                </tr>
+                <tr v-for="data in datas" v-if="navIdInTb === 2" @click="showmodal">
+                    <td>{{data.id}}</td>
+                    <td>{{data.name}}</td>
+                    <td>{{data.salary}}</td>
+                    <td>{{data.deptName}}</td>
+                </tr>
+                <tr v-for="data in datas" v-if="navIdInTb === 3" @click="showmodal">
+                    <td>{{data.id}}</td>
+                    <td>{{data.personName}}</td>
+                    <td>{{data.rateFormat}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div id="pagenation">
-        <ul class="uk-pagination uk-flex-center" uk-margin>
+        <ul class="uk-pagination uk-flex-center" uk-margin style="margin: 20px">
             <li @click="goPrev" :class="{'uk-disabled': currentPage - 1 === 0}"><a href="#"><span
                     uk-pagination-previous></span></a></li>
             <li v-for="(page, index) in pages"
-                :class="{'uk-active': currentPage === index + 1}"
-                @click="focusCurrent">
-                <a href="#">{{index + 1}}</a>
+                :class="{'uk-active uk-text-large': currentPage === index + 1}"
+                >
+                <a href="#" @click="focusCurrent">{{index + 1}}</a>
             </li>
             <li @click="toNext" :class="{'uk-disabled': currentPage === pages}"><a href="#"><span
                     uk-pagination-next></span></a></li>

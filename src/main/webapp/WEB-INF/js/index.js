@@ -77,7 +77,6 @@ function getPlaceIdByName(name) {
 }
 
 
-
 /**
  * 执行更新，自动刷新当前页 提示修改成功或失败
  * @param dataType
@@ -160,7 +159,7 @@ var pagenation = new Vue({
         },
         toNext: function () {
             this.currentPage++
-        }
+        },
     },
     watch: {
         currentPage: function (val) {
@@ -194,6 +193,12 @@ var vm = new Vue({
             1: 'dept',
             2: 'place',
             3: 'bonus'
+        },
+        tableName:{
+            0:'人员',
+            1:'部门',
+            2:'职位',
+            3:'出勤'
         }
     },
     methods: {
@@ -212,9 +217,9 @@ var vm = new Vue({
             if (this.navIdInTb === 0) {
                 modal.id = dataArr[0]
                 modal.name = dataArr[1]
-                modal.salary = dataArr[2]
-
-                modal.placeSelectValue = getPlaceIdByName(dataArr[3])
+                modal.pass = dataArr[2]
+                modal.salary = dataArr[3]
+                modal.placeSelectValue = getPlaceIdByName(dataArr[4])
                 modal.deleteInfo = '确认删除吗？'
             }
             /*当前nav的值为部门*/
@@ -264,13 +269,14 @@ var vm = new Vue({
     }
 })
 
-
+/*modal框*/
 var modal = new Vue({
     el: '#mainModal',
     data: {
         id: 0,
         name: '',
         salary: 0,
+        pass:'',
         places:Places,
         navId: vm.navIdInTb,
         placeSelectValue: '',
@@ -303,6 +309,9 @@ var modal = new Vue({
         },
         onRateChange: function (val) {
             this.rate = val
+        },
+        onPassChange: function(val){
+            this.pass = val
         },
         deleteData: function () {
             deleteData(this.dataType, this.id)
