@@ -61,8 +61,8 @@ public class PersonDaoTest {
     }
 
     @Test
-    public void getRate() {
-        System.out.println(personDao.getRate(3));
+    public void getRateById() {
+        System.out.println(personDao.getRateById(3));
     }
 
     @Test

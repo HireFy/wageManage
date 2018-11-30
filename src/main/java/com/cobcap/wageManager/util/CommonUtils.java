@@ -55,4 +55,28 @@ public class CommonUtils {
     }
 
 
+    /**
+     * 生成密码
+     * @param length 设定密码的长度
+     * @return
+     */
+    public static String generatePass(int length) {
+        Random random = new Random();
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            buffer.append(random.nextInt(10));
+        }
+
+        return String.valueOf(buffer);
+    }
+
+    /**
+     * 生成默认长度为6的密码
+     * @return
+     */
+    public static String generatePass() {
+        return generatePass(6);
+    }
+
+
 }

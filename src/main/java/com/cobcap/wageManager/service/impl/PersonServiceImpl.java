@@ -83,7 +83,7 @@ public class PersonServiceImpl implements PersonService {
         for (int i = 0; i < dataSize; i++) {
             String name = CommonUtils.getRandomName();
             int placeId = placeIds.get(random.nextInt(placeIds.size()));
-            person = new Person(name, placeId);
+            person = new Person(name, placeId, CommonUtils.generatePass());
             personDao.insert(person);
         }
     }
@@ -121,7 +121,7 @@ public class PersonServiceImpl implements PersonService {
         for (Person person : personList) {
             Integer id = person.getId();
             BigDecimal baseSalary = personDao.getBaseSalary(id);
-            Float rate = personDao.getRate(id);
+            Float rate = personDao.getRateById(id);
             try {
                 person.setSalary(CommonUtils.getSalary(baseSalary, rate));
             } catch (Exception e) {

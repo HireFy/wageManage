@@ -24,6 +24,7 @@ create table place(
 create table person(
   p_id int not null identity(1,1) primary key ,
   p_name varchar(20),
+  pass varchar (20),
   p_salary DECIMAL(9,2),
   p_place_id int,
   foreign key (p_place_id) references place(pl_id) on delete set null on update cascade

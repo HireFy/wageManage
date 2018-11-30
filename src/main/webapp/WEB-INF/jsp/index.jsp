@@ -40,7 +40,6 @@
 </nav>
 
 
-<!-- This is the modal -->
 <div id="mainModal" uk-modal>
     <div id="personMo" uk-modal>
         <person-modal :id="id"
@@ -89,7 +88,8 @@
         <div class="uk-modal-dialog uk-modal-body">
             <span class=".uk-text-danger">{{deleteInfo}}</span>
             <button class="uk-button uk-button-danger uk-align-right uk-modal-close"
-                    @click="deleteData">确认</button>
+                    @click="deleteData">确认
+            </button>
         </div>
     </div>
 </div>

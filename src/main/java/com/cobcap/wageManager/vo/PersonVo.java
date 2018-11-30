@@ -11,6 +11,7 @@ public class PersonVo {
     private BigDecimal salary;
     private Integer placeId;
     private String placeName;
+    private String pass;
 
     public PersonVo() {
 

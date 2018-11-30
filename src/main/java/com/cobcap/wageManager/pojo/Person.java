@@ -13,6 +13,7 @@ public class Person {
     private String name;
     private BigDecimal salary;
     private Integer placeId;
+    private String pass;
 
 
     public Person() {
@@ -25,9 +26,22 @@ public class Person {
         this.placeId = placeId;
     }
 
+    public Person(String name, BigDecimal salary, Integer placeId, String pass) {
+        this.name = name;
+        this.salary = salary;
+        this.placeId = placeId;
+        this.pass = pass;
+    }
+
     public Person(String name, Integer placeId) {
         this.name = name;
         this.placeId = placeId;
+    }
+
+    public Person(String name, Integer placeId, String pass) {
+        this.name = name;
+        this.placeId = placeId;
+        this.pass = pass;
     }
 
     public Person(Integer id, String name, BigDecimal salary, Integer placeId) {
@@ -35,5 +49,13 @@ public class Person {
         this.name = name;
         this.salary = salary;
         this.placeId = placeId;
+    }
+
+    public Person(Integer id, String name, BigDecimal salary, Integer placeId, String pass) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+        this.placeId = placeId;
+        this.pass = pass;
     }
 }

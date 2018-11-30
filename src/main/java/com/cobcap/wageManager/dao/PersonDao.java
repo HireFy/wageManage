@@ -24,7 +24,7 @@ public interface PersonDao {
 
     BigDecimal getBaseSalary(Integer id);
 
-    Float getRate(Integer id);
+    Float getRateById(Integer id);
 
     int getTotalCount();
 
