@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 
@@ -17,10 +18,10 @@ import static org.junit.Assert.*;
 public class CommonUtilsTest {
 
     /*生成数据总量*/
-    private static int dataSize = 2000;
+    private static int dataSize = 200;
 
     /*每次处理的数据量*/
-    private static int pageSize = 500;
+    private static int pageSize = 10;
 
     @Autowired
     private PersonService personService;
@@ -33,6 +34,15 @@ public class CommonUtilsTest {
         CommonUtils com = new CommonUtils();
         System.out.println(CommonUtils.getRandomName());
     }
+
+
+    @Test
+    /*测试生成密码*/
+    public void generatePass() {
+        System.out.println(CommonUtils.generatePass());
+    }
+
+
 
     /*生成数据*/
     /*place和dept的数据得自己写*/
