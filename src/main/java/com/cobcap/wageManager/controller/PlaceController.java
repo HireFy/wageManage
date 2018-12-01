@@ -48,4 +48,9 @@ public class PlaceController {
     public List<Place> getAllPlaces() {
         return placeService.getAllPlaces();
     }
+
+    @RequestMapping("/{id}")
+    public PlaceVo getPlaceById(@PathVariable Integer id) {
+        return placeService.transFormData(placeService.getById(id));
+    }
 }

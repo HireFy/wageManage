@@ -22,25 +22,29 @@
     <title></title>
 </head>
 <body>
-<nav class="uk-navbar-container" uk-navbar>
+<nav class="uk-navbar-container" uk-navbar id="navbar">
     <div class="uk-navbar-left">
-        <div id="navbar">
-            <ul class="uk-navbar-nav">
-                <li @click="navId = 0" :class="{'uk-active':navId === 0}">
-                    <a><span :class="{'uk-text-large':navId === 0}">人员</span></a></li>
-                <li @click="navId = 1" :class="{'uk-active':navId === 1}">
-                    <a><span :class="{'uk-text-large':navId === 1}">部门</span></a></li>
-                <li @click="navId = 2" :class="{'uk-active':navId === 2}">
-                    <a><span :class="{'uk-text-large':navId === 2}">职位</span></a></li>
-                <li @click="navId = 3" :class="{'uk-active':navId === 3}">
-                    <a href="#"><span :class="{'uk-text-large':navId === 3}">奖金</span></a></li>
-            </ul>
-        </div>
+        <ul class="uk-navbar-nav">
+            <li @click="navId = 0" :class="{'uk-active':navId === 0}">
+                <a><span :class="{'uk-text-large':navId === 0}">人员</span></a></li>
+            <li @click="navId = 1" :class="{'uk-active':navId === 1}">
+                <a><span :class="{'uk-text-large':navId === 1}">部门</span></a></li>
+            <li @click="navId = 2" :class="{'uk-active':navId === 2}">
+                <a><span :class="{'uk-text-large':navId === 2}">职位</span></a></li>
+            <li @click="navId = 3" :class="{'uk-active':navId === 3}">
+                <a href="#"><span :class="{'uk-text-large':navId === 3}">奖金</span></a></li>
+        </ul>
+    </div>
+    <div class="uk-navbar-right">
+        <button class="uk-button uk-button-default" style="margin-right: 20px;"
+        @click="showAddModal">添加</button>
     </div>
 </nav>
 
 
 <div id="mainModal" uk-modal>
+
+    <%--更新modal--%>
     <div id="personMo" uk-modal>
         <person-modal :id="id"
                       :name="name"
@@ -84,6 +88,17 @@
         >
         </bonus-modal>
     </div>
+    <%--更新modal END--%>
+
+
+        <%--增加modal--%>
+        <div id="personAddMo" uk-modal>
+            <person-add-modal
+            :person_places="places">
+            </person-add-modal>
+        </div>
+
+
 
     <%--删除提示modal--%>
     <div id="deleteModal" uk-modal>
@@ -138,7 +153,7 @@
                     uk-pagination-previous></span></a></li>
             <li v-for="(page, index) in pages"
                 :class="{'uk-active uk-text-large': currentPage === index + 1}"
-                >
+            >
                 <a href="#" @click="focusCurrent">{{index + 1}}</a>
             </li>
             <li @click="toNext" :class="{'uk-disabled': currentPage === pages}"><a href="#"><span

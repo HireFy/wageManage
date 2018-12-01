@@ -111,7 +111,7 @@ function update(dataType, data) {
  */
 
 /**
- * 提示删除信息
+ * 打开id为deleteModal提示删除信息
  */
 function deleteAlert() {
     UIkit.modal("#deleteModal").show();
@@ -134,9 +134,48 @@ function deleteData(dataType, id) {
                 '    <a class="uk-alert-close" uk-close></a>\n' +
                 '    <p>删除操作已生效</p>\n' +
                 '</div>');
+        },
+        error:function () {
+            vm.refreshCurrentPage()
+            UIkit.modal.dialog('<div class="uk-alert-danger" uk-alert>\n' +
+                '    <a class="uk-alert-close" uk-close></a>\n' +
+                '    <p>删除操作失败</p>\n' +
+                '</div>');
         }
     })
 }
+
+
+/*向后端发起添加数据的请求*/
+function add(dataType, data) {
+    $.ajax({
+        type:"post",
+        url:"/"+dataType+"/add",
+        contentType:"application/json",
+        dataType:"json",
+        data:data,
+        success:function () {
+            vm.refreshCurrentPage()
+
+            /*添加成功后，重新获取页数*/
+            getPageCount(dataType)
+            pagenation.pages = pageCount
+
+            UIkit.modal.dialog('<div class="uk-alert-success" uk-alert>\n' +
+                '    <a class="uk-alert-close" uk-close></a>\n' +
+                '    <p>已成功添加</p>\n' +
+                '</div>');
+        },
+        error: function (error) {
+            vm.refreshCurrentPage()
+            UIkit.modal.dialog('<div class="uk-alert-danger" uk-alert>\n' +
+                '    <a class="uk-alert-close" uk-close></a>\n' +
+                '    <p>添加数据失败</p>\n' +
+                '</div>');
+        },
+    })
+}
+
 
 
 /**
@@ -178,6 +217,11 @@ var navbar = new Vue({
         navId: function (val, oldVal) {
             console.log("navId in navbar: " + oldVal + " ===> " + val)
             vm.navIdInTb = val
+        }
+    },
+    methods:{
+        showAddModal:function () {
+            UIkit.modal(modal.modalAddType[this.navId]).show()
         }
     }
 })
@@ -248,7 +292,7 @@ var vm = new Vue({
         },
         refreshCurrentPage: function () {
             getData(this.currentPage, this.dataType[this.navIdInTb], this.datas)
-        }
+        },
     },
     watch: {
         /*当nav改变时，标签页也改变，应重设currentpage为1*/
@@ -284,12 +328,15 @@ var modal = new Vue({
         deptId: 0,
         rate: 0,
         deleteInfo: '确认删除吗?',
-        dataType: vm.dataType[this.navId],
+        dataType: vm.dataType[vm.navIdInTb],
         modalType: {
             0: '#personMo',
             1: '#deptMo',
             2: '#placeMo',
             3: '#bonusMo'
+        },
+        modalAddType:{
+            0:'#personAddMo'
         }
     },
     methods: {

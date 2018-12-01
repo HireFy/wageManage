@@ -32,4 +32,6 @@ public interface PlaceService {
     List<PlaceVo> getPlaceVos(int pageNum, int pageSize);
 
     List<Place> getAllPlaces();
+
+    PlaceVo transFormData(Place place);
 }

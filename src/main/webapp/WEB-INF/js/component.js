@@ -311,3 +311,76 @@ Vue.component('bonus-modal', {
         '<button class="uk-button uk-button-primary uk-align-right" @click="update">修改</button>\n' +
         '</div>'
 })
+
+
+/*person 添加 modal*/
+Vue.component('person-add-modal', {
+    props: ['person_places'],
+    data: function () {
+        return {
+            name: '',
+            pass: '',
+            salary: '',
+            childPlaces: this.person_places,
+            childSelectVal: 0
+        }
+    },
+    watch: {
+        /*当职位选择发生变化的时候,发送请求获取对应基本底薪显示*/
+        childSelectVal:function (val) {
+            var _this = this
+            $.ajax({
+                type:"post",
+                url:"/place/" + val,
+                dataType:"json",
+                success:function (data){
+                    _this.salary = data['salary']
+                }
+            })
+        }
+    },
+    methods: {
+        /*点击添加按钮触发函数add()*/
+        add: function () {
+            data = JSON.stringify({
+                name:this.name,
+                pass:this.pass,
+                salary:this.salary,
+                placeId:this.childSelectVal
+            })
+            add(vm.dataType[vm.navIdInTb], data)
+        }
+    },
+    template: '<div class="uk-modal-dialog uk-modal-body">\n' +
+        '        <form class="uk-form-stacked">\n' +
+        '            <div class="uk-margin">\n' +
+        '                <label class="uk-form-label" for="form-stacked-text">姓名</label>\n' +
+        '                <div class="uk-form-controls">\n' +
+        '                    <input v-model="name" class="uk-input" id="form-stacked-text" type="text" autofocus>\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="uk-margin">\n' +
+        '                <label class="uk-form-label" for="form-pass-text">密码</label>\n' +
+        '                <div class="uk-form-controls">\n' +
+        '                    <input v-model="pass" class="uk-input" id="form-pass-text" type="text">\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="uk-margin">\n' +
+        '                <label class="uk-form-label" for="form-stacked-text-bonus">薪资</label>\n' +
+        '                <div class="uk-form-controls">\n' +
+        '                    <input v-model="salary" class="uk-input" disabled="disabled" id="form-stacked-text-bonus" type="text" :placeholder="salary">\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="uk-margin">\n' +
+        '                <label class="uk-form-label" for="form-stacked-select">职位</label>\n' +
+        '                <div class="uk-form-controls">\n' + '<select class="uk-select" id="form-stacked-select" v-model="childSelectVal">\n' +
+        '    <option v-for="place in childPlaces" :value="place.id">{{place.name}}</option>\n' +
+        '  \n' +
+        '</select>' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '\n' +
+        '        </form>\n' +
+        '<button class="uk-button uk-button-primary uk-align-right" @click="add">添加</button>' +
+        '    </div>'
+})

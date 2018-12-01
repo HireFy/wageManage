@@ -70,4 +70,9 @@ public class PersonController {
         return flag;
     }
 
+    /*添加person*/
+    @RequestMapping("/add")
+    public Boolean addPerson(@RequestBody Person person) {
+        return personService.insert(person);
+    }
 }

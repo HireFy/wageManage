@@ -23,12 +23,13 @@
 </head>
 <body>
 <div class="uk-flex uk-flex-center" style="margin-top: 120px">
-    <div id="loginBox" class="uk-card uk-card-default uk-card-body uk-width-1-2@m">
+    <div id="loginBox" class="uk-card uk-card-default uk-card-body uk-width-1-2@m"
+         @keyup.enter="login">
         <form class="uk-form-stacked" id="login_form">
             <div class="uk-margin">
                 <label class="uk-form-label" for="num">编号</label>
                 <div class="uk-form-controls">
-                    <input class="uk-input" id="num" name="num" type="text" placeholder="员工编号"
+                    <input class="uk-input" id="num" name="num" type="text" autofocus placeholder="员工编号"
                            v-model="num"
                            :class="{'uk-form-danger' : isExistInvalidChar || !isNumOk}"
                            @blur="numBlur">
@@ -49,8 +50,7 @@
             <button class="uk-button uk-button-text uk-width-1-1 uk-margin-small-bottom">现在注册</button>
             <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom"
                     :disabled="isDisabled"
-                    @click="login"
-                    @keyup.enter="login">登录
+                    @click="login">登录
             </button>
         </div>
     </div>
