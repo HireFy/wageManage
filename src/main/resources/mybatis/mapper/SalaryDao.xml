@@ -9,30 +9,37 @@
     </resultMap>
 
     <select id="getById" resultMap="SalaryMap">
-        select * from salary where sa_id = #{id}
+        select *
+        from salary
+        where sa_id = #{id}
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into salary (p_id, salary) values (#{personId}, #{salary})
+        insert into salary (p_id, salary)
+        values (#{personId}, #{salary})
     </insert>
 
     <update id="updateById">
         update salary
         <set>
-            <if test="personId != null"> p_id = #{personId},</if>
-            <if test="salary != null"> salary = #{salary}</if>
+            <if test="personId != null">p_id = #{personId},</if>
+            <if test="salary != null">salary = #{salary}</if>
         </set>
         where sa_id = #{id}
     </update>
 
     <delete id="deleteById">
-        delete from salary where sa_id = #{id}
+        delete
+        from salary
+        where sa_id = #{id}
     </delete>
 
     <select id="getSalaries" resultMap="SalaryMap">
-        select top ${size} * from salary
+        select top ${size} *
+        from salary
         where sa_id not in (
-            select top ${offset} sa_id from salary
+            select top ${offset} sa_id
+            from salary
         )
     </select>
 
@@ -44,30 +51,54 @@
     </insert>
 
     <select id="getTotalCount" resultType="int">
-        select count(*) from salary
+        select count(*)
+        from salary
     </select>
 
     <select id="getSalaryByPersonId" resultType="BigDecimal">
-        select salary from salary where p_id = #{id}
+        select salary
+        from salary
+        where p_id = #{id}
     </select>
 
     <select id="getPersonBySalaryId" resultMap="com.cobcap.wageManager.dao.PersonDao.personMap">
-        select person.* from person,salary where sa_id = #{id} and salary.p_id = person.p_id
+        select person.*
+        from person,
+             salary
+        where sa_id = #{id}
+          and salary.p_id = person.p_id
     </select>
 
     <update id="updateSalaryByPersonId">
         update salary
         <set>
-            <if test="salary != null"> salary = #{salary}</if>
+            <if test="salary != null">salary = #{salary}</if>
         </set>
         where p_id = #{personId}
     </update>
 
     <delete id="deleteByPersonId">
-        delete from salary where p_id = #{id}
+        delete
+        from salary
+        where p_id = #{id}
     </delete>
 
     <select id="getSalaryIdByPersonId" resultType="Integer">
-        select sa_id from salary where p_id = #{personId}
+        select sa_id
+        from salary
+        where p_id = #{personId}
     </select>
+
+    <delete id="deleteByDeptId">
+        delete
+        from salary
+        where p_id in
+              (select p_id from person where person.pl_id
+                                               in (select pl_id from place where pl_dept_id = #{id}))
+    </delete>
+
+    <delete id="deleteByPlaceId">
+        delete
+        from salary where p_id in (select p_id from person where pl_id = #{id})
+    </delete>
 </mapper>

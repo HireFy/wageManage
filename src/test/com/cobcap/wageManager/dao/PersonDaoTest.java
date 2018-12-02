@@ -91,4 +91,9 @@ public class PersonDaoTest {
         System.out.println(born);
         System.out.println(enterTime);
     }
+
+    @Test
+    public void deleteByDeptId() {
+        System.out.println(personDao.deleteByDeptId(1016));
+    }
 }

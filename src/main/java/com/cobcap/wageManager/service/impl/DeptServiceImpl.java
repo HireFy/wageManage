@@ -1,6 +1,9 @@
 package com.cobcap.wageManager.service.impl;
 
 import com.cobcap.wageManager.dao.DeptDao;
+import com.cobcap.wageManager.dao.PersonDao;
+import com.cobcap.wageManager.dao.PlaceDao;
+import com.cobcap.wageManager.dao.SalaryDao;
 import com.cobcap.wageManager.pojo.Dept;
 import com.cobcap.wageManager.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +17,39 @@ public class DeptServiceImpl implements DeptService {
     @Autowired
     private DeptDao deptDao;
 
+    @Autowired
+    private SalaryDao salaryDao;
+
+    @Autowired
+    private PlaceDao placeDao;
+
+    @Autowired
+    private PersonDao personDao;
+
     @Override
     public Dept getById(Integer id) {
         return deptDao.getById(id);
     }
 
+    /**
+     * 删除部门，部门的职位删除，相关人员删除，工资删除
+     *
+     * @param id
+     * @return
+     */
     @Override
     public Boolean deleteById(Integer id) {
-        return deptDao.deleteById(id);
+        /*工资表删除*/
+        if (salaryDao.deleteByDeptId(id)) {
+            /*人员删除*/
+            if (personDao.deleteByDeptId(id)) {
+                /*职位删除*/
+                if (placeDao.deleteByDeptId(id)) {
+                    return deptDao.deleteById(id);
+                }
+            }
+        }
+        return false;
     }
 
     @Override

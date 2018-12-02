@@ -8,6 +8,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface SalaryDao {
+    Boolean deleteByDeptId(Integer id);
+
+    Boolean deleteByPlaceId(Integer id);
+
     Salary getById(Integer id);
 
     Boolean deleteById(Integer id);

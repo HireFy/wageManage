@@ -1,7 +1,9 @@
 package com.cobcap.wageManager.service.impl;
 
 import com.cobcap.wageManager.dao.DeptDao;
+import com.cobcap.wageManager.dao.PersonDao;
 import com.cobcap.wageManager.dao.PlaceDao;
+import com.cobcap.wageManager.dao.SalaryDao;
 import com.cobcap.wageManager.pojo.Place;
 import com.cobcap.wageManager.service.PlaceService;
 import com.cobcap.wageManager.service.SalaryService;
@@ -28,14 +30,33 @@ public class PlaceServiceImpl implements PlaceService {
     @Autowired
     private SalaryService salaryService;
 
+    @Autowired
+    private SalaryDao salaryDao;
+
+    @Autowired
+    private PersonDao personDao;
+
     @Override
     public Place getById(Integer id) {
         return placeDao.getById(id);
     }
 
+    /**
+     * 删除职位，相关人员删除，相关工资删除
+     * @param id
+     * @return
+     */
     @Override
     public Boolean deleteById(Integer id) {
-        return placeDao.deleteById(id);
+        /*工资表删除*/
+        if(salaryDao.deleteByPlaceId(id)){
+            /*人员删除*/
+            if(personDao.deleteByPlaceId(id)){
+                return placeDao.deleteById(id);
+            }
+        }
+
+        return false;
     }
 
     /**

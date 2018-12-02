@@ -16,7 +16,9 @@
     </resultMap>
 
     <select id="getById" resultMap="personMap">
-        select * from person where p_id = #{id}
+        select *
+        from person
+        where p_id = #{id}
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
@@ -27,7 +29,7 @@
     <update id="updateById">
         update person
         <set>
-            <if test="name != null"> p_name = #{name},</if>
+            <if test="name != null">p_name = #{name},</if>
             <if test="pass != null">p_pass = #{pass},</if>
             <if test="placeId != null">pl_id = #{placeId},</if>
             <if test="sex != null">p_sex = #{sex},</if>
@@ -40,48 +42,77 @@
     </update>
 
     <delete id="deleteById">
-        delete from person where p_id = #{id}
+        delete
+        from person
+        where p_id = #{id}
     </delete>
 
     <select id="getPersons" resultMap="personMap">
-        select top ${size} * from dbo.person
+        select top ${size} *
+        from dbo.person
         where p_id not in (
-          select top ${offset} p_id from dbo.person
+            select top ${offset} p_id
+            from dbo.person
         )
     </select>
 
     <select id="getPersonIdPageNation" resultType="Integer">
-        select top ${size} p_id from dbo.person
+        select top ${size} p_id
+        from dbo.person
         where p_id not in (
-          select top ${offset} p_id from dbo.person
+            select top ${offset} p_id
+            from dbo.person
         )
     </select>
 
     <select id="isNameExist" resultType="Boolean">
         select
-        case when count(*) = 0
-        then 0 else 1 end
+            case
+                when count(*) = 0
+                    then 0
+                else 1 end
         from person
-        where p_name=#{name}
+        where p_name = #{name}
     </select>
 
     <select id="getAllId" resultType="Integer">
-        select p_id from person
+        select p_id
+        from person
     </select>
 
     <select id="getBaseSalaryById" resultType="BigDecimal">
-        select pl_salary from wageNew.dbo.person, wageNew.dbo.place where p_id=#{id} and person.pl_id = place.pl_id
+        select pl_salary
+        from wageNew.dbo.person,
+             wageNew.dbo.place
+        where p_id = #{id}
+          and person.pl_id = place.pl_id
     </select>
 
     <select id="getTotalCount" resultType="int">
-        select count(*) from person
+        select count(*)
+        from person
     </select>
 
     <select id="getNameById" resultType="String">
-        select p_name from dbo.person where p_id = #{id}
+        select p_name
+        from dbo.person
+        where p_id = #{id}
     </select>
 
     <select id="getAllIdByPlaceId" resultType="Integer">
-        select p_id from person where dbo.person.pl_id = #{placeId}
+        select p_id
+        from person
+        where dbo.person.pl_id = #{placeId}
     </select>
+
+    <delete id="deleteByDeptId">
+        delete
+        from person
+        where person.pl_id in (select pl_id from place where pl_dept_id = #{id})
+    </delete>
+
+    <delete id="deleteByPlaceId">
+        delete
+        from person where pl_id = #{id}
+    </delete>
 </mapper>

@@ -10,17 +10,20 @@
     </resultMap>
 
     <select id="getById" resultMap="placeMap">
-        select * from place where pl_id = #{id}
+        select *
+        from place
+        where pl_id = #{id}
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into place (pl_name, pl_salary, pl_dept_id) values (#{name}, #{salary}, #{deptId})
+        insert into place (pl_name, pl_salary, pl_dept_id)
+        values (#{name}, #{salary}, #{deptId})
     </insert>
 
     <update id="updateById">
         update place
         <set>
-            <if test="name != null"> pl_name = #{name},</if>
+            <if test="name != null">pl_name = #{name},</if>
             <if test="salary != null">pl_salary = #{salary},</if>
             <if test="deptId != null">pl_dept_id = #{deptId}</if>
         </set>
@@ -28,41 +31,60 @@
     </update>
 
     <delete id="deleteById">
-        delete from place where pl_id = #{id}
+        delete
+        from place
+        where pl_id = #{id}
     </delete>
 
     <select id="getPlaces" resultMap="placeMap">
-        select top ${size} * from dbo.place
+        select top ${size} *
+        from dbo.place
         where pl_id not in (
-          select top ${offset} pl_id from dbo.dept
+            select top ${offset} pl_id
+            from dbo.dept
         )
     </select>
 
     <select id="isNameExist" resultType="Boolean">
         select
-        case when count(*) = 0
-        then 0 else 1 end
+            case
+                when count(*) = 0
+                    then 0
+                else 1 end
         from place
-        where pl_name=#{name}
+        where pl_name = #{name}
     </select>
 
     <select id="getSalaryByPlaceId" resultType="BigDecimal">
-        select pl_salary from place where pl_id = #{id}
+        select pl_salary
+        from place
+        where pl_id = #{id}
     </select>
 
     <select id="getTotalCount" resultType="int">
-        select count(*) from place
+        select count(*)
+        from place
     </select>
 
     <select id="getAllIds" resultType="int">
-        select pl_id from place
+        select pl_id
+        from place
     </select>
 
     <select id="getPlaceNameById" resultType="String">
-        select pl_name from dbo.place where pl_id = #{id}
+        select pl_name
+        from dbo.place
+        where pl_id = #{id};
     </select>
 
     <select id="getAllPlaces" resultMap="placeMap">
-        select * from dbo.place
+        select *
+        from dbo.place;
     </select>
+
+    <delete id="deleteByDeptId">
+        delete
+        from place
+        where pl_dept_id = #{id};
+    </delete>
 </mapper>

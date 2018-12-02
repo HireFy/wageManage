@@ -31,4 +31,8 @@ public interface PersonDao {
     String getNameById(Integer id);
 
     List<Integer> getAllIdByPlaceId(@Param("placeId") Integer placeId);
+
+    Boolean deleteByDeptId(Integer id);
+
+    Boolean deleteByPlaceId(Integer id);
 }
