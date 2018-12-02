@@ -31,10 +31,4 @@ public class PersonServiceImplTest {
         personService.generatePerson();
     }
 
-    /*生成person对应薪酬*/
-    @Test
-    public void generateSalary() {
-        personService.generateSalary(1, 2010);
-    }
-
 }

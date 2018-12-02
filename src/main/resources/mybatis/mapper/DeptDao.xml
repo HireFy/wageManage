@@ -54,4 +54,8 @@
         select * from dept
     </select>
 
+    <select id="getIdByDeptName" resultType="Integer">
+        select d_id from dept where d_name = #{name}
+    </select>
+
 </mapper>

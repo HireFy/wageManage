@@ -36,4 +36,6 @@ public interface PlaceService {
     PlaceVo transFormData(Place place);
 
     Integer getRandomPlaceId();
+
+    void generate();
 }

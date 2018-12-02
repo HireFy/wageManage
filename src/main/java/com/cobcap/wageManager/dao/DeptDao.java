@@ -23,4 +23,6 @@ public interface DeptDao {
     String getDeptNameById(Integer id);
 
     List<Dept> getAllDepts();
+
+    Integer getIdByDeptName(String name);
 }

@@ -130,4 +130,44 @@ public class PlaceServiceImpl implements PlaceService {
         int placeId = placeIds.get(random.nextInt(placeIds.size()));
         return placeId;
     }
+
+
+    public void generate() {
+        Place place = new Place("运维工程师", BigDecimal.valueOf(9000), deptDao.getIdByDeptName("技术部门"));
+        Place place1 = new Place("设计师", BigDecimal.valueOf(10000), deptDao.getIdByDeptName("产品部门"));
+        Place place2 = new Place("编辑", BigDecimal.valueOf(8000), deptDao.getIdByDeptName("运营部门"));
+        Place place3 = new Place("测试工程师", BigDecimal.valueOf(9000), deptDao.getIdByDeptName("技术部门"));
+        Place place4 = new Place("活动策划", BigDecimal.valueOf(8700), deptDao.getIdByDeptName("运营部门"));
+        Place place5 = new Place("架构师", BigDecimal.valueOf(100000), deptDao.getIdByDeptName("技术部门"));
+        Place place6 = new Place("数据运营", BigDecimal.valueOf(9000), deptDao.getIdByDeptName("运营部门"));
+        Place place7 = new Place("媒体运营", BigDecimal.valueOf(9000), deptDao.getIdByDeptName("运营部门"));
+        Place place8 = new Place("前端工程师", BigDecimal.valueOf(10000), deptDao.getIdByDeptName("技术部门"));
+        Place place9 = new Place("内容策划", BigDecimal.valueOf(8000), deptDao.getIdByDeptName("运营部门"));
+        Place place10 = new Place("会员运营", BigDecimal.valueOf(8000), deptDao.getIdByDeptName("运营部门"));
+        Place place11 = new Place("产品运营", BigDecimal.valueOf(8000), deptDao.getIdByDeptName("产品部门"));
+        Place place12 = new Place("产品经理", BigDecimal.valueOf(9500), deptDao.getIdByDeptName("产品部门"));
+        Place place13 = new Place("产品助理", BigDecimal.valueOf(8000), deptDao.getIdByDeptName("产品部门"));
+        Place place14 = new Place("Python工程师", BigDecimal.valueOf(10000), deptDao.getIdByDeptName("技术部门"));
+        Place place15 = new Place("Java工程师", BigDecimal.valueOf(12000), deptDao.getIdByDeptName("技术部门"));
+
+        this.insert(place);
+        this.insert(place1);
+        this.insert(place2);
+        this.insert(place3);
+        this.insert(place4);
+        this.insert(place5);
+        this.insert(place6);
+        this.insert(place7);
+        this.insert(place8);
+        this.insert(place9);
+        this.insert(place10);
+        this.insert(place11);
+        this.insert(place12);
+        this.insert(place13);
+        this.insert(place14);
+        this.insert(place15);
+
+
+
+    }
 }

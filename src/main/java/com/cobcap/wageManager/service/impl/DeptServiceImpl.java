@@ -58,4 +58,15 @@ public class DeptServiceImpl implements DeptService {
     public List<Dept> getDepts(int pageNum, int pageSize) {
         return deptDao.getDepts((pageNum - 1) * pageSize, pageSize);
     }
+
+    /*生成部门信息*/
+    public void generateDept() {
+        Dept dept = new Dept("技术部门");
+        Dept dept1 = new Dept("产品部门");
+        Dept dept2 = new Dept("运营部门");
+
+        this.insert(dept);
+        this.insert(dept1);
+        this.insert(dept2);
+    }
 }
