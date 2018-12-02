@@ -47,34 +47,42 @@ function getData(num, dataType, datalist) {
 
 
 var Places;
+var Depts;
 /**
  * 从数据库获取Place信息，生成id和name对应的Place对象
  */
-function generatePlaceObject() {
+function getDataInfos(dataType) {
     $.ajax({
         type:"post",
-        url:"/place/all",
+        url: "/" + dataType + "/all",
         dataType:"json",
         async: false,
         success:function (data) {
-            Places = data
+            if(dataType === 'place')
+                Places = data
+            if(dataType === 'dept')
+                Depts = data
         }
     })
 }
-generatePlaceObject()
+getDataInfos('place')
+getDataInfos('dept')
 
 /**
- * 根据placeName查找placeId
+ * 返回 datas 指定name的id
  * @param name
+ * @param datas
  * @returns {*}
  */
-function getPlaceIdByName(name) {
-    for (i in Places) {
-        if (Places[i]['name'] === name) {
-            return Places[i]['id']
+function getIdByName(name, datas) {
+    for (i in datas) {
+        if (datas[i]['name'] === name) {
+            return datas[i]['id']
         }
     }
 }
+
+
 
 
 /**
@@ -106,9 +114,7 @@ function update(dataType, data) {
         }
     })
 }
-/**
- * 根据placeName查找placeId
- */
+
 
 /**
  * 打开id为deleteModal提示删除信息
@@ -236,13 +242,13 @@ var vm = new Vue({
             0: 'person',
             1: 'dept',
             2: 'place',
-            3: 'bonus'
+            3: 'salary'
         },
         tableName:{
             0:'人员',
             1:'部门',
             2:'职位',
-            3:'出勤'
+            3:'工资'
         }
     },
     methods: {
@@ -261,9 +267,11 @@ var vm = new Vue({
             if (this.navIdInTb === 0) {
                 modal.id = dataArr[0]
                 modal.name = dataArr[1]
-                modal.pass = dataArr[2]
-                modal.salary = dataArr[3]
-                modal.placeSelectValue = getPlaceIdByName(dataArr[4])
+                modal.pass = dataArr[4]
+                modal.onDutyRate = dataArr[8].substring(0, dataArr[8].length - 1)
+                modal.overTimeRate = dataArr[9].substring(0, dataArr[9].length - 1)
+                modal.salary = dataArr[10].slice(1)
+                modal.placeSelectValue = getIdByName(dataArr[7], Places)
                 modal.deleteInfo = '确认删除吗？'
             }
             /*当前nav的值为部门*/
@@ -278,15 +286,14 @@ var vm = new Vue({
                 modal.id = dataArr[0]
                 modal.name = dataArr[1]
                 modal.salary = dataArr[2]
-                modal.deptId = dataArr[3]
+                modal.deptSelectValue = getIdByName(dataArr[3], Depts)
                 modal.deleteInfo = '确认删除吗？'
             }
-            /*当前nav的值为奖金*/
+            /*当前nav的值为工资*/
             if (this.navIdInTb === 3) {
                 modal.id = dataArr[0]
                 modal.name = dataArr[1]
-                modal.rate = dataArr[2]
-                modal.deleteInfo = '确认删除吗？相关联的人员也会删除！'
+                modal.salary = dataArr[2]
             }
             console.log('modal.placeSelectValue: ' + modal.placeSelectValue);
         },
@@ -322,18 +329,21 @@ var modal = new Vue({
         salary: 0,
         pass:'',
         places:Places,
+        depts:Depts,
         navId: vm.navIdInTb,
         placeSelectValue: '',
         fatherId: 0,
         deptId: 0,
-        rate: 0,
+        onDutyRate:0,
+        deptSelectValue:0,
+        overTimeRate:0,
         deleteInfo: '确认删除吗?',
         dataType: vm.dataType[vm.navIdInTb],
         modalType: {
             0: '#personMo',
             1: '#deptMo',
             2: '#placeMo',
-            3: '#bonusMo'
+            3: '#salaryMo'
         },
         modalAddType:{
             0:'#personAddMo'
@@ -351,8 +361,8 @@ var modal = new Vue({
         onFatherIdChange: function (val) {
             this.fatherId = val
         },
-        onDeptIdChange: function (val) {
-            this.deptId = val
+        onDeptSelectChange: function (val) {
+            this.deptSelectValue = val
         },
         onRateChange: function (val) {
             this.rate = val
@@ -362,6 +372,15 @@ var modal = new Vue({
         },
         deleteData: function () {
             deleteData(this.dataType, this.id)
+        },
+        onDutyRateChange:function (val) {
+            this.onDutyRate = val
+        },
+        onOverTimeRateChange:function (val) {
+            this.overTimeRate = val
+        },
+        onSalaryChange:function (val) {
+            this.salary = val
         }
     }
 })

@@ -45,4 +45,10 @@ public class DeptController {
     public Boolean deleteDept(@PathVariable Integer id) {
         return deptService.deleteById(id);
     }
+
+    /*获得所有dept*/
+    @RequestMapping("/all")
+    public List<Dept> getAll() {
+        return deptService.getAllDepts();
+    }
 }

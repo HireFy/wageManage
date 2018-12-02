@@ -20,15 +20,15 @@ public class PersonServiceImplTest {
 
     @Test
     public void insert() {
-        Person person = new Person("enim", 1);
-        assertEquals(true, personService.insert(person));
+//        Person person = new Person("enim", 1);
+//        assertEquals(true, personService.insert(person));
     }
 
 
     /*生成person*/
     @Test
     public void generatePerson() {
-        personService.generatePerson(2000);
+        personService.generatePerson();
     }
 
     /*生成person对应薪酬*/

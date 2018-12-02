@@ -6,56 +6,47 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Data
 public class Person {
     private Integer id;
     private String name;
-    private BigDecimal salary;
-    private Integer placeId;
+    private String sex;
+    private Integer age;
+    private Timestamp born;
     private String pass;
-
+    private Timestamp enterTime;
+    private Integer placeId;
+    private Float onDutyRate;
+    private Float overTimeRate;
 
     public Person() {
 
     }
 
-    public Person(String name, BigDecimal salary, Integer placeId) {
-        this.name = name;
-        this.salary = salary;
-        this.placeId = placeId;
-    }
-
-    public Person(String name, BigDecimal salary, Integer placeId, String pass) {
-        this.name = name;
-        this.salary = salary;
-        this.placeId = placeId;
-        this.pass = pass;
-    }
-
-    public Person(String name, Integer placeId) {
-        this.name = name;
-        this.placeId = placeId;
-    }
-
-    public Person(String name, Integer placeId, String pass) {
-        this.name = name;
-        this.placeId = placeId;
-        this.pass = pass;
-    }
-
-    public Person(Integer id, String name, BigDecimal salary, Integer placeId) {
+    public Person(Integer id, String name, String sex, Integer age, Timestamp born, String pass, Timestamp enterTime, Integer placeId, Float onDutyRate, Float overTimeRate) {
         this.id = id;
         this.name = name;
-        this.salary = salary;
+        this.sex = sex;
+        this.age = age;
+        this.born = born;
+        this.pass = pass;
+        this.enterTime = enterTime;
         this.placeId = placeId;
+        this.onDutyRate = onDutyRate;
+        this.overTimeRate = overTimeRate;
     }
 
-    public Person(Integer id, String name, BigDecimal salary, Integer placeId, String pass) {
-        this.id = id;
+    public Person(String name, String sex, Integer age, Timestamp born, String pass, Timestamp enterTime, Integer placeId, Float onDutyRate, Float overTimeRate) {
         this.name = name;
-        this.salary = salary;
-        this.placeId = placeId;
+        this.sex = sex;
+        this.age = age;
+        this.born = born;
         this.pass = pass;
+        this.enterTime = enterTime;
+        this.placeId = placeId;
+        this.onDutyRate = onDutyRate;
+        this.overTimeRate = overTimeRate;
     }
 }

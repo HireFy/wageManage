@@ -22,13 +22,13 @@ public interface PersonDao {
 
     List<Integer> getAllId();
 
-    BigDecimal getBaseSalary(Integer id);
-
-    Float getRateById(Integer id);
+    BigDecimal getBaseSalaryById(Integer id);
 
     int getTotalCount();
 
     List<Integer> getPersonIdPageNation(@Param("offset") int offset, @Param("size") int size);
 
     String getNameById(Integer id);
+
+    List<Integer> getAllIdByPlaceId(@Param("placeId") Integer placeId);
 }

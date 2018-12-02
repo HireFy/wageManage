@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cobcap.wageManager.dao.SalaryDao">
+    <resultMap id="SalaryMap" type="Salary">
+        <id column="sa_id" property="id"/>
+        <result column="p_id" property="personId"/>
+        <result column="salary" property="salary"/>
+    </resultMap>
+
+    <select id="getById" resultMap="SalaryMap">
+        select * from salary where sa_id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into salary (p_id, salary) values (#{personId}, #{salary})
+    </insert>
+
+    <update id="updateById">
+        update salary
+        <set>
+            <if test="personId != null"> p_id = #{personId},</if>
+            <if test="salary != null"> salary = #{salary}</if>
+        </set>
+        where sa_id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from salary where sa_id = #{id}
+    </delete>
+
+    <select id="getSalaries" resultMap="SalaryMap">
+        select top ${size} * from salary
+        where sa_id not in (
+            select top ${offset} sa_id from salary
+        )
+    </select>
+
+    <insert id="insertSalaries" useGeneratedKeys="true" keyProperty="id">
+        insert into salary (p_id, salary) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.personId}, #{item.salary})
+        </foreach>
+    </insert>
+
+    <select id="getTotalCount" resultType="int">
+        select count(*) from salary
+    </select>
+
+    <select id="getSalaryByPersonId" resultType="BigDecimal">
+        select salary from salary where p_id = #{id}
+    </select>
+
+    <select id="getPersonBySalaryId" resultMap="com.cobcap.wageManager.dao.PersonDao.personMap">
+        select person.* from person,salary where sa_id = #{id} and salary.p_id = person.p_id
+    </select>
+
+    <update id="updateSalaryByPersonId">
+        update salary
+        <set>
+            <if test="salary != null"> salary = #{salary}</if>
+        </set>
+        where p_id = #{personId}
+    </update>
+
+    <delete id="deleteByPersonId">
+        delete from salary where p_id = #{id}
+    </delete>
+
+    <select id="getSalaryIdByPersonId" resultType="Integer">
+        select sa_id from salary where p_id = #{personId}
+    </select>
+</mapper>

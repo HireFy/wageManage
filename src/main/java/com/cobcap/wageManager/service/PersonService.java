@@ -23,6 +23,8 @@ public interface PersonService {
 
     void generatePerson(int dataSize);
 
+    void generatePerson();
+
     void generateSalary(int pageNum, int pageSize);
 
     Boolean update(Person person);

@@ -7,6 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,19 +35,29 @@ public class PersonDaoTest {
 
     @Test
     public void updateById() {
-        Person person = new Person(2, "fjw", null, null);
+        Person person = new Person(2, "zxq", "女", null, null, null, null, null, null, null);
+
         assertEquals(true, personDao.updateById(person));
     }
 
     @Test
     public void insert() {
-        Person person = new Person("quod", 4);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
+        Timestamp born = null;
+        Timestamp enterTime = null;
+        try {
+            born = new Timestamp(dateFormat.parse("1997-12-09").getTime());
+            enterTime = new Timestamp(dateFormat.parse("2020-12-3").getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Person person = new Person("fjw", "男", 23, born, "1234", enterTime, 3, Float.valueOf((float) 0.54), Float.valueOf((float) 0.45));
         assertEquals(true, personDao.insert(person));
     }
 
     @Test
     public void isNameExist() {
-        assertEquals(true, personDao.isNameExist("quod"));
+        assertEquals(true, personDao.isNameExist("fjw"));
         assertEquals(false, personDao.isNameExist("sdfsdf"));
     }
 
@@ -57,16 +73,22 @@ public class PersonDaoTest {
 
     @Test
     public void getBaseSalary() {
-        System.out.println(personDao.getBaseSalary(5));
+        System.out.println(personDao.getBaseSalaryById(2));
     }
 
-    @Test
-    public void getRateById() {
-        System.out.println(personDao.getRateById(3));
-    }
 
     @Test
     public void getPageCount() {
         System.out.println(personDao.getTotalCount());
+    }
+
+    @Test
+    public void testTime() throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        Timestamp born = new Timestamp(dateFormat.parse("1997-12-09").getTime());
+        Timestamp enterTime = new Timestamp(dateFormat.parse("2020-12-3").getTime());
+
+        System.out.println(born);
+        System.out.println(enterTime);
     }
 }

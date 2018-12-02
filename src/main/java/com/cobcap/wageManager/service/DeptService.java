@@ -18,4 +18,6 @@ public interface DeptService {
     List<Dept> getDepts(int pageNum, int pageSize);
 
     int getPageCount(int pageSize);
+
+    List<Dept> getAllDepts();
 }

@@ -32,7 +32,7 @@
             <li @click="navId = 2" :class="{'uk-active':navId === 2}">
                 <a><span :class="{'uk-text-large':navId === 2}">职位</span></a></li>
             <li @click="navId = 3" :class="{'uk-active':navId === 3}">
-                <a href="#"><span :class="{'uk-text-large':navId === 3}">奖金</span></a></li>
+                <a href="#"><span :class="{'uk-text-large':navId === 3}">工资</span></a></li>
         </ul>
     </div>
     <div class="uk-navbar-right">
@@ -52,8 +52,12 @@
                       :pass="pass"
                       :datatype="dataType"
                       :person_places="places"
+                      :on_duty_rate="onDutyRate"
+                      :over_time_rate="overTimeRate"
                       :selectvalue="placeSelectValue"
                       @on-select-value-change="onSelectValueChange"
+                      @on-duty-rate-change="onDutyRateChange"
+                      @on-over-time-rate-change="onOverTimeRateChange"
                       @on-name-change="onNameChange"
                       @on-pass-change="onPassChange"
         ></person-modal>
@@ -72,21 +76,21 @@
         <place-modal :id="id"
                      :name="name"
                      :salary="salary"
-                     :deptid="deptId"
+                     :deptlist="depts"
+                     :deptselect="deptSelectValue"
                      @on-name-change="onNameChange"
-                     @on-deptid-change="onDeptIdChange"
+                     @on-salary-change="onSalaryChange"
+                     @on-dept-select-change="onDeptSelectChange"
         >
         </place-modal>
     </div>
 
-    <div id="bonusMo" uk-modal>
-        <bonus-modal :id="id"
+    <div id="salaryMo" uk-modal>
+        <salary-modal :id="id"
                      :name="name"
-                     :rate="rate"
-                     @on-name-change="onNameChange"
-                     @on-rate-change="onRateChange"
+                     :salary="salary"
         >
-        </bonus-modal>
+        </salary-modal>
     </div>
     <%--更新modal END--%>
 
@@ -113,24 +117,30 @@
 
 <div id="main">
     <div class="uk-flex uk-flex-center">
-        <div id="my-table" class="uk-card uk-card-default uk-card-body uk-width-1-2@m">
+        <div id="my-table" class="uk-card uk-card-default uk-card-body"
+             :class="{'uk-width-1-2@m': navIdInTb != 0}">
             <table class="uk-table uk-table-hover uk-table-divider">
                 <thead is="person-head" v-if="navIdInTb === 0"></thead>
                 <thead is="dept-head" v-if="navIdInTb === 1"></thead>
                 <thead is="place-head" v-if="navIdInTb === 2"></thead>
-                <thead is="bonus-head" v-if="navIdInTb === 3"></thead>
+                <thead is="salary-head" v-if="navIdInTb === 3"></thead>
                 <tbody>
                 <tr v-for="data in datas" v-if="navIdInTb === 0" @click="showmodal">
                     <td>{{data.id}}</td>
                     <td>{{data.name}}</td>
+                    <td>{{data.sex}}</td>
+                    <td>{{data.age}}</td>
                     <td>{{data.pass}}</td>
-                    <td>{{data.salary}}</td>
+                    <td>{{data.bornTimeStr}}</td>
+                    <td>{{data.enterTimeStr}}</td>
                     <td>{{data.placeName}}</td>
+                    <td>{{data.onDutyRateStr}}</td>
+                    <td>{{data.overTimeRateStr}}</td>
+                    <td>￥{{data.salary}}</td>
                 </tr>
                 <tr v-for="data in datas" v-if="navIdInTb === 1" @click="showmodal">
                     <td>{{data.id}}</td>
                     <td>{{data.name}}</td>
-                    <td>{{data.fatherId}}</td>
                 </tr>
                 <tr v-for="data in datas" v-if="navIdInTb === 2" @click="showmodal">
                     <td>{{data.id}}</td>
@@ -141,7 +151,7 @@
                 <tr v-for="data in datas" v-if="navIdInTb === 3" @click="showmodal">
                     <td>{{data.id}}</td>
                     <td>{{data.personName}}</td>
-                    <td>{{data.rateFormat}}</td>
+                    <td>￥{{data.salary}}</td>
                 </tr>
                 </tbody>
             </table>

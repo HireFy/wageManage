@@ -6,21 +6,14 @@ import lombok.Data;
 public class Dept {
     private Integer id;
     private String name;
-    private Integer fatherId;
 
     public Dept() {
 
     }
 
-    public Dept(String name, Integer fatherId) {
-        this.name = name;
-        this.fatherId = fatherId;
-    }
-
-    public Dept(Integer id, String name, Integer fatherId) {
+    public Dept(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.fatherId = fatherId;
     }
 
     public Dept(String name) {

@@ -26,7 +26,7 @@ public class PlaceDaoTest {
 
     @Test
     public void deleteById() {
-        assertEquals(true, placeDao.deleteById(3));
+        assertEquals(true, placeDao.deleteById(2));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class PlaceDaoTest {
 
     @Test
     public void isNameExist() {
-        assertEquals(true, placeDao.isNameExist("技术主管"));
+        assertEquals(true, placeDao.isNameExist("财务主管"));
         assertEquals(false, placeDao.isNameExist("营销主管"));
     }
 

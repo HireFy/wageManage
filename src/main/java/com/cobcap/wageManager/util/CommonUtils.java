@@ -1,19 +1,27 @@
 package com.cobcap.wageManager.util;
 
 import com.cobcap.wageManager.dao.PersonDao;
+import com.cobcap.wageManager.dao.PlaceDao;
 import com.cobcap.wageManager.pojo.Person;
 import com.cobcap.wageManager.service.PersonService;
+import com.cobcap.wageManager.service.PlaceService;
 import com.cobcap.wageManager.service.impl.PersonServiceImpl;
+import com.cobcap.wageManager.service.impl.PlaceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Random;
-
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class CommonUtils {
 
-    public static String getRandomName() {
+    private static String currentYear = "2018";
+
+    public static Map getRandomNameAndSex() {
+        Map<String, Object> map = new HashMap<>();
         Random random = new Random();
         String[] Surname = {"赵", "钱", "孙", "李", "周", "吴", "郑", "王", "冯", "陈", "褚", "卫", "蒋", "沈", "韩", "杨", "朱", "秦", "尤", "许",
                 "何", "吕", "施", "张", "孔", "曹", "严", "华", "金", "魏", "陶", "姜", "戚", "谢", "邹", "喻", "柏", "水", "窦", "章", "云", "苏", "潘", "葛", "奚", "范", "彭", "郎",
@@ -25,28 +33,36 @@ public class CommonUtils {
         String boy = "伟刚勇毅俊峰强军平保东文辉力明永健世广志义兴良海山仁波宁贵福生龙元全国胜学祥才发武新利清飞彬富顺信子杰涛昌成康星光天达安岩中茂进林有坚和彪博诚先敬震振壮会思群豪心邦承乐绍功松善厚庆磊民友裕河哲江超浩亮政谦亨奇固之轮翰朗伯宏言若鸣朋斌梁栋维启克伦翔旭鹏泽晨辰士以建家致树炎德行时泰盛雄琛钧冠策腾楠榕风航弘";
         int index = random.nextInt(Surname.length - 1);
         String name = Surname[index]; //获得一个随机的姓氏
+        String sex = "";/*性别*/
         int i = random.nextInt(3);//可以根据这个数设置产生的男女比例
         if (i == 2) {
             int j = random.nextInt(girl.length() - 2);
             if (j % 2 == 0) {
 //                    name = "女-" + name + girl.substring(j, j + 2);
                 name = name + girl.substring(j, j + 2);
+                sex = "女";
             } else {
 //                    name = "女-" + name + girl.substring(j, j + 1);
                 name = name + girl.substring(j, j + 1);
+                sex = "女";
             }
         } else {
             int j = random.nextInt(girl.length() - 2);
             if (j % 2 == 0) {
 //                    name = "男-" + name + boy.substring(j, j + 2);
                 name = name + boy.substring(j, j + 2);
+                sex = "男";
             } else {
 //                    name = "男-" + name + boy.substring(j, j + 1);
                 name = name + boy.substring(j, j + 1);
+                sex = "男";
             }
         }
 
-        return name;
+        map.put("name", name);
+        map.put("sex", sex);
+
+        return map;
     }
 
     /*根据职位底薪和奖金计算薪资*/
@@ -57,6 +73,7 @@ public class CommonUtils {
 
     /**
      * 生成密码
+     *
      * @param length 设定密码的长度
      * @return
      */
@@ -72,6 +89,7 @@ public class CommonUtils {
 
     /**
      * 生成默认长度为6的密码
+     *
      * @return
      */
     public static String generatePass() {
@@ -79,4 +97,113 @@ public class CommonUtils {
     }
 
 
+    /**
+     * 获得小数的百分比显示
+     *
+     * @param num 传递的小数
+     * @return
+     */
+    public static String getPercentFormat(Float num) {
+        return new BigDecimal(num).setScale(2, BigDecimal.ROUND_CEILING).floatValue() * 100 + "%";
+    }
+
+    /**
+     * 生成指定时间段内一段时间
+     *
+     * @param beginDate 起始时间
+     * @param endDate   结束时间
+     * @return Date
+     */
+    public static Timestamp getRandomDate(String beginDate, String endDate) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date start = format.parse(beginDate);
+            Date end = format.parse(endDate);
+
+            if (start.getTime() >= end.getTime()) {
+                return null;
+            }
+
+            long date = random(start.getTime(), end.getTime());
+
+            return new Timestamp(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 生成指定long类型区间内一个long型数
+     *
+     * @param begin
+     * @param end
+     * @return long
+     */
+    private static long random(long begin, long end) {
+        long rtn = begin + (long) (Math.random() * (end - begin));
+        if (rtn == begin || rtn == end) {
+            return random(begin, end);
+        }
+        return rtn;
+    }
+
+    /**
+     * 得到年龄
+     *
+     * @param bornTime 出生时间
+     * @return int
+     */
+    public static int getAge(Timestamp bornTime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(bornTime);
+
+        return Integer.valueOf(currentYear) - calendar.get(Calendar.YEAR);
+    }
+
+    /**
+     * 获得随机的出(缺)勤率
+     * 出(缺)勤率最高10%
+     * @return
+     */
+    public static Float getRandomOnDutyRate() {
+        Float onDutyRate = getRandomFloat((float) 0.10);
+        return onDutyRate;
+    }
+
+    /**
+     * 获得随机的加班率
+     * @return
+     */
+    public static Float getRandomOverTimeRate() {
+        Float overTimeRate = getRandomFloat((float) 1);
+        return overTimeRate;
+    }
+
+    /**
+     * 设定一个最大的取值限定，返回从0到end之间的Float
+     * @param max 最大的取值限定
+     * @return
+     */
+    public static Float getRandomFloat(Float max) {
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        return Float.valueOf(decimalFormat.format(
+                0 + (float) Math.random() * max));
+    }
+
+    /**
+     * 根据职位的底薪baseSalary计算
+     * @param baseSalary 职位底薪
+     * @param onDutyRate 出(缺)勤率
+     * @param overTimeRate 加班率
+     * @return
+     */
+    public static BigDecimal computeSalary(BigDecimal baseSalary, Float onDutyRate, Float overTimeRate) {
+
+        BigDecimal salary = BigDecimal.valueOf(
+                baseSalary.floatValue() + (baseSalary.floatValue() * overTimeRate)
+                        - (baseSalary.floatValue() * onDutyRate));
+
+        return salary;
+    }
 }

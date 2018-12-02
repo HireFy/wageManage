@@ -5,9 +5,14 @@
     <resultMap id="personMap" type="Person">
         <id column="p_id" property="id"/>
         <result column="p_name" property="name"/>
-        <result column="p_salary" property="salary"/>
-        <result column="p_place_id" property="placeId"/>
-        <result column="pass" property="pass"/>
+        <result column="p_sex" property="sex"/>
+        <result column="p_age" property="age"/>
+        <result column="p_time" property="enterTime"/>
+        <result column="p_born" property="born"/>
+        <result column="pl_id" property="placeId"/>
+        <result column="p_pass" property="pass"/>
+        <result column="p_onduty" property="onDutyRate"/>
+        <result column="p_overtime" property="overTimeRate"/>
     </resultMap>
 
     <select id="getById" resultMap="personMap">
@@ -15,16 +20,21 @@
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into person (p_name, p_salary, p_place_id, pass) values (#{name}, #{salary}, #{placeId}, #{pass})
+        insert into wageNew.dbo.person (p_name, p_sex, p_age, p_time, p_born, p_pass, pl_id, p_onduty, p_overtime)
+        values (#{name}, #{sex}, #{age}, #{enterTime}, #{born}, #{pass}, #{placeId}, #{onDutyRate}, #{overTimeRate})
     </insert>
 
     <update id="updateById">
         update person
         <set>
             <if test="name != null"> p_name = #{name},</if>
-            <if test="salary != null">p_salary = #{salary},</if>
-            <if test="pass != null">pass = #{pass},</if>
-            <if test="placeId != null">p_place_id = #{placeId}</if>
+            <if test="pass != null">p_pass = #{pass},</if>
+            <if test="placeId != null">pl_id = #{placeId},</if>
+            <if test="sex != null">p_sex = #{sex},</if>
+            <if test="enterTime != null">p_time = #{enterTime},</if>
+            <if test="born != null">p_born = #{born},</if>
+            <if test="onDutyRate">p_onduty = #{onDutyRate},</if>
+            <if test="overTimeRate">p_overtime = #{overTimeRate}</if>
         </set>
         where p_id = #{id}
     </update>
@@ -59,12 +69,8 @@
         select p_id from person
     </select>
 
-    <select id="getBaseSalary" resultType="BigDecimal">
-        select pl_salary from person, place where p_id=#{id} and p_place_id = pl_id
-    </select>
-
-    <select id="getRateById" resultType="Float">
-        select rate from bonus where bonus.p_id = #{id}
+    <select id="getBaseSalaryById" resultType="BigDecimal">
+        select pl_salary from wageNew.dbo.person, wageNew.dbo.place where p_id=#{id} and person.pl_id = place.pl_id
     </select>
 
     <select id="getTotalCount" resultType="int">
@@ -73,5 +79,9 @@
 
     <select id="getNameById" resultType="String">
         select p_name from dbo.person where p_id = #{id}
+    </select>
+
+    <select id="getAllIdByPlaceId" resultType="Integer">
+        select p_id from person where dbo.person.pl_id = #{placeId}
     </select>
 </mapper>

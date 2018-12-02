@@ -1,6 +1,7 @@
-package com.cobcap.wageManager.dao;
+package com.cobcap.wageManager.service.impl;
 
-import com.cobcap.wageManager.pojo.Dept;
+import com.cobcap.wageManager.pojo.Salary;
+import com.cobcap.wageManager.service.SalaryService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,40 +12,48 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring-mybatis.xml")
-public class DeptDaoTest {
+public class SalaryServiceImplTest {
 
     @Autowired
-    private DeptDao deptDao;
+    private SalaryService salaryService;
 
     @Test
     public void getById() {
-        System.out.println(deptDao.getById(1));
     }
 
     @Test
     public void deleteById() {
-        assertEquals(true, deptDao.deleteById(1));
     }
 
     @Test
     public void updateById() {
-        Dept dept = new Dept(1, "后端部门");
-        System.out.println(deptDao.updateById(dept));
     }
 
     @Test
     public void insert() {
-        Dept dept = new Dept("产品部门");
-        assertEquals(true, deptDao.insert(dept));
     }
 
     @Test
-    public void isNameExist() {
-        assertEquals(false, deptDao.isNameExist("技术部门"));
+    public void getSalaries() {
     }
 
     @Test
-    public void getDepts() {
-        System.out.println(deptDao.getDepts(0, 5));
+    public void getTotalCount() {
+    }
+
+    @Test
+    public void getSalaryByPersonId() {
+    }
+
+    @Test
+    public void getPersonBySalaryId() {
+    }
+
+    /**
+     * 根据已经生成的person生成salary表的数据
+     */
+    @Test
+    public void generateSalary() {
+        salaryService.generateSalary();
     }
 }

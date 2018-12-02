@@ -4,6 +4,7 @@ import com.cobcap.wageManager.dao.DeptDao;
 import com.cobcap.wageManager.dao.PlaceDao;
 import com.cobcap.wageManager.pojo.Place;
 import com.cobcap.wageManager.service.PlaceService;
+import com.cobcap.wageManager.service.SalaryService;
 import com.cobcap.wageManager.vo.PlaceVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.lang.management.PlatformLoggingMXBean;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class PlaceServiceImpl implements PlaceService {
@@ -22,6 +24,9 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Autowired
     private DeptDao deptDao;
+
+    @Autowired
+    private SalaryService salaryService;
 
     @Override
     public Place getById(Integer id) {
@@ -33,9 +38,15 @@ public class PlaceServiceImpl implements PlaceService {
         return placeDao.deleteById(id);
     }
 
+    /**
+     * place中的底薪更新的时候，刷新所有人的工资
+     * @param place
+     * @return
+     */
     @Override
     public Boolean updateById(Place place) {
-        return placeDao.updateById(place);
+        placeDao.updateById(place);
+        return salaryService.updateSalary(place.getId());
     }
 
     @Override
@@ -105,5 +116,18 @@ public class PlaceServiceImpl implements PlaceService {
             placeVos.add(this.transFormData(place));
         }
         return placeVos;
+    }
+
+
+
+    /**
+     * 获得随机的职位id
+     * @return
+     */
+    public Integer getRandomPlaceId() {
+        List<Integer> placeIds = this.getAllIds();
+        Random random = new Random();
+        int placeId = placeIds.get(random.nextInt(placeIds.size()));
+        return placeId;
     }
 }

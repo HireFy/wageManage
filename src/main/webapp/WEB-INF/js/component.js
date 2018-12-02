@@ -3,9 +3,15 @@ Vue.component('person-head', {
         '        <tr>\n' +
         '            <th>id</th>\n' +
         '            <th>姓名</th>\n' +
+        '            <th>性别</th>\n' +
+        '            <th>年龄</th>\n' +
         '            <th>密码</th>\n' +
-        '            <th>薪资</th>\n' +
+        '            <th>出生日期</th>\n' +
+        '            <th>入职时间</th>\n' +
         '            <th>职位</th>\n' +
+        '            <th>缺勤</th>\n' +
+        '            <th>加班</th>\n' +
+        '            <th>薪资</th>\n' +
         '        </tr>\n' +
         '    </thead>\n'
 })
@@ -15,7 +21,6 @@ Vue.component('dept-head', {
         '        <tr>\n' +
         '            <th>id</th>\n' +
         '            <th>部门</th>\n' +
-        '            <th>父级部门</th>\n' +
         '        </tr>\n' +
         '    </thead>'
 })
@@ -23,7 +28,7 @@ Vue.component('dept-head', {
 Vue.component('place-head', {
     template: ' <thead>\n' +
         '        <tr>\n' +
-        '            <th>id</th>\n' +
+        '            <th>职位编号</th>\n' +
         '            <th>职位</th>\n' +
         '            <th>基本薪资</th>\n' +
         '            <th>所属部门</th>\n' +
@@ -31,12 +36,12 @@ Vue.component('place-head', {
         '    </thead>'
 })
 
-Vue.component('bonus-head', {
+Vue.component('salary-head', {
     template: ' <thead>\n' +
         '        <tr>\n' +
-        '            <th>id</th>\n' +
+        '            <th>工资编号</th>\n' +
         '            <th>姓名</th>\n' +
-        '            <th>奖金</th>\n' +
+        '            <th>薪水</th>\n' +
         '        </tr>\n' +
         '    </thead>'
 })
@@ -44,13 +49,15 @@ Vue.component('bonus-head', {
 
 /*person的模态(modal)框*/
 Vue.component('person-modal', {
-    props: ['id', 'name', 'salary', 'selectvalue', 'datatype', 'person_places', 'pass'],
+    props: ['id', 'name', 'salary', 'selectvalue', 'datatype', 'person_places', 'pass', 'on_duty_rate', 'over_time_rate'],
     data: function () {
         return {
             childSelectVal: this.selectvalue,
             childName: this.name,
             childPlaces: this.person_places,
             childPass: this.pass,
+            childOnDutyRate: this.on_duty_rate,
+            childOverTimeRate: this.over_time_rate
         }
     },
     watch: {
@@ -72,6 +79,18 @@ Vue.component('person-modal', {
         },
         childPass: function (val) {
             this.$emit('on-pass-change', val)
+        },
+        on_duty_rate: function (val) {
+            this.childOnDutyRate = val
+        },
+        childOnDutyRate: function (val) {
+            this.$emit('on-duty-rate-change', val)
+        },
+        over_time_rate: function (val) {
+            this.childOverTimeRate = val
+        },
+        childOverTimeRate: function (val) {
+            this.$emit('on-over-time-rate-change', val)
         }
     },
     methods: {
@@ -80,8 +99,11 @@ Vue.component('person-modal', {
                 id: this.id,
                 name: this.name,
                 placeId: this.childSelectVal,
-                pass: this.pass
+                pass: this.pass,
+                onDutyRate: this.childOnDutyRate / 100,
+                overTimeRate: this.childOverTimeRate / 100,
             })
+
             update(vm.dataType[vm.navIdInTb], data)
         },
         deleteData: function () {
@@ -104,9 +126,17 @@ Vue.component('person-modal', {
         '                </div>\n' +
         '            </div>\n' +
         '            <div class="uk-margin">\n' +
-        '                <label class="uk-form-label" for="form-stacked-text-bonus">薪资</label>\n' +
-        '                <div class="uk-form-controls">\n' +
-        '                    <input class="uk-input" disabled="disabled" id="form-stacked-text-bonus" type="text" :placeholder="salary">\n' +
+        '                <label class="uk-form-label" for="form-on-duty-text">缺勤率</label>\n' +
+        '                <div class="uk-form-controls uk-inline" style="width: 100%">' +
+        '                    <input v-model="childOnDutyRate" :class="{\'uk-form-danger\': childOnDutyRate > 10}" class="uk-input" id="form-on-duty-text" type="text" uk-tooltip="title: 不超过10%; pos: top-right;">' +
+        '                    <span class="uk-form-icon uk-form-icon-flip">%</span>'+
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="uk-margin">\n' +
+        '                <label class="uk-form-label" for="form-over-time-text">加班率</label>\n' +
+        '                <div class="uk-form-controls uk-inline" style="width: 100%">\n' +
+        '                    <input v-model="childOverTimeRate" :class="{\'uk-form-danger\': childOverTimeRate > 100}" class="uk-input" id="form-over-time-text" type="text">\n' +
+        '                    <span class="uk-form-icon uk-form-icon-flip">%</span>'+
         '                </div>\n' +
         '            </div>\n' +
         '            <div class="uk-margin">\n' +
@@ -117,33 +147,31 @@ Vue.component('person-modal', {
         '</select>' +
         '                </div>\n' +
         '            </div>\n' +
-        '\n' +
+        '            <div class="uk-margin">\n' +
+        '                <label class="uk-form-label" for="form-stacked-text-bonus">薪资</label>\n' +
+        '                <div class="uk-form-controls">\n' +
+        '                    <input class="uk-input" disabled="disabled" id="form-stacked-text-bonus" type="text" :placeholder="salary">\n' +
+        '                </div>\n' +
+        '            </div>\n' +
         '        </form>\n' + '<button class="uk-button uk-button-danger" @click="deleteData">删除</button>' +
-        '<button class="uk-button uk-button-primary uk-align-right" @click="update">修改</button>' +
+        '<button class="uk-button uk-button-primary uk-align-right" @click="update" :disabled="(childOnDutyRate > 10) || (childOverTimeRate > 100)">修改</button>' +
         '    </div>'
 })
 
 /*dept的模态(modal)框*/
 Vue.component('dept-modal', {
-    props: ['id', 'name', 'fatherid'],
+    props: ['id', 'name'],
     data: function () {
         return {
-            childName: this.name,
-            childFatherId: this.fatherid
+            childName: this.name
         }
     },
     watch: {
         name: function (val) {
             this.childName = val
         },
-        fatherid: function (val) {
-            this.childFatherId = val
-        },
         childName: function (val) {
             this.$emit('on-name-change', val)
-        },
-        childFatherId: function (val) {
-            this.$emit('on-fatherid-change', val)
         }
     },
     methods: {
@@ -154,7 +182,6 @@ Vue.component('dept-modal', {
             data = JSON.stringify({
                 id: this.id,
                 name: this.name,
-                fatherId: this.childFatherId
             })
             update(vm.dataType[vm.navIdInTb], data)
         }
@@ -170,13 +197,6 @@ Vue.component('dept-modal', {
         '        </div>\n' +
         '    </div>\n' +
         '\n' +
-        '     <div class="uk-margin">\n' +
-        '        <label class="uk-form-label" for="form-stacked-text">父级部门</label>\n' +
-        '        <div class="uk-form-controls">\n' +
-        '            <input v-model="childFatherId" class="uk-input" id="form-stacked-text" type="text" placeholder="">\n' +
-        '        </div>\n' +
-        '    </div>\n' +
-        '\n' +
         '</form>\n' + '<button class="uk-button uk-button-danger" @click="deleteData">删除</button>' +
         '<button class="uk-button uk-button-primary uk-align-right" @click="update">修改</button>' +
         '</div>'
@@ -184,11 +204,13 @@ Vue.component('dept-modal', {
 
 /*place的模态(modal)框*/
 Vue.component('place-modal', {
-    props: ['id', 'name', 'salary', 'deptid'],
+    props: ['id', 'name', 'salary', 'deptselect', 'deptlist'],
     data: function () {
         return {
             childName: this.name,
-            childDeptId: this.deptId
+            childDeptSelect: this.deptselect,
+            childDepts:this.deptlist,
+            childSalary:this.salary
         }
     },
     methods: {
@@ -199,7 +221,8 @@ Vue.component('place-modal', {
             data = JSON.stringify({
                 id: this.id,
                 name: this.name,
-                deptId: this.childDeptId
+                deptId: this.childDeptSelect,
+                salary: this.childSalary
             })
             update(vm.dataType[vm.navIdInTb], data)
         }
@@ -208,14 +231,20 @@ Vue.component('place-modal', {
         name: function (val) {
             this.childName = val
         },
-        deptid: function (val) {
-            this.childDeptId = val
+        deptselect: function (val) {
+            this.childDeptSelect = val
+        },
+        salary:function(val){
+            this.childSalary = val
         },
         childName: function (val) {
             this.$emit('on-name-change', val)
         },
-        childDeptId: function (val) {
-            this.$emit('on-deptid-change', val)
+        childDeptSelect: function (val) {
+            this.$emit('on-dept-select-change', val)
+        },
+        childSalary:function (val) {
+            this.$emit('on-salary-change', val)
         }
     },
     template: '<div class="uk-modal-dialog uk-modal-body">\n' +
@@ -232,17 +261,16 @@ Vue.component('place-modal', {
         '     <div class="uk-margin">\n' +
         '        <label class="uk-form-label" for="form-stacked-text">基本薪资</label>\n' +
         '        <div class="uk-form-controls">\n' +
-        '            <input :value="salary" class="uk-input" disabled="disabled" id="form-stacked-text" type="text" placeholder="">\n' +
+        '            <input v-model="childSalary" class="uk-input" id="form-stacked-text" type="text" placeholder="">\n' +
         '        </div>\n' +
         '    </div>\n' +
         '\n' +
         '     <div class="uk-margin">\n' +
         '        <label class="uk-form-label" for="select-dept">所属部门</label>\n' +
         '        <div class="uk-form-controls">\n' +
-        '            <select class="uk-select" id="select-dept" v-model="childDeptId">\n' +
-        '                <option value="1">技术部门</option>\n' +
-        '                <option value="2">产品部门</option>\n' +
-        '                <option value="3">运营部门</option>\n' +
+        '            <select class="uk-select" id="select-dept" v-model="childDeptSelect">\n' +
+        '                <option v-for="dept in deptlist" :value="dept.id">{{dept.name}}</option>\n' +
+
         '            </select>\n' +
         '        </div>\n' +
         '    </div>\n' +
@@ -253,42 +281,9 @@ Vue.component('place-modal', {
         '</div>'
 })
 
-/*bonus的模态框*/
-Vue.component('bonus-modal', {
-    props: ['id', 'name', 'rate'],
-    data: function () {
-        return {
-            childName: this.name,
-            childRate: this.rate
-        }
-    },
-    watch: {
-        name: function (val) {
-            this.childName = this.name
-        },
-        rate: function (val) {
-            this.childRate = this.rate
-        },
-        childName: function (val) {
-            this.$emit('on-name-change', val)
-        },
-        childRate: function (val) {
-            this.$emit('on-rate-change', val)
-        }
-    },
-    methods: {
-        deleteData: function () {
-            deleteAlert()
-        },
-        update: function () {
-            data = JSON.stringify({
-                id: this.id,
-                name: this.name,
-                rate: this.childRate
-            })
-            update(vm.dataType[vm.navIdInTb], data)
-        }
-    },
+/*salary的模态框*/
+Vue.component('salary-modal', {
+    props: ['id', 'name', 'salary'],
     template: '<div class="uk-modal-dialog uk-modal-body">\n' +
         '    <h2 class="uk-modal-title">{{id}}</h2>\n' +
         '    <form class="uk-form-stacked">\n' +
@@ -296,19 +291,17 @@ Vue.component('bonus-modal', {
         '        <div class="uk-margin">\n' +
         '            <label class="uk-form-label" for="form-stacked-text">姓名</label>\n' +
         '            <div class="uk-form-controls">\n' +
-        '                <input v-model="childName" class="uk-input" id="form-stacked-text" type="text" placeholder="">\n' +
+        '                <input :value="name" class="uk-input" id="form-stacked-text" type="text" disabled="disabled">\n' +
         '            </div>\n' +
         '        </div>\n' +
         '\n' +
         '        <div class="uk-margin">\n' +
-        '            <label class="uk-form-label" for="form-stacked-text">奖金</label>\n' +
+        '            <label class="uk-form-label" for="form-stacked-text">工资</label>\n' +
         '            <div class="uk-form-controls">\n' +
-        '                <input v-model="childRate" class="uk-input" id="form-stacked-text" type="text" placeholder="">\n' +
+        '                <input :value="salary" class="uk-input" id="form-stacked-text" type="text" disabled="disabled">\n' +
         '            </div>\n' +
         '        </div>\n' +
         '    </form>\n' +
-        '<button class="uk-button uk-button-danger" @click="deleteData">删除</button>\n' +
-        '<button class="uk-button uk-button-primary uk-align-right" @click="update">修改</button>\n' +
         '</div>'
 })
 
@@ -327,13 +320,13 @@ Vue.component('person-add-modal', {
     },
     watch: {
         /*当职位选择发生变化的时候,发送请求获取对应基本底薪显示*/
-        childSelectVal:function (val) {
+        childSelectVal: function (val) {
             var _this = this
             $.ajax({
-                type:"post",
-                url:"/place/" + val,
-                dataType:"json",
-                success:function (data){
+                type: "post",
+                url: "/place/" + val,
+                dataType: "json",
+                success: function (data) {
                     _this.salary = data['salary']
                 }
             })
@@ -343,10 +336,10 @@ Vue.component('person-add-modal', {
         /*点击添加按钮触发函数add()*/
         add: function () {
             data = JSON.stringify({
-                name:this.name,
-                pass:this.pass,
-                salary:this.salary,
-                placeId:this.childSelectVal
+                name: this.name,
+                pass: this.pass,
+                salary: this.salary,
+                placeId: this.childSelectVal
             })
             add(vm.dataType[vm.navIdInTb], data)
         }

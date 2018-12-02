@@ -21,4 +21,6 @@ public interface DeptDao {
     int getTotalCount();
 
     String getDeptNameById(Integer id);
+
+    List<Dept> getAllDepts();
 }
