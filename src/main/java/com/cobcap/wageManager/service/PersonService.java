@@ -39,4 +39,7 @@ public interface PersonService {
     Boolean isPassRight(Integer num, String pass);
 
     PersonVo transFormData(Person person);
+
+    /*添加人员*/
+    Boolean addUser(Person person);
 }

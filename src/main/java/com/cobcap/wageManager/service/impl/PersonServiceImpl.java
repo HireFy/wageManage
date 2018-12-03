@@ -67,7 +67,7 @@ public class PersonServiceImpl implements PersonService {
      * @return
      */
     @Override
-    public Boolean insert(Person person) {
+    public Boolean addUser(Person person) {
         if (person.getOnDutyRate() == null) {
             person.setOnDutyRate((float) 0);
         }
@@ -79,6 +79,11 @@ public class PersonServiceImpl implements PersonService {
         }
 
         return false;
+    }
+
+    @Override
+    public Boolean insert(Person person) {
+        return personDao.insert(person);
     }
 
     @Override
