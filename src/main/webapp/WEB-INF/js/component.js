@@ -314,6 +314,10 @@ Vue.component('person-add-modal', {
             name: '',
             pass: '',
             salary: '',
+            born:'',
+            sex:'',
+            enterTime:'',
+            age:0,
             childPlaces: this.person_places,
             childSelectVal: 0
         }
@@ -330,6 +334,14 @@ Vue.component('person-add-modal', {
                     _this.salary = data['salary']
                 }
             })
+        },
+        born:function (val) {
+            console.log("born watch!")
+            if(this.checkDateComp(val)){
+                console.log("born判断正确")
+
+                this.age = 2018 - val.substring(0, 4)
+            }
         }
     },
     methods: {
@@ -339,9 +351,17 @@ Vue.component('person-add-modal', {
                 name: this.name,
                 pass: this.pass,
                 salary: this.salary,
+                sex: this.sex,
+                age: this.age,
+                born:this.born,
+                enterTime:this.enterTime,
                 placeId: this.childSelectVal
             })
             add(vm.dataType[vm.navIdInTb], data)
+        },
+        checkDateComp:function (date) {
+            console.log("checkDateComp: " + checkDate(date))
+            return checkDate(date)
         }
     },
     template: '<div class="uk-modal-dialog uk-modal-body">\n' +
@@ -352,10 +372,40 @@ Vue.component('person-add-modal', {
         '                    <input v-model="name" class="uk-input" id="form-stacked-text" type="text" autofocus>\n' +
         '                </div>\n' +
         '            </div>\n' +
+        '            <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">\n' +
+        '                 <label><input class="uk-radio" type="radio" name="radio2" @click="sex = \'男\' ">男</label>\n' +
+        '                 <label><input class="uk-radio" type="radio" name="radio2" @click="sex = \'女\' ">女</label>\n' +
+        '            </div>' +
+        '            <div class="uk-margin">\n' +
+        '                <label class="uk-form-label" for="form-age-text">年龄</label>\n' +
+        '                <div class="uk-form-controls">\n' +
+        '                    <input v-model="age" class="uk-input" id="form-age-text" type="text" disabled="disabled">\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="uk-margin">\n' +
+        '                <label class="uk-form-label" for="form-born-text">出生日期</label>\n' +
+        '                <div class="uk-form-controls">\n' +
+        '                    <input v-model="born" class="uk-input" :class="{\'uk-form-danger\': !checkDateComp(born)}" id="form-born-text" type="text" uk-tooltip="title: xxxx-xx-xx; pos: top-right">\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="uk-margin">\n' +
+        '                <label class="uk-form-label" for="form-enter-text">入职时间</label>\n' +
+        '                <div class="uk-form-controls">\n' +
+        '                    <input v-model="enterTime" class="uk-input" :class="{\'uk-form-danger\': !checkDateComp(enterTime)}" id="form-enter-text" type="text" uk-tooltip="title: xxxx-xx-xx; pos: top-right">\n' +
+        '                </div>\n' +
+        '            </div>\n' +
         '            <div class="uk-margin">\n' +
         '                <label class="uk-form-label" for="form-pass-text">密码</label>\n' +
         '                <div class="uk-form-controls">\n' +
         '                    <input v-model="pass" class="uk-input" id="form-pass-text" type="text">\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="uk-margin">\n' +
+        '                <label class="uk-form-label" for="form-stacked-select">职位</label>\n' +
+        '                <div class="uk-form-controls">\n' +
+        '                   <select class="uk-select" id="form-stacked-select" v-model="childSelectVal">\n' +
+        '                       <option v-for="place in childPlaces" :value="place.id">{{place.name}}</option>\n' +
+        '                   </select>' +
         '                </div>\n' +
         '            </div>\n' +
         '            <div class="uk-margin">\n' +
@@ -364,15 +414,6 @@ Vue.component('person-add-modal', {
         '                    <input v-model="salary" class="uk-input" disabled="disabled" id="form-stacked-text-bonus" type="text" :placeholder="salary">\n' +
         '                </div>\n' +
         '            </div>\n' +
-        '            <div class="uk-margin">\n' +
-        '                <label class="uk-form-label" for="form-stacked-select">职位</label>\n' +
-        '                <div class="uk-form-controls">\n' + '<select class="uk-select" id="form-stacked-select" v-model="childSelectVal">\n' +
-        '    <option v-for="place in childPlaces" :value="place.id">{{place.name}}</option>\n' +
-        '  \n' +
-        '</select>' +
-        '                </div>\n' +
-        '            </div>\n' +
-        '\n' +
         '        </form>\n' +
         '<button class="uk-button uk-button-primary uk-align-right" @click="add">添加</button>' +
         '    </div>'

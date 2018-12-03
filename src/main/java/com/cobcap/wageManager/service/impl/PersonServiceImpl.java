@@ -2,6 +2,7 @@ package com.cobcap.wageManager.service.impl;
 
 import com.cobcap.wageManager.dao.PersonDao;
 import com.cobcap.wageManager.pojo.Person;
+import com.cobcap.wageManager.pojo.Salary;
 import com.cobcap.wageManager.service.PersonService;
 import com.cobcap.wageManager.service.PlaceService;
 import com.cobcap.wageManager.service.SalaryService;
@@ -60,12 +61,24 @@ public class PersonServiceImpl implements PersonService {
         return personDao.updateById(person);
     }
 
+    /**
+     * 插入person的时候，设置出勤率加班率为空，设置薪资为职位底薪
+     * @param person
+     * @return
+     */
     @Override
     public Boolean insert(Person person) {
-//        if (person.getSalary() == null) {
-//            person.setSalary(placeService.getSalaryByPlaceId(person.getPlaceId()));
-//        }
-        return personDao.insert(person);
+        if (person.getOnDutyRate() == null) {
+            person.setOnDutyRate((float) 0);
+        }
+        if (person.getOverTimeRate() == null) {
+            person.setOverTimeRate((float) 0);
+        }
+        if (personDao.insert(person)) {
+            return salaryService.insert(new Salary(person.getId(), placeService.getSalaryByPlaceId(person.getPlaceId())));
+        }
+
+        return false;
     }
 
     @Override

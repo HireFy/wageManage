@@ -51,8 +51,10 @@ public class PersonDaoTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Person person = new Person("fjw", "男", 23, born, "1234", enterTime, 3, Float.valueOf((float) 0.54), Float.valueOf((float) 0.45));
-        assertEquals(true, personDao.insert(person));
+        Person person = new Person("fujunwei", "男", 21, Timestamp.valueOf("1997-11-20 08:00:00.0"), "1234", Timestamp.valueOf("2018-01-01 08:00:00.0"), 1151, (float) 0.0, (float) 0.0);
+        System.out.println("before: " + person.getId());
+        System.out.println(personDao.insert(person));
+        System.out.println(person.getId());
     }
 
     @Test
