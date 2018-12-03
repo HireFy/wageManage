@@ -1,6 +1,7 @@
 var pageCount;
 getPageCount('person');
 
+
 /*页面加载的时候先获取person总页数*/
 function getPageCount(dataType) {
     $.post({
@@ -228,7 +229,8 @@ var pagenation = new Vue({
 var navbar = new Vue({
     el: '#navbar',
     data: {
-        navId: 0
+        navId: 0,
+        value:''
     },
     watch: {
         navId: function (val, oldVal) {
@@ -239,6 +241,25 @@ var navbar = new Vue({
     methods:{
         showAddModal:function () {
             UIkit.modal(modal.modalAddType[this.navId]).show()
+        },
+        find:function () {
+            UIkit.modal(modal.modalType[this.navId]).show()
+            $.ajax({
+                type:'post',
+                url:'/search/name/'+this.value,
+                dataType:'json',
+                success:function (data) {
+                    modal.id = data.id
+                    modal.name = data.name
+                    modal.pass = data.pass
+                    modal.onDutyRate = data.onDutyRateStr.substring(0, data.onDutyRateStr.length - 1)
+                    modal.overTimeRate = data.overTimeRateStr.substring(0, data.overTimeRateStr.length - 1)
+                    modal.salary = data.salary
+                    modal.placeSelectValue = data.placeId
+                    modal.deleteInfo = '确认删除吗？'
+
+                }
+            })
         }
     }
 })

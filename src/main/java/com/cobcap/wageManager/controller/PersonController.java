@@ -73,6 +73,6 @@ public class PersonController {
     /*添加person*/
     @RequestMapping("/add")
     public Boolean addPerson(@RequestBody Person person) {
-        return personService.insert(person);
+        return personService.addUser(person);
     }
 }

@@ -47,8 +47,8 @@
             </div>
         </form>
         <div class="uk-button-group" style="width: 100%;">
-            <button class="uk-button uk-button-text uk-width-1-1 uk-margin-small-bottom">现在注册</button>
-            <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom"
+            <button class="uk-button uk-button-text uk-width-1-1 uk-margin-small-bottom" hidden="hidden">现在注册</button>
+            <button class="uk-button uk-button-text uk-width-1-1 uk-margin-small-bottom"
                     :disabled="isDisabled"
                     @click="login">登录
             </button>

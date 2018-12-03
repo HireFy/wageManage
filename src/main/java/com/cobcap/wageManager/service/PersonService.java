@@ -42,4 +42,6 @@ public interface PersonService {
 
     /*添加人员*/
     Boolean addUser(Person person);
+
+    Person getPersonByName(String name);
 }

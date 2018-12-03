@@ -115,4 +115,8 @@
         delete
         from person where pl_id = #{id}
     </delete>
+
+    <select id="getPersonByName" resultMap="personMap">
+        select * from person where p_name = #{name}
+    </select>
 </mapper>

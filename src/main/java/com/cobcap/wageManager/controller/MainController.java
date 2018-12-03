@@ -1,11 +1,11 @@
 package com.cobcap.wageManager.controller;
 
+import com.cobcap.wageManager.pojo.Person;
 import com.cobcap.wageManager.service.PersonService;
+import com.cobcap.wageManager.vo.PersonVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -53,5 +53,11 @@ public class MainController {
         mv.setViewName("404");
         return mv;
 
+    }
+
+    @RequestMapping("/search/name/{name}")
+    @ResponseBody
+    public PersonVo searchByName(@PathVariable String name) {
+        return service.transFormData(service.getPersonByName(name));
     }
 }

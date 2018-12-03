@@ -22,6 +22,7 @@
     <title></title>
 </head>
 <body>
+
 <nav class="uk-navbar-container" uk-navbar id="navbar">
     <div class="uk-navbar-left">
         <ul class="uk-navbar-nav">
@@ -35,17 +36,27 @@
                 <a href="#"><span :class="{'uk-text-large':navId === 3}">工资</span></a></li>
         </ul>
     </div>
-    <div class="uk-navbar-right">
-        <button class="uk-button uk-button-default" style="margin-right: 20px;"
-                @click="showAddModal"
-                :disabled="navId === 3">添加
-        </button>
+
+    <div class="uk-navbar-right" uk-grid>
+        <div>
+            <button class="uk-button uk-button-default" style="margin-right: 20px;"
+                    @click="showAddModal"
+                    :disabled="navId === 3">添加
+            </button>
+        </div>
+        <div class="uk-grid-collapse" uk-grid>
+            <div>
+                <input class="uk-input" id="form-stacked-text" type="text" autofocus v-model="value">
+            </div>
+            <div>
+                <button class="uk-button uk-button-default" @click="find" :disabled="value === ''">搜索</button>
+            </div>
+        </div>
     </div>
 </nav>
 
 
 <div id="mainModal" uk-modal>
-
     <%--更新modal--%>
     <div id="personMo" uk-modal>
         <person-modal :id="id"
@@ -111,7 +122,7 @@
 
     <div id="placeAddMo" uk-modal>
         <place-add-modal
-        :deptlist="depts"
+                :deptlist="depts"
         >
         </place-add-modal>
     </div>

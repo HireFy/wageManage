@@ -35,4 +35,6 @@ public interface PersonDao {
     Boolean deleteByDeptId(Integer id);
 
     Boolean deleteByPlaceId(Integer id);
+
+    Person getPersonByName(String name);
 }

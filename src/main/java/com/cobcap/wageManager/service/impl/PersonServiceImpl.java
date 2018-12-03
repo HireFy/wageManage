@@ -210,6 +210,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
 
+    @Override
+    public Person getPersonByName(String name) {
+        return personDao.getPersonByName(name);
+    }
+
     /**
      * 生成person的Vo对象
      * @param person
