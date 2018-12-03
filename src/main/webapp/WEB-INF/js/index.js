@@ -323,6 +323,14 @@ var vm = new Vue({
             pagenation.pages = pageCount
             pagenation.currentPage = this.currentPage
             modal.navId = val
+
+            /*如果切换到职位标签
+            * 重新获取dept信息
+            * 刷新modal中depts的数据*/
+            if (val === 2){
+                getDataInfos('dept')
+                modal.depts = Depts
+            }
         },
         currentPage: function (val) {
             getData(val, this.dataType[this.navIdInTb], this.datas)
@@ -357,7 +365,8 @@ var modal = new Vue({
             3: '#salaryMo'
         },
         modalAddType:{
-            0:'#personAddMo'
+            0:'#personAddMo',
+            1:'#deptAddMo'
         }
     },
     methods: {

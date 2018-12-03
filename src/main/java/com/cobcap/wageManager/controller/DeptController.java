@@ -51,4 +51,10 @@ public class DeptController {
     public List<Dept> getAll() {
         return deptService.getAllDepts();
     }
+
+    /*部门添加*/
+    @RequestMapping("/add")
+    public Boolean insert(@RequestBody Dept dept) {
+        return deptService.insert(dept);
+    }
 }

@@ -418,3 +418,31 @@ Vue.component('person-add-modal', {
         '<button class="uk-button uk-button-primary uk-align-right" @click="add">添加</button>' +
         '    </div>'
 })
+
+/*dept 添加 modal*/
+Vue.component('dept-add-modal',{
+    data:function(){
+        return {
+            name:''
+        }
+    },
+    methods:{
+        add:function () {
+            data = JSON.stringify({
+                "name":this.name
+            })
+            add(vm.dataType[vm.navIdInTb], data)
+        }
+    },
+    template: '<div class="uk-modal-dialog uk-modal-body">\n' +
+        '        <form class="uk-form-stacked">\n' +
+        '            <div class="uk-margin">\n' +
+        '                <label class="uk-form-label" for="form-stacked-text">部门名字</label>\n' +
+        '                <div class="uk-form-controls">\n' +
+        '                    <input v-model="name" class="uk-input" id="form-stacked-text" type="text" autofocus>\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '        </form>\n' +
+        '<button class="uk-button uk-button-primary uk-align-right" @click="add">添加</button>' +
+        '    </div>'
+})

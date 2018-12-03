@@ -37,7 +37,8 @@
     </div>
     <div class="uk-navbar-right">
         <button class="uk-button uk-button-default" style="margin-right: 20px;"
-        @click="showAddModal">添加</button>
+                @click="showAddModal">添加
+        </button>
     </div>
 </nav>
 
@@ -87,21 +88,25 @@
 
     <div id="salaryMo" uk-modal>
         <salary-modal :id="id"
-                     :name="name"
-                     :salary="salary"
+                      :name="name"
+                      :salary="salary"
         >
         </salary-modal>
     </div>
     <%--更新modal END--%>
 
 
-        <%--增加modal--%>
-        <div id="personAddMo" uk-modal>
-            <person-add-modal
-            :person_places="places">
-            </person-add-modal>
-        </div>
+    <%--增加modal--%>
+    <div id="personAddMo" uk-modal>
+        <person-add-modal
+                :person_places="places">
+        </person-add-modal>
+    </div>
 
+        <div id="deptAddMo" uk-modal>
+            <dept-add-modal>
+            </dept-add-modal>
+        </div>
 
 
     <%--删除提示modal--%>

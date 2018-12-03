@@ -40,16 +40,13 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public Boolean deleteById(Integer id) {
         /*工资表删除*/
-        if (salaryDao.deleteByDeptId(id)) {
-            /*人员删除*/
-            if (personDao.deleteByDeptId(id)) {
-                /*职位删除*/
-                if (placeDao.deleteByDeptId(id)) {
-                    return deptDao.deleteById(id);
-                }
-            }
-        }
-        return false;
+        salaryDao.deleteByDeptId(id);
+        /*人员删除*/
+        personDao.deleteByDeptId(id);
+        /*职位删除*/
+        placeDao.deleteByDeptId(id);
+        return deptDao.deleteById(id);
+
     }
 
     @Override
