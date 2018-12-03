@@ -91,6 +91,9 @@ Vue.component('person-modal', {
         },
         childOverTimeRate: function (val) {
             this.$emit('on-over-time-rate-change', val)
+        },
+        person_places:function (val) {
+            this.childPlaces = val
         }
     },
     methods: {
@@ -445,4 +448,56 @@ Vue.component('dept-add-modal',{
         '        </form>\n' +
         '<button class="uk-button uk-button-primary uk-align-right" @click="add">添加</button>' +
         '    </div>'
+})
+
+/*place 添加 modal*/
+Vue.component('place-add-modal', {
+    props:['deptlist'],
+    data:function(){
+        return {
+            placeName:'',
+            baseSalary:'',
+            deptSelect:0
+        }
+    },
+    methods:{
+        add:function () {
+            data = JSON.stringify({
+                "name":this.placeName,
+                "salary":this.baseSalary,
+                "deptId":this.deptSelect
+            })
+            add(vm.dataType[vm.navIdInTb], data)
+        }
+    },
+    template: '<div class="uk-modal-dialog uk-modal-body">\n' +
+        '    <form class="uk-form-stacked">\n' +
+        '\n' +
+        '    <div class="uk-margin">\n' +
+        '        <label class="uk-form-label" for="form-stacked-text">职位</label>\n' +
+        '        <div class="uk-form-controls">\n' +
+        '            <input v-model="placeName" class="uk-input" id="form-stacked-text" type="text" placeholder="">\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '\n' +
+        '     <div class="uk-margin">\n' +
+        '        <label class="uk-form-label" for="form-stacked-text">基本薪资</label>\n' +
+        '        <div class="uk-form-controls">\n' +
+        '            <input v-model="baseSalary" class="uk-input" id="form-stacked-text" type="text" placeholder="">\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '\n' +
+        '     <div class="uk-margin">\n' +
+        '        <label class="uk-form-label" for="select-dept">所属部门</label>\n' +
+        '        <div class="uk-form-controls">\n' +
+        '            <select class="uk-select" id="select-dept" v-model="deptSelect">\n' +
+        '                <option v-for="dept in deptlist" :value="dept.id">{{dept.name}}</option>\n' +
+
+        '            </select>\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '\n' +
+        '</form>\n' +
+        '<button class="uk-button uk-button-primary uk-align-right" @click="add">添加</button>\n' +
+        '</div>'
 })

@@ -331,6 +331,14 @@ var vm = new Vue({
                 getDataInfos('dept')
                 modal.depts = Depts
             }
+
+            /*如果切换到人员
+            * 重新获取place信息
+            * 刷新modal中places的数据*/
+            if (val === 0){
+                getDataInfos('place')
+                modal.places = Places
+            }
         },
         currentPage: function (val) {
             getData(val, this.dataType[this.navIdInTb], this.datas)
@@ -366,7 +374,8 @@ var modal = new Vue({
         },
         modalAddType:{
             0:'#personAddMo',
-            1:'#deptAddMo'
+            1:'#deptAddMo',
+            2:'#placeAddMo'
         }
     },
     methods: {

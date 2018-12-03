@@ -37,7 +37,8 @@
     </div>
     <div class="uk-navbar-right">
         <button class="uk-button uk-button-default" style="margin-right: 20px;"
-                @click="showAddModal">添加
+                @click="showAddModal"
+                :disabled="navId === 3">添加
         </button>
     </div>
 </nav>
@@ -103,10 +104,17 @@
         </person-add-modal>
     </div>
 
-        <div id="deptAddMo" uk-modal>
-            <dept-add-modal>
-            </dept-add-modal>
-        </div>
+    <div id="deptAddMo" uk-modal>
+        <dept-add-modal>
+        </dept-add-modal>
+    </div>
+
+    <div id="placeAddMo" uk-modal>
+        <place-add-modal
+        :deptlist="depts"
+        >
+        </place-add-modal>
+    </div>
 
 
     <%--删除提示modal--%>

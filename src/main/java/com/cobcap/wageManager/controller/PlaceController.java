@@ -53,4 +53,9 @@ public class PlaceController {
     public PlaceVo getPlaceById(@PathVariable Integer id) {
         return placeService.transFormData(placeService.getById(id));
     }
+
+    @RequestMapping("/add")
+    public Boolean insertPlace(@RequestBody Place place) {
+        return placeService.insert(place);
+    }
 }

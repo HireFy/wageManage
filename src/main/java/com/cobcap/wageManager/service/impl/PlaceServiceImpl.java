@@ -43,24 +43,24 @@ public class PlaceServiceImpl implements PlaceService {
 
     /**
      * 删除职位，相关人员删除，相关工资删除
+     *
      * @param id
      * @return
      */
     @Override
     public Boolean deleteById(Integer id) {
         /*工资表删除*/
-        if(salaryDao.deleteByPlaceId(id)){
-            /*人员删除*/
-            if(personDao.deleteByPlaceId(id)){
-                return placeDao.deleteById(id);
-            }
-        }
+        salaryDao.deleteByPlaceId(id);
+        /*人员删除*/
+        personDao.deleteByPlaceId(id);
 
-        return false;
+        return placeDao.deleteById(id);
+
     }
 
     /**
      * place中的底薪更新的时候，刷新所有人的工资
+     *
      * @param place
      * @return
      */
@@ -140,9 +140,9 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
 
-
     /**
      * 获得随机的职位id
+     *
      * @return
      */
     public Integer getRandomPlaceId() {
@@ -187,7 +187,6 @@ public class PlaceServiceImpl implements PlaceService {
         this.insert(place13);
         this.insert(place14);
         this.insert(place15);
-
 
 
     }
