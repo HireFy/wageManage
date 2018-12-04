@@ -33,9 +33,13 @@ public interface PlaceService {
 
     List<Place> getAllPlaces();
 
-    PlaceVo transFormData(Place place);
-
     Integer getRandomPlaceId();
 
+    PlaceVo transFormData(Place place);
+
+    List<PlaceVo> transFormData(List<Place> places);
+
     void generate();
+
+    List<Place> getPlaceBykw(String kw);
 }

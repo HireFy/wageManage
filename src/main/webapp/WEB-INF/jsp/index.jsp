@@ -22,7 +22,6 @@
     <title></title>
 </head>
 <body>
-
 <nav class="uk-navbar-container" uk-navbar id="navbar">
     <div class="uk-navbar-left">
         <ul class="uk-navbar-nav">
@@ -44,17 +43,16 @@
                     :disabled="navId === 3">添加
             </button>
         </div>
-        <div class="uk-grid-collapse" uk-grid>
-            <div>
-                <input class="uk-input" id="form-stacked-text" type="text" autofocus v-model="value">
+        <div class="uk-grid-collapse" uk-grid @keyup.enter="find">
+            <div class="uk-inline">
+                <input class="uk-input" id="form-stacked-text" type="text" autofocus v-model="value" :placeholder="placeHolder" :disabled="navId === 3">
             </div>
             <div>
-                <button class="uk-button uk-button-default" @click="find" :disabled="value === ''">搜索</button>
+                <button class="uk-button uk-button-default" @click="find" :disabled="value === '' || navId === 3">搜索</button>
             </div>
         </div>
     </div>
 </nav>
-
 
 <div id="mainModal" uk-modal>
     <%--更新modal--%>
@@ -181,7 +179,7 @@
             </table>
         </div>
     </div>
-    <div id="pagenation">
+    <div id="pagenation" v-show="showPagenation">
         <ul class="uk-pagination uk-flex-center" uk-margin style="margin: 20px">
             <li @click="goPrev" :class="{'uk-disabled': currentPage - 1 === 0}"><a href="#"><span
                     uk-pagination-previous></span></a></li>

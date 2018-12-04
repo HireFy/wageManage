@@ -36,5 +36,5 @@ public interface PersonDao {
 
     Boolean deleteByPlaceId(Integer id);
 
-    Person getPersonByName(String name);
+    List<Person> getPersonBykw(@Param("kw") String kw);
 }

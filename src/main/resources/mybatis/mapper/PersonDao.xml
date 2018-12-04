@@ -82,8 +82,8 @@
 
     <select id="getBaseSalaryById" resultType="BigDecimal">
         select pl_salary
-        from wageNew.dbo.person,
-             wageNew.dbo.place
+        from person,
+             place
         where p_id = #{id}
           and person.pl_id = place.pl_id
     </select>
@@ -95,7 +95,7 @@
 
     <select id="getNameById" resultType="String">
         select p_name
-        from dbo.person
+        from person
         where p_id = #{id}
     </select>
 
@@ -113,10 +113,19 @@
 
     <delete id="deleteByPlaceId">
         delete
-        from person where pl_id = #{id}
+        from person
+        where pl_id = #{id}
     </delete>
 
-    <select id="getPersonByName" resultMap="personMap">
-        select * from person where p_name = #{name}
+    <select id="getPersonBykw" resultMap="personMap">
+        select *
+        from person,
+             place,
+             dept
+        where (p_name like concat('%', #{kw}, '%')
+            or pl_name like concat('%', #{kw}, '%')
+            or d_name like concat('%', #{kw}, '%'))
+          and person.pl_id = place.pl_id
+          and pl_dept_id = d_id
     </select>
 </mapper>

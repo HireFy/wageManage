@@ -41,6 +41,11 @@ public class PlaceServiceImpl implements PlaceService {
         return placeDao.getById(id);
     }
 
+    @Override
+    public List<Place> getPlaceBykw(String kw) {
+        return placeDao.getPlaceBykw(kw);
+    }
+
     /**
      * 删除职位，相关人员删除，相关工资删除
      *

@@ -31,4 +31,6 @@ public interface PlaceDao {
     List<Place> getAllPlaces();
 
     Boolean deleteByDeptId(Integer deptId);
+
+    List<Place> getPlaceBykw(String kw);
 }

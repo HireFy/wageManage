@@ -87,4 +87,13 @@
         from place
         where pl_dept_id = #{id};
     </delete>
+
+    <select id="getPlaceBykw" resultMap="placeMap">
+        select *
+        from place,
+             dept
+        where (pl_name like concat('%', #{kw}, '%')
+            or d_name like concat('%', #{kw}, '%'))
+          and pl_dept_id = d_id
+    </select>
 </mapper>

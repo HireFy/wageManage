@@ -58,4 +58,10 @@
         select d_id from dept where d_name = #{name}
     </select>
 
+    <select id="getDeptBykw" resultMap="deptMap">
+        select *
+        from dept
+        where d_name like concat('%', #{kw}, '%')
+    </select>
+
 </mapper>

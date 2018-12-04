@@ -40,8 +40,11 @@ public interface PersonService {
 
     PersonVo transFormData(Person person);
 
+    List<PersonVo> transFormData(List<Person> personList);
+
     /*添加人员*/
     Boolean addUser(Person person);
 
-    Person getPersonByName(String name);
+    List<Person> getPersonBykw(String kw);
+
 }

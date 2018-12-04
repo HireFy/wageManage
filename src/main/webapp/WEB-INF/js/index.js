@@ -204,6 +204,7 @@ var pagenation = new Vue({
     data: {
         pages: pageCount,
         currentPage: 1,
+        showPagenation:true
     },
     methods: {
         focusCurrent: function (event) {
@@ -230,12 +231,26 @@ var navbar = new Vue({
     el: '#navbar',
     data: {
         navId: 0,
-        value:''
+        value:'',
+        placeHolderData:{
+            0:'姓名/职位/部门',
+            1:'部门',
+            2:'职位/部门'
+        },
+        placeHolder:'姓名/职位/部门'
     },
     watch: {
         navId: function (val, oldVal) {
             console.log("navId in navbar: " + oldVal + " ===> " + val)
             vm.navIdInTb = val
+            this.placeHolder = this.placeHolderData[val]
+        },
+        value:function (val) {
+            if(val === '') {
+                pagenation.showPagenation = true
+                getData(1, vm.dataType[this.navId], datalist)
+                vm.datas = datalist
+            }
         }
     },
     methods:{
@@ -243,21 +258,13 @@ var navbar = new Vue({
             UIkit.modal(modal.modalAddType[this.navId]).show()
         },
         find:function () {
-            UIkit.modal(modal.modalType[this.navId]).show()
+            pagenation.showPagenation = false
             $.ajax({
                 type:'post',
-                url:'/search/name/'+this.value,
+                url:'/search/'+vm.dataType[this.navId]+'/'+this.value,
                 dataType:'json',
                 success:function (data) {
-                    modal.id = data.id
-                    modal.name = data.name
-                    modal.pass = data.pass
-                    modal.onDutyRate = data.onDutyRateStr.substring(0, data.onDutyRateStr.length - 1)
-                    modal.overTimeRate = data.overTimeRateStr.substring(0, data.overTimeRateStr.length - 1)
-                    modal.salary = data.salary
-                    modal.placeSelectValue = data.placeId
-                    modal.deleteInfo = '确认删除吗？'
-
+                    vm.datas = data
                 }
             })
         }
@@ -336,6 +343,7 @@ var vm = new Vue({
     watch: {
         /*当nav改变时，标签页也改变，应重设currentpage为1*/
         navIdInTb: function (val, oldVal) {
+            pagenation.showPagenation = true
             this.currentPage = 1
             datatypeComment = this.dataType[this.navIdInTb]
             getData(this.currentPage, datatypeComment, this.datas)

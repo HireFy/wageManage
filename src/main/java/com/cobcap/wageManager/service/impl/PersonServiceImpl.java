@@ -211,8 +211,8 @@ public class PersonServiceImpl implements PersonService {
 
 
     @Override
-    public Person getPersonByName(String name) {
-        return personDao.getPersonByName(name);
+    public List<Person> getPersonBykw(String kw) {
+        return personDao.getPersonBykw(kw);
     }
 
     /**

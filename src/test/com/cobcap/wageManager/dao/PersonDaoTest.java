@@ -98,4 +98,9 @@ public class PersonDaoTest {
     public void deleteByDeptId() {
         System.out.println(personDao.deleteByDeptId(1016));
     }
+
+    @Test
+    public void getPersonBykw() {
+        System.out.println(personDao.getPersonBykw("技术"));
+    }
 }

@@ -47,4 +47,9 @@ public class DeptDaoTest {
     public void getDepts() {
         System.out.println(deptDao.getDepts(0, 5));
     }
+
+    @Test
+    public void getDeptByKw() {
+        System.out.println(deptDao.getDeptBykw("技术"));
+    }
 }

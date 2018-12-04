@@ -22,4 +22,6 @@ public interface DeptService {
     List<Dept> getAllDepts();
 
     void generateDept();
+
+    List<Dept> getDeptBykw(String kw);
 }

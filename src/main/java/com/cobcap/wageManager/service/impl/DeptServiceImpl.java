@@ -84,6 +84,11 @@ public class DeptServiceImpl implements DeptService {
         return deptDao.getDepts((pageNum - 1) * pageSize, pageSize);
     }
 
+    @Override
+    public List<Dept> getDeptBykw(String kw) {
+        return deptDao.getDeptBykw(kw);
+    }
+
     /*生成部门信息*/
     public void generateDept() {
         Dept dept = new Dept("技术部门");
