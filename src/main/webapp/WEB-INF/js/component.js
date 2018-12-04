@@ -347,6 +347,17 @@ Vue.component('person-add-modal', {
             }
         }
     },
+    computed:{
+        isEverythingOK:function () {
+            return this.name != ''
+                && this.pass != ''
+                && this.born != ''
+                && this.sex != ''
+                && this.enterTime != ''
+                && this.age != 0
+                && this.childSelectVal != 0
+        }
+    },
     methods: {
         /*点击添加按钮触发函数add()*/
         add: function () {
@@ -365,6 +376,9 @@ Vue.component('person-add-modal', {
         checkDateComp:function (date) {
             console.log("checkDateComp: " + checkDate(date))
             return checkDate(date)
+        },
+        info:function () {
+            console.log("isEverythingOK: " + this.isEverythingOK)
         }
     },
     template: '<div class="uk-modal-dialog uk-modal-body">\n' +
@@ -418,7 +432,7 @@ Vue.component('person-add-modal', {
         '                </div>\n' +
         '            </div>\n' +
         '        </form>\n' +
-        '<button class="uk-button uk-button-primary uk-align-right" @click="add">添加</button>' +
+        '<button class="uk-button uk-button-primary uk-align-right" @click="add" :disabled="!isEverythingOK" @mouseover="info">添加</button>' +
         '    </div>'
 })
 
@@ -427,6 +441,11 @@ Vue.component('dept-add-modal',{
     data:function(){
         return {
             name:''
+        }
+    },
+    computed:{
+        isEverythingOK:function () {
+            return this.name != ''
         }
     },
     methods:{
@@ -446,7 +465,7 @@ Vue.component('dept-add-modal',{
         '                </div>\n' +
         '            </div>\n' +
         '        </form>\n' +
-        '<button class="uk-button uk-button-primary uk-align-right" @click="add">添加</button>' +
+        '<button class="uk-button uk-button-primary uk-align-right" @click="add" :disabled="!isEverythingOK">添加</button>' +
         '    </div>'
 })
 
@@ -457,8 +476,28 @@ Vue.component('place-add-modal', {
         return {
             placeName:'',
             baseSalary:'',
-            deptSelect:0
+            deptSelect:0,
+            existInvalidChar:false
         }
+    },
+    watch:{
+        baseSalary: function (val) {
+            /*如果不全是数字，existInvalidChar返回true*/
+            for (var i = 0; i < val.length; i++) {
+                if (isNaN(parseInt(val.charAt(i)))) {
+                    this.existInvalidChar = true
+                    return
+                }
+            }
+            this.existInvalidChar = false
+        }
+    },
+    computed:{
+      isEverythingOK:function () {
+          return this.placeName != ''
+              && this.baseSalary != ''
+              && this.deptSelect != 0
+      }
     },
     methods:{
         add:function () {
@@ -483,7 +522,7 @@ Vue.component('place-add-modal', {
         '     <div class="uk-margin">\n' +
         '        <label class="uk-form-label" for="form-stacked-text">基本薪资</label>\n' +
         '        <div class="uk-form-controls">\n' +
-        '            <input v-model="baseSalary" class="uk-input" id="form-stacked-text" type="text" placeholder="">\n' +
+        '            <input v-model="baseSalary" class="uk-input" :class="{\'uk-form-danger\' : existInvalidChar}" id="form-stacked-text" type="text" placeholder="">\n' +
         '        </div>\n' +
         '    </div>\n' +
         '\n' +
@@ -498,6 +537,6 @@ Vue.component('place-add-modal', {
         '    </div>\n' +
         '\n' +
         '</form>\n' +
-        '<button class="uk-button uk-button-primary uk-align-right" @click="add">添加</button>\n' +
+        '<button class="uk-button uk-button-primary uk-align-right" @click="add" :disabled="!isEverythingOK || existInvalidChar">添加</button>\n' +
         '</div>'
 })
