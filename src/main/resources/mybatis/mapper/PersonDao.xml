@@ -22,7 +22,7 @@
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into wageNew.dbo.person (p_name, p_sex, p_age, p_time, p_born, p_pass, pl_id, p_onduty, p_overtime)
+        insert into person (p_name, p_sex, p_age, p_time, p_born, p_pass, pl_id, p_onduty, p_overtime)
         values (#{name}, #{sex}, #{age}, #{enterTime}, #{born}, #{pass}, #{placeId}, #{onDutyRate}, #{overTimeRate})
     </insert>
 

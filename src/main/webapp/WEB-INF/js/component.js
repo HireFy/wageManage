@@ -345,6 +345,9 @@ Vue.component('person-add-modal', {
 
                 this.age = 2018 - val.substring(0, 4)
             }
+        },
+        person_places:function (val) {
+            this.childPlaces = val
         }
     },
     computed:{

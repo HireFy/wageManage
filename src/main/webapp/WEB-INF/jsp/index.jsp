@@ -22,7 +22,7 @@
     <title></title>
 </head>
 <body>
-<nav class="uk-navbar-container" uk-navbar id="navbar">
+<nav class="uk-navbar-container" uk-navbar id="navbar" uk-sticky>
     <div class="uk-navbar-left">
         <ul class="uk-navbar-nav">
             <li @click="navId = 0" :class="{'uk-active':navId === 0}">

@@ -41,7 +41,7 @@
         from dbo.place
         where pl_id not in (
             select top ${offset} pl_id
-            from dbo.dept
+            from dbo.place
         )
     </select>
 
