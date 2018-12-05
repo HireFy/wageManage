@@ -54,6 +54,10 @@
     </div>
 </nav>
 
+<div class="uk-flex uk-flex-right" style="margin-right: 40px">
+    <a href="/signout" class="uk-icon-button" uk-icon="icon: sign-out; ratio: 1.5"></a>
+</div>
+
 <div id="mainModal" uk-modal>
     <%--更新modal--%>
     <div id="personMo" uk-modal>

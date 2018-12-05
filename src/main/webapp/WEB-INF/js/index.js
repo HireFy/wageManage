@@ -111,7 +111,6 @@ function update(dataType, data) {
                 '    <a class="uk-alert-close" uk-close></a>\n' +
                 '    <p>更新操作已生效</p>\n' +
                 '</div>');
-            console.log("update操作 " + data)
         }
     })
 }
@@ -334,7 +333,6 @@ var vm = new Vue({
                 modal.name = dataArr[1]
                 modal.salary = dataArr[2]
             }
-            console.log('modal.placeSelectValue: ' + modal.placeSelectValue);
         },
         refreshCurrentPage: function () {
             getData(this.currentPage, this.dataType[this.navIdInTb], this.datas)
@@ -371,7 +369,6 @@ var vm = new Vue({
         },
         currentPage: function (val) {
             getData(val, this.dataType[this.navIdInTb], this.datas)
-            console.log("currentPage改变获取的值： " + vm.datas)
         }
     }
 })

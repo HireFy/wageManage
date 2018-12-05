@@ -122,9 +122,9 @@
         from person,
              place,
              dept
-        where (p_name like concat('%', #{kw}, '%')
-            or pl_name like concat('%', #{kw}, '%')
-            or d_name like concat('%', #{kw}, '%'))
+        where (p_name like '%' + #{kw} + '%'
+            or pl_name like '%' + #{kw} + '%'
+            or d_name like '%' + #{kw} + '%')
           and person.pl_id = place.pl_id
           and pl_dept_id = d_id
     </select>

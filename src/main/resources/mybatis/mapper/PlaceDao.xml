@@ -92,8 +92,8 @@
         select *
         from place,
              dept
-        where (pl_name like concat('%', #{kw}, '%')
-            or d_name like concat('%', #{kw}, '%'))
+        where (pl_name like '%' + #{kw} + '%'
+            or d_name like '%' + #{kw} + '%')
           and pl_dept_id = d_id
     </select>
 </mapper>

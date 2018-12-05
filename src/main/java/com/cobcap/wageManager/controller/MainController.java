@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -28,11 +29,13 @@ public class MainController {
 
     private static int pageSize = 10;
 
+    /*网站主页*/
     @RequestMapping("/")
     public String index() {
         return "login";
     }
 
+    /*用户登录*/
     @RequestMapping("/person/{number}")
     public ModelAndView login(@PathVariable String number, HttpSession session) {
 
@@ -65,21 +68,34 @@ public class MainController {
 
     }
 
+
+    /*查询人员的关键词*/
     @RequestMapping("/search/person/{kw}")
     @ResponseBody
     public List<PersonVo> searchByPersonKw(@PathVariable String kw) {
         return personService.transFormData(personService.getPersonBykw(kw));
     }
 
+    /*查询部门的关键词*/
     @RequestMapping("/search/dept/{kw}")
     @ResponseBody
     public List<Dept> searchByDeptKw(@PathVariable String kw) {
         return deptService.getDeptBykw(kw);
     }
 
+    /*查询职位的关键词*/
     @RequestMapping("/search/place/{kw}")
     @ResponseBody
     public List<PlaceVo> searchByPlaceKw(@PathVariable String kw) {
         return placeService.transFormData(placeService.getPlaceBykw(kw));
     }
+
+    /*退出登录*/
+    @RequestMapping("/signout")
+    public String backToLogin(HttpSession session) {
+        /*清除session*/
+        session.invalidate();
+        return "redirect:/";
+    }
+
 }

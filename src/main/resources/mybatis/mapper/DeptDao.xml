@@ -61,7 +61,7 @@
     <select id="getDeptBykw" resultMap="deptMap">
         select *
         from dept
-        where d_name like concat('%', #{kw}, '%')
+        where d_name like '%' + #{kw} + '%'
     </select>
 
 </mapper>

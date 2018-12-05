@@ -380,9 +380,6 @@ Vue.component('person-add-modal', {
             console.log("checkDateComp: " + checkDate(date))
             return checkDate(date)
         },
-        info:function () {
-            console.log("isEverythingOK: " + this.isEverythingOK)
-        }
     },
     template: '<div class="uk-modal-dialog uk-modal-body">\n' +
         '        <form class="uk-form-stacked">\n' +
@@ -435,7 +432,7 @@ Vue.component('person-add-modal', {
         '                </div>\n' +
         '            </div>\n' +
         '        </form>\n' +
-        '<button class="uk-button uk-button-primary uk-align-right" @click="add" :disabled="!isEverythingOK" @mouseover="info">添加</button>' +
+        '<button class="uk-button uk-button-primary uk-align-right" @click="add" :disabled="!isEverythingOK">添加</button>' +
         '    </div>'
 })
 
