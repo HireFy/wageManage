@@ -13,7 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -96,6 +100,20 @@ public class MainController {
         /*清除session*/
         session.invalidate();
         return "redirect:/";
+    }
+
+
+    /*获取当前时间*/
+    @RequestMapping("/current")
+    @ResponseBody
+    public Map getCurrent() {
+        Map<String, Object> map = new HashMap<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+
+        map.put("current", sdf.format(date));
+
+        return map;
     }
 
 }

@@ -135,7 +135,6 @@ public class CommonUtils {
 
     /**
      * 生成指定long类型区间内一个long型数
-     *
      * @param begin
      * @param end
      * @return long
@@ -205,5 +204,17 @@ public class CommonUtils {
                         - (baseSalary.floatValue() * onDutyRate));
 
         return salary;
+    }
+
+
+    /**
+     * 获得TimeStamp格式的year
+     * @param timestamp
+     * @return
+     */
+    public static int getYear(Timestamp timestamp) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(timestamp);
+        return calendar.get(Calendar.YEAR);
     }
 }

@@ -18,14 +18,12 @@ public class Person {
     private String pass;
     private Timestamp enterTime;
     private Integer placeId;
-    private Float onDutyRate;
-    private Float overTimeRate;
 
     public Person() {
 
     }
 
-    public Person(Integer id, String name, String sex, Integer age, Timestamp born, String pass, Timestamp enterTime, Integer placeId, Float onDutyRate, Float overTimeRate) {
+    public Person(Integer id, String name, String sex, Integer age, Timestamp born, String pass, Timestamp enterTime, Integer placeId) {
         this.id = id;
         this.name = name;
         this.sex = sex;
@@ -34,11 +32,9 @@ public class Person {
         this.pass = pass;
         this.enterTime = enterTime;
         this.placeId = placeId;
-        this.onDutyRate = onDutyRate;
-        this.overTimeRate = overTimeRate;
     }
 
-    public Person(String name, String sex, Integer age, Timestamp born, String pass, Timestamp enterTime, Integer placeId, Float onDutyRate, Float overTimeRate) {
+    public Person(String name, String sex, Integer age, Timestamp born, String pass, Timestamp enterTime, Integer placeId) {
         this.name = name;
         this.sex = sex;
         this.age = age;
@@ -46,7 +42,5 @@ public class Person {
         this.pass = pass;
         this.enterTime = enterTime;
         this.placeId = placeId;
-        this.onDutyRate = onDutyRate;
-        this.overTimeRate = overTimeRate;
     }
 }

@@ -8,6 +8,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -21,19 +23,19 @@ public class SalaryDaoTest {
 
     @Test
     public void insert() {
-        Salary salary = new Salary(2, BigDecimal.valueOf(10000));
+        Salary salary = new Salary(5, BigDecimal.valueOf(10000), BigDecimal.valueOf(100), BigDecimal.valueOf(300), BigDecimal.valueOf(3000), new Timestamp(System.currentTimeMillis()));
 
         System.out.println(salaryDao.insert(salary));
     }
 
     @Test
     public void getById() {
-        System.out.println(salaryDao.getById(1));
+        System.out.println(salaryDao.getById(3));
     }
 
     @Test
     public void update() {
-        System.out.println(salaryDao.updateById(new Salary(1, null, BigDecimal.valueOf(10))));
+        System.out.println(salaryDao.updateById(new Salary(3, null, BigDecimal.valueOf(10), null, null, null, null)));
     }
 
     @Test
@@ -47,12 +49,13 @@ public class SalaryDaoTest {
     }
 
     @Test
-    public void getSalaryByPersonId() {
-        System.out.println(salaryDao.getSalaryByPersonId(2));
+    public void getPersonBySalaryId() {
+        System.out.println(salaryDao.getPersonBySalaryId(3));
     }
 
     @Test
-    public void getPersonBySalaryId() {
-        System.out.println(salaryDao.getPersonBySalaryId(1));
+    public void getSalaryByPersonId() {
+        List<Salary> salaries = salaryDao.getSalaryByPersonId(1, 12, 1106);
+        System.out.println(salaries);
     }
 }

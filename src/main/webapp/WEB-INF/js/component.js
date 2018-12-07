@@ -9,9 +9,6 @@ Vue.component('person-head', {
         '            <th>出生日期</th>\n' +
         '            <th>入职时间</th>\n' +
         '            <th>职位</th>\n' +
-        '            <th>缺勤</th>\n' +
-        '            <th>加班</th>\n' +
-        '            <th>薪资</th>\n' +
         '        </tr>\n' +
         '    </thead>\n'
 })
@@ -40,8 +37,12 @@ Vue.component('salary-head', {
     template: ' <thead>\n' +
         '        <tr>\n' +
         '            <th>工资编号</th>\n' +
-        '            <th>姓名</th>\n' +
-        '            <th>薪水</th>\n' +
+        // '            <th>姓名</th>\n' +
+        '            <th>应发薪水</th>\n' +
+        '            <th>加班补贴</th>\n' +
+        '            <th>缺勤扣除</th>\n' +
+        '            <th>实发薪水</th>\n' +
+        '            <th>记录日期</th>\n' +
         '        </tr>\n' +
         '    </thead>'
 })
@@ -49,15 +50,22 @@ Vue.component('salary-head', {
 
 /*person的模态(modal)框*/
 Vue.component('person-modal', {
-    props: ['id', 'name', 'salary', 'selectvalue', 'datatype', 'person_places', 'pass', 'on_duty_rate', 'over_time_rate'],
+    props: ['id', 'name', 'salary', 'selectvalue', 'datatype', 'person_places', 'pass', 'born', 'age'],
     data: function () {
         return {
             childSelectVal: this.selectvalue,
             childName: this.name,
             childPlaces: this.person_places,
             childPass: this.pass,
-            childOnDutyRate: this.on_duty_rate,
-            childOverTimeRate: this.over_time_rate
+            childBorn:this.born,
+            childAge:this.age
+        }
+    },
+    computed:{
+        isEverythingOK:function () {
+            return this.childName != ''
+                && this.childPass != ''
+                && this.childBorn != ''
         }
     },
     watch: {
@@ -80,20 +88,21 @@ Vue.component('person-modal', {
         childPass: function (val) {
             this.$emit('on-pass-change', val)
         },
-        on_duty_rate: function (val) {
-            this.childOnDutyRate = val
-        },
-        childOnDutyRate: function (val) {
-            this.$emit('on-duty-rate-change', val)
-        },
-        over_time_rate: function (val) {
-            this.childOverTimeRate = val
-        },
-        childOverTimeRate: function (val) {
-            this.$emit('on-over-time-rate-change', val)
-        },
         person_places:function (val) {
             this.childPlaces = val
+        },
+        born:function (val) {
+            this.childBorn = val
+        },
+        childBorn:function (val) {
+            this.childAge = 2018 - val.substring(0, 4)
+            this.$emit('on-born-change', val)
+        },
+        age:function (val) {
+            this.childAge = val
+        },
+        childAge:function (val) {
+            this.$emit('on-age-change', val)
         }
     },
     methods: {
@@ -103,15 +112,19 @@ Vue.component('person-modal', {
                 name: this.name,
                 placeId: this.childSelectVal,
                 pass: this.pass,
-                onDutyRate: this.childOnDutyRate / 100,
-                overTimeRate: this.childOverTimeRate / 100,
+                born:this.childBorn,
+                age:this.childAge
             })
 
             update(vm.dataType[vm.navIdInTb], data)
         },
         deleteData: function () {
             deleteAlert();
-        }
+        },
+        checkDateComp:function (date) {
+            console.log("checkDateComp: " + checkDate(date))
+            return checkDate(date)
+        },
     },
     template: '<div class="uk-modal-dialog uk-modal-body">\n' +
         '        <h2 class="uk-modal-title">{{id}}</h2>\n' +
@@ -129,17 +142,15 @@ Vue.component('person-modal', {
         '                </div>\n' +
         '            </div>\n' +
         '            <div class="uk-margin">\n' +
-        '                <label class="uk-form-label" for="form-on-duty-text">缺勤率</label>\n' +
-        '                <div class="uk-form-controls uk-inline" style="width: 100%">' +
-        '                    <input v-model="childOnDutyRate" :class="{\'uk-form-danger\': childOnDutyRate > 10}" class="uk-input" id="form-on-duty-text" type="text" uk-tooltip="title: 不超过10%; pos: top-right;">' +
-        '                    <span class="uk-form-icon uk-form-icon-flip">%</span>'+
+        '                <label class="uk-form-label" for="form-age-text">年龄</label>\n' +
+        '                <div class="uk-form-controls">\n' +
+        '                    <input v-model="childAge" class="uk-input" id="form-age-text" type="text" disabled="disabled">\n' +
         '                </div>\n' +
         '            </div>\n' +
         '            <div class="uk-margin">\n' +
-        '                <label class="uk-form-label" for="form-over-time-text">加班率</label>\n' +
-        '                <div class="uk-form-controls uk-inline" style="width: 100%">\n' +
-        '                    <input v-model="childOverTimeRate" :class="{\'uk-form-danger\': childOverTimeRate > 100}" class="uk-input" id="form-over-time-text" type="text">\n' +
-        '                    <span class="uk-form-icon uk-form-icon-flip">%</span>'+
+        '                <label class="uk-form-label" for="form-born-text">出生日期</label>\n' +
+        '                <div class="uk-form-controls">\n' +
+        '                    <input v-model="childBorn" class="uk-input" :class="{\'uk-form-danger\': !checkDateComp(childBorn)}" id="form-born-text" type="text" uk-tooltip="title: xxxx-xx-xx; pos: top-right">\n' +
         '                </div>\n' +
         '            </div>\n' +
         '            <div class="uk-margin">\n' +
@@ -150,14 +161,8 @@ Vue.component('person-modal', {
         '</select>' +
         '                </div>\n' +
         '            </div>\n' +
-        '            <div class="uk-margin">\n' +
-        '                <label class="uk-form-label" for="form-stacked-text-bonus">薪资</label>\n' +
-        '                <div class="uk-form-controls">\n' +
-        '                    <input class="uk-input" disabled="disabled" id="form-stacked-text-bonus" type="text" :placeholder="salary">\n' +
-        '                </div>\n' +
-        '            </div>\n' +
         '        </form>\n' + '<button class="uk-button uk-button-danger" @click="deleteData">删除</button>' +
-        '<button class="uk-button uk-button-primary uk-align-right" @click="update" :disabled="(childOnDutyRate > 10) || (childOverTimeRate > 100)">修改</button>' +
+        '<button class="uk-button uk-button-primary uk-align-right" @click="update" :disabled="!isEverythingOK">修改</button>' +
         '    </div>'
 })
 
@@ -311,7 +316,7 @@ Vue.component('salary-modal', {
 
 /*person 添加 modal*/
 Vue.component('person-add-modal', {
-    props: ['person_places'],
+    props: ['person_places', 'currentdate'],
     data: function () {
         return {
             name: '',
@@ -319,7 +324,7 @@ Vue.component('person-add-modal', {
             salary: '',
             born:'',
             sex:'',
-            enterTime:'',
+            enterTime:this.currentdate,
             age:0,
             childPlaces: this.person_places,
             childSelectVal: 0
@@ -348,6 +353,9 @@ Vue.component('person-add-modal', {
         },
         person_places:function (val) {
             this.childPlaces = val
+        },
+        currentdate:function (val) {
+            this.enterTime = val
         }
     },
     computed:{
@@ -408,7 +416,7 @@ Vue.component('person-add-modal', {
         '            <div class="uk-margin">\n' +
         '                <label class="uk-form-label" for="form-enter-text">入职时间</label>\n' +
         '                <div class="uk-form-controls">\n' +
-        '                    <input v-model="enterTime" class="uk-input" :class="{\'uk-form-danger\': !checkDateComp(enterTime)}" id="form-enter-text" type="text" uk-tooltip="title: xxxx-xx-xx; pos: top-right">\n' +
+        '                    <input v-model="enterTime" class="uk-input" id="form-enter-text" disabled="disabled" type="text" uk-tooltip="title: xxxx-xx-xx; pos: top-right">\n' +
         '                </div>\n' +
         '            </div>\n' +
         '            <div class="uk-margin">\n' +

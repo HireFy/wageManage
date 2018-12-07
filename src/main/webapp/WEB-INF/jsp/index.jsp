@@ -40,15 +40,18 @@
         <div>
             <button class="uk-button uk-button-default" style="margin-right: 20px;"
                     @click="showAddModal"
-                    :disabled="navId === 3">添加
+            >添加
             </button>
         </div>
         <div class="uk-grid-collapse" uk-grid @keyup.enter="find">
             <div class="uk-inline">
-                <input class="uk-input" id="form-stacked-text" type="text" autofocus v-model="value" :placeholder="placeHolder" :disabled="navId === 3">
+                <input class="uk-input" id="form-stacked-text" type="text" autofocus v-model="value"
+                       :placeholder="placeHolder">
             </div>
             <div>
-                <button class="uk-button uk-button-default" @click="find" :disabled="value === '' || navId === 3">搜索</button>
+                <button class="uk-button uk-button-default" @click="find" :disabled="value === ''"
+                        autofocus="autofocus">搜索
+                </button>
             </div>
         </div>
     </div>
@@ -63,18 +66,17 @@
     <div id="personMo" uk-modal>
         <person-modal :id="id"
                       :name="name"
-                      :salary="salary"
                       :pass="pass"
+                      :born="born"
+                      :age="age"
                       :datatype="dataType"
                       :person_places="places"
-                      :on_duty_rate="onDutyRate"
-                      :over_time_rate="overTimeRate"
                       :selectvalue="placeSelectValue"
                       @on-select-value-change="onSelectValueChange"
-                      @on-duty-rate-change="onDutyRateChange"
-                      @on-over-time-rate-change="onOverTimeRateChange"
                       @on-name-change="onNameChange"
                       @on-pass-change="onPassChange"
+                      @on-born-change="onBornChange"
+                      @on-age-change="onAgeChange"
         ></person-modal>
     </div>
 
@@ -113,6 +115,7 @@
     <%--增加modal--%>
     <div id="personAddMo" uk-modal>
         <person-add-modal
+                :currentdate="currentDate"
                 :person_places="places">
         </person-add-modal>
     </div>
@@ -143,44 +146,52 @@
 
 <div id="main">
     <div class="uk-flex uk-flex-center">
-        <div id="my-table" class="uk-card uk-card-default uk-card-body"
+        <div id="my-table"
+             v-show="showSalary"
              :class="{'uk-width-1-2@m': navIdInTb != 0}">
-            <table class="uk-table uk-table-hover uk-table-divider">
-                <thead is="person-head" v-if="navIdInTb === 0"></thead>
-                <thead is="dept-head" v-if="navIdInTb === 1"></thead>
-                <thead is="place-head" v-if="navIdInTb === 2"></thead>
-                <thead is="salary-head" v-if="navIdInTb === 3"></thead>
-                <tbody>
-                <tr v-for="data in datas" v-if="navIdInTb === 0" @click="showmodal">
-                    <td>{{data.id}}</td>
-                    <td>{{data.name}}</td>
-                    <td>{{data.sex}}</td>
-                    <td>{{data.age}}</td>
-                    <td>{{data.pass}}</td>
-                    <td>{{data.bornTimeStr}}</td>
-                    <td>{{data.enterTimeStr}}</td>
-                    <td>{{data.placeName}}</td>
-                    <td>{{data.onDutyRateStr}}</td>
-                    <td>{{data.overTimeRateStr}}</td>
-                    <td>￥{{data.salary}}</td>
-                </tr>
-                <tr v-for="data in datas" v-if="navIdInTb === 1" @click="showmodal">
-                    <td>{{data.id}}</td>
-                    <td>{{data.name}}</td>
-                </tr>
-                <tr v-for="data in datas" v-if="navIdInTb === 2" @click="showmodal">
-                    <td>{{data.id}}</td>
-                    <td>{{data.name}}</td>
-                    <td>{{data.salary}}</td>
-                    <td>{{data.deptName}}</td>
-                </tr>
-                <tr v-for="data in datas" v-if="navIdInTb === 3" @click="showmodal">
-                    <td>{{data.id}}</td>
-                    <td>{{data.personName}}</td>
-                    <td>￥{{data.salary}}</td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="uk-card uk-card-default uk-card-body" v-show="showSalaryHead">
+                <div class="uk-text-left">人员编号:<span class="uk-text-large">{{personNum}}</span></div>
+                <div class="uk-text-center"><span class="uk-text-large">{{personName}}</span></div>
+            </div>
+            <div class="uk-card uk-card-default uk-card-body">
+                <table class="uk-table uk-table-hover uk-table-divider">
+                    <thead is="person-head" v-if="navIdInTb === 0"></thead>
+                    <thead is="dept-head" v-if="navIdInTb === 1"></thead>
+                    <thead is="place-head" v-if="navIdInTb === 2"></thead>
+                    <thead is="salary-head" v-if="navIdInTb === 3"></thead>
+                    <tbody>
+                    <tr v-for="data in datas" v-if="navIdInTb === 0" @click="showmodal">
+                        <td>{{data.id}}</td>
+                        <td>{{data.name}}</td>
+                        <td>{{data.sex}}</td>
+                        <td>{{data.age}}</td>
+                        <td>{{data.pass}}</td>
+                        <td>{{data.bornTimeStr}}</td>
+                        <td>{{data.enterTimeStr}}</td>
+                        <td>{{data.placeName}}</td>
+                    </tr>
+                    <tr v-for="data in datas" v-if="navIdInTb === 1" @click="showmodal">
+                        <td>{{data.id}}</td>
+                        <td>{{data.name}}</td>
+                    </tr>
+                    <tr v-for="data in datas" v-if="navIdInTb === 2" @click="showmodal">
+                        <td>{{data.id}}</td>
+                        <td>{{data.name}}</td>
+                        <td>{{data.salary}}</td>
+                        <td>{{data.deptName}}</td>
+                    </tr>
+                    <tr v-for="data in datas" v-if="navIdInTb === 3" @click="showmodal">
+                        <td>{{data.id}}</td>
+                        <%--<td>{{data.personName}}</td>--%>
+                        <td>{{data.baseSalary}}</td>
+                        <td>{{data.overTimeSalary}}</td>
+                        <td>{{data.cutSalary}}</td>
+                        <td>{{data.finalSalary}}</td>
+                        <td>{{data.recordDateStr}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <div id="pagenation" v-show="showPagenation">

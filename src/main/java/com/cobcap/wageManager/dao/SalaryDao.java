@@ -26,8 +26,6 @@ public interface SalaryDao {
 
     int getTotalCount();
 
-    BigDecimal getSalaryByPersonId(Integer id);
-
     Person getPersonBySalaryId(Integer id);
 
     Boolean updateSalaryByPersonId(@Param("personId")Integer id, @Param("salary")BigDecimal salary);
@@ -35,4 +33,10 @@ public interface SalaryDao {
     Boolean deleteByPersonId(Integer id);
 
     Integer getSalaryIdByPersonId(Integer personId);
+
+    /*根据用户Id查找其所有工资信息*/
+    List<Salary> getSalaryByPersonId(@Param("offset") int offset, @Param("size") int size, @Param("personId") Integer personId);
+
+    /*获得指定id用户的工资记录的条数*/
+    int getSalaryCountByPersonId(Integer personId);
 }

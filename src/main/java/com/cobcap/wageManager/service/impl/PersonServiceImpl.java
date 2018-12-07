@@ -32,13 +32,13 @@ public class PersonServiceImpl implements PersonService {
     private SalaryService salaryService;
 
     private static int dataSize = 100;
-    /*出生时间区间*/
+    /*生成出生时间区间*/
     private static String beginDateBorn = "1980-01-01";
     private static String endDateBorn = "1990-12-31";
 
-    /*入职时间区间*/
+    /*生成入职时间区间*/
     private static String beginDataEnter = "2015-01-01";
-    private static String endDateEnter = "2018-12-31";
+    private static String endDateEnter = "2015-12-31";
 
     @Override
     public Person getById(Integer id) {
@@ -62,23 +62,13 @@ public class PersonServiceImpl implements PersonService {
     }
 
     /**
-     * 插入person的时候，设置出勤率加班率为空，设置薪资为职位底薪
+     * 新增person
      * @param person
      * @return
      */
     @Override
     public Boolean addUser(Person person) {
-        if (person.getOnDutyRate() == null) {
-            person.setOnDutyRate((float) 0);
-        }
-        if (person.getOverTimeRate() == null) {
-            person.setOverTimeRate((float) 0);
-        }
-        if (personDao.insert(person)) {
-            return salaryService.insert(new Salary(person.getId(), placeService.getSalaryByPlaceId(person.getPlaceId())));
-        }
-
-        return false;
+        return this.insert(person);
     }
 
     @Override
@@ -126,13 +116,9 @@ public class PersonServiceImpl implements PersonService {
             Timestamp enterTime = CommonUtils.getRandomDate(beginDataEnter, endDateEnter);
             /*获得职位*/
             int placeId = placeService.getRandomPlaceId();
-            /*获得出(缺)勤率*/
-            Float onDutyRate = CommonUtils.getRandomOnDutyRate();
-            /*获得加班率*/
-            Float overTimeRate = CommonUtils.getRandomOverTimeRate();
 
             person = new Person((String)nameAndSex.get("name"), (String)nameAndSex.get("sex"),
-                    age, born, pass, enterTime, placeId, onDutyRate, overTimeRate);
+                    age, born, pass, enterTime, placeId);
 
             this.insert(person);
         }
@@ -173,16 +159,16 @@ public class PersonServiceImpl implements PersonService {
         return personDao.getPersonIdPageNation((pageNum - 1) * pageSize, pageSize);
     }
 
-    /*更新person，同时根据职位的改变重新计算薪资*/
+    /*更新person,相应薪资会在新的月底刷新*/
     @Override
     public Boolean update(Person person) {
-        BigDecimal baseSalary = placeService.getSalaryByPlaceId(person.getPlaceId());
-        Float onDutyRate = person.getOnDutyRate();
-        Float overTimeRate = person.getOverTimeRate();
+//        BigDecimal baseSalary = placeService.getSalaryByPlaceId(person.getPlaceId());
+//        Float onDutyRate = person.getOnDutyRate();
+//        Float overTimeRate = person.getOverTimeRate();
 
-        BigDecimal salary = CommonUtils.computeSalary(baseSalary, onDutyRate, overTimeRate);
+//        BigDecimal salary = CommonUtils.computeSalary(baseSalary, onDutyRate, overTimeRate);
 
-        salaryService.updateSalaryByPersonId(person.getId(), salary);
+//        salaryService.updateSalaryByPersonId(person.getId(), salary);
 
         return this.updateById(person);
     }
@@ -226,11 +212,8 @@ public class PersonServiceImpl implements PersonService {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
         vo.setPlaceName(placeService.getPlaceNameById(vo.getPlaceId()));
-        vo.setSalary(salaryService.getSalaryByPersonId(vo.getId()));
         vo.setBornTimeStr(df.format(vo.getBorn()));
         vo.setEnterTimeStr(df.format(vo.getEnterTime()));
-        vo.setOnDutyRateStr(CommonUtils.getPercentFormat(vo.getOnDutyRate()));
-        vo.setOverTimeRateStr(CommonUtils.getPercentFormat(vo.getOverTimeRate()));
 
         return vo;
     }

@@ -2,28 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cobcap.wageManager.dao.SalaryDao">
-    <resultMap id="SalaryMap" type="Salary">
+    <resultMap id="salaryMap" type="Salary">
         <id column="sa_id" property="id"/>
         <result column="p_id" property="personId"/>
-        <result column="salary" property="salary"/>
+        <result column="base_salary" property="baseSalary"/>
+        <result column="overtime_salary" property="overTimeSalary"/>
+        <result column="cut_salary" property="cutSalary"/>
+        <result column="final_salary" property="finalSalary"/>
+        <result column="record_date" property="recordDate"/>
     </resultMap>
 
-    <select id="getById" resultMap="SalaryMap">
+    <select id="getById" resultMap="salaryMap">
         select *
         from salary
         where sa_id = #{id}
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into salary (p_id, salary)
-        values (#{personId}, #{salary})
+        insert into salary (p_id, base_salary, overtime_salary, cut_salary, final_salary, record_date)
+        values (#{personId}, #{baseSalary}, #{overTimeSalary}, #{cutSalary}, #{finalSalary}, #{recordDate})
     </insert>
 
     <update id="updateById">
         update salary
         <set>
             <if test="personId != null">p_id = #{personId},</if>
-            <if test="salary != null">salary = #{salary}</if>
+            <if test="baseSalary != null">base_salary = #{baseSalary},</if>
+            <if test="overTimeSalary != null">overtime_salary = #{overTimeSalary},</if>
+            <if test="cutSalary != null">cut_salary = #{cutSalary},</if>
+            <if test="finalSalary != null">final_salary = #{finalSalary},</if>
+            <if test="recordDate != null">record_date = #{recordDate}</if>
         </set>
         where sa_id = #{id}
     </update>
@@ -34,7 +42,7 @@
         where sa_id = #{id}
     </delete>
 
-    <select id="getSalaries" resultMap="SalaryMap">
+    <select id="getSalaries" resultMap="salaryMap">
         select top ${size} *
         from salary
         where sa_id not in (
@@ -44,21 +52,15 @@
     </select>
 
     <insert id="insertSalaries" useGeneratedKeys="true" keyProperty="id">
-        insert into salary (p_id, salary) values
+        insert into salary (p_id, base_salary, overtime_salary, cut_salary, final_salary, record_date) values
         <foreach collection="list" item="item" separator=",">
-            (#{item.personId}, #{item.salary})
+            (#{item.personId}, #{item.baseSalary}, #{item.overTimeSalary}, #{item.cutSalary}, #{item.finalSalary}, #{item.recordDate})
         </foreach>
     </insert>
 
     <select id="getTotalCount" resultType="int">
         select count(*)
         from salary
-    </select>
-
-    <select id="getSalaryByPersonId" resultType="BigDecimal">
-        select salary
-        from salary
-        where p_id = #{id}
     </select>
 
     <select id="getPersonBySalaryId" resultMap="com.cobcap.wageManager.dao.PersonDao.personMap">
@@ -72,7 +74,7 @@
     <update id="updateSalaryByPersonId">
         update salary
         <set>
-            <if test="salary != null">salary = #{salary}</if>
+            <if test="baseSalary != null">base_salary = #{baseSalary}</if>
         </set>
         where p_id = #{personId}
     </update>
@@ -101,4 +103,17 @@
         delete
         from salary where p_id in (select p_id from person where pl_id = #{id})
     </delete>
+
+    <select id="getSalaryByPersonId" resultMap="salaryMap">
+        select top ${size} *
+        from (select * from salary where p_id = #{personId}) as temp
+        where sa_id not in (
+        select top ${offset} sa_id
+        from (select * from salary where p_id = #{personId}) as temp
+        )
+    </select>
+
+    <select id="getSalaryCountByPersonId" resultType="Integer">
+        select count(*) from salary where p_id = #{personId}
+    </select>
 </mapper>

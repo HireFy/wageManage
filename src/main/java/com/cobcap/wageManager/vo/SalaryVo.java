@@ -4,6 +4,7 @@ import com.cobcap.wageManager.pojo.Salary;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /**
  * @Description
@@ -14,7 +15,12 @@ public class SalaryVo {
     private Integer id;
     private Integer personId;
     private String personName;
-    private BigDecimal salary;
+    private BigDecimal baseSalary;
+    private BigDecimal overTimeSalary;
+    private BigDecimal cutSalary;
+    private BigDecimal finalSalary;
+    private Timestamp recordDate;
+    private String recordDateStr;
 
     public SalaryVo() {
 

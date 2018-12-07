@@ -23,8 +23,6 @@ public interface SalaryService {
 
     int getTotalCount();
 
-    BigDecimal getSalaryByPersonId(Integer id);
-
     Person getPersonBySalaryId(Integer id);
 
     void generateSalary();
@@ -38,4 +36,14 @@ public interface SalaryService {
     Boolean deleteByPersonId(Integer id);
 
     Boolean updateSalary(Integer placeId);
+
+    List<Salary> getSalaryByPersonId(int pageNum, int pageSize, Integer personId);
+
+    SalaryVo transFormData(Salary salary);
+
+    List<SalaryVo> transFormData(List<Salary> salaryList);
+
+    int getSalaryCountByPersonId(Integer personId);
+
+    int getSalaryCount(int totalCount, int pageSize);
 }

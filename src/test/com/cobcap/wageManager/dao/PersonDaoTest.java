@@ -24,8 +24,8 @@ public class PersonDaoTest {
 
     @Test
     public void getById() {
-        assertNotNull(personDao.getById(2));
-        System.out.println(personDao.getById(2));
+//        assertNotNull(personDao.getById(110));
+        System.out.println(personDao.getById(1108));
     }
 
     @Test
@@ -35,26 +35,16 @@ public class PersonDaoTest {
 
     @Test
     public void updateById() {
-        Person person = new Person(2, "zxq", "女", null, null, null, null, null, null, null);
+//        Person person = new Person(2, "zxq", "女", null, null, null, null, null, null, null);
 
-        assertEquals(true, personDao.updateById(person));
+//        assertEquals(true, personDao.updateById(person));
     }
 
     @Test
     public void insert() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
-        Timestamp born = null;
-        Timestamp enterTime = null;
-        try {
-            born = new Timestamp(dateFormat.parse("1997-12-09").getTime());
-            enterTime = new Timestamp(dateFormat.parse("2020-12-3").getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Person person = new Person("fujunwei", "男", 21, Timestamp.valueOf("1997-11-20 08:00:00.0"), "1234", Timestamp.valueOf("2018-01-01 08:00:00.0"), 1151, (float) 0.0, (float) 0.0);
-        System.out.println("before: " + person.getId());
-        System.out.println(personDao.insert(person));
-        System.out.println(person.getId());
+        Timestamp born = new Timestamp(System.currentTimeMillis());
+        Person person = new Person("fjw", "男", 23, born, "213423", born, 3);
+        personDao.insert(person);
     }
 
     @Test
@@ -75,7 +65,7 @@ public class PersonDaoTest {
 
     @Test
     public void getBaseSalary() {
-        System.out.println(personDao.getBaseSalaryById(2));
+        System.out.println(personDao.getBaseSalaryById(5));
     }
 
 
@@ -101,6 +91,6 @@ public class PersonDaoTest {
 
     @Test
     public void getPersonBykw() {
-        System.out.println(personDao.getPersonBykw("技术"));
+        System.out.println(personDao.getPersonBykw("产品"));
     }
 }

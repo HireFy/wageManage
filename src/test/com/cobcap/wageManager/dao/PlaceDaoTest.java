@@ -37,7 +37,7 @@ public class PlaceDaoTest {
 
     @Test
     public void insert() {
-        Place place = new Place("财务主管", BigDecimal.valueOf(20000.00), 2);
+        Place place = new Place("财务主管", BigDecimal.valueOf(20000.00), 1);
         assertEquals(true, placeDao.insert(place));
     }
 

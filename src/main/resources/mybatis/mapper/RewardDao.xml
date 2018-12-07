@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cobcap.wageManager.dao.RewardDao">
+    <resultMap id="rewardMap" type="Reward">
+        <id column="id" property="id"/>
+        <result column="p_id" property="personId"/>
+        <result column="ab_days" property="absenceDays"/>
+        <result column="ov_days" property="overTimeDays"/>
+        <result column="record_date" property="recordDate"/>
+    </resultMap>
+
+    <resultMap id="absenceAndOver" type="HashMap">
+        <result column="absence" property="absence" javaType="java.lang.Integer"/>
+        <result column="overtime" property="overtime" javaType="java.lang.Object"/>
+    </resultMap>
+
+    <select id="getById" resultMap="rewardMap">
+        select *
+        from reward
+        where id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into reward (p_id, ab_days, ov_days, record_date)
+        values (#{personId}, #{absenceDays}, #{overTimeDays}, #{recordDate})
+    </insert>
+
+    <update id="update">
+        update reward
+        <set>
+            <if test="personId != null">p_id = #{personId},</if>
+            <if test="absenceDays != null">ab_days = #{absenceDays},</if>
+            <if test="overTimeDays != null">ov_days = #{overTimeDays},</if>
+            <if test="recordDate != null">record_date = #{recordDate}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete
+        from reward
+        where id = #{id}
+    </delete>
+
+    <select id="getRewards" resultMap="rewardMap">
+        select top ${size} *
+        from reward
+        where id not in (
+            select top ${offset} id
+            from reward
+        )
+    </select>
+
+    <insert id="insertRewardList" useGeneratedKeys="true" keyProperty="id">
+        insert into reward (p_id, ab_days, ov_days, record_date) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.personId}, #{item.absenceDays}, #{item.overTimeDays}, #{item.recordDate})
+        </foreach>
+    </insert>
+
+    <select id="getTotalCount" resultType="int">
+        select count(*)
+        from reward
+    </select>
+
+    <select id="getRecordCount" resultType="int">
+        select count(*) from reward where p_id = #{personId}
+    </select>
+
+    <select id="getAbsenceAndOver" resultMap="absenceAndOver">
+      select ab_days as absence, ov_days as overtime from reward where p_id = #{personId} and record_date = #{recordDate}
+    </select>
+
+</mapper>

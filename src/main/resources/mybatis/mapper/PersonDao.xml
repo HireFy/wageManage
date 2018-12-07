@@ -11,8 +11,6 @@
         <result column="p_born" property="born"/>
         <result column="pl_id" property="placeId"/>
         <result column="p_pass" property="pass"/>
-        <result column="p_onduty" property="onDutyRate"/>
-        <result column="p_overtime" property="overTimeRate"/>
     </resultMap>
 
     <select id="getById" resultMap="personMap">
@@ -22,8 +20,8 @@
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into person (p_name, p_sex, p_age, p_time, p_born, p_pass, pl_id, p_onduty, p_overtime)
-        values (#{name}, #{sex}, #{age}, #{enterTime}, #{born}, #{pass}, #{placeId}, #{onDutyRate}, #{overTimeRate})
+        insert into person (p_name, p_sex, p_age, p_time, p_born, p_pass, pl_id)
+        values (#{name}, #{sex}, #{age}, #{enterTime}, #{born}, #{pass}, #{placeId})
     </insert>
 
     <update id="updateById">
@@ -31,12 +29,11 @@
         <set>
             <if test="name != null">p_name = #{name},</if>
             <if test="pass != null">p_pass = #{pass},</if>
+            <if test="age != null">p_age = #{age},</if>
             <if test="placeId != null">pl_id = #{placeId},</if>
             <if test="sex != null">p_sex = #{sex},</if>
             <if test="enterTime != null">p_time = #{enterTime},</if>
             <if test="born != null">p_born = #{born},</if>
-            <if test="onDutyRate">p_onduty = #{onDutyRate},</if>
-            <if test="overTimeRate">p_overtime = #{overTimeRate}</if>
         </set>
         where p_id = #{id}
     </update>

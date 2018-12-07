@@ -2,6 +2,7 @@ package com.cobcap.wageManager.service.impl;
 
 import com.cobcap.wageManager.dao.PersonDao;
 import com.cobcap.wageManager.dao.PlaceDao;
+import com.cobcap.wageManager.dao.RewardDao;
 import com.cobcap.wageManager.dao.SalaryDao;
 import com.cobcap.wageManager.pojo.Person;
 import com.cobcap.wageManager.pojo.Salary;
@@ -14,8 +15,12 @@ import org.springframework.stereotype.Service;
 
 import java.awt.geom.FlatteningPathIterator;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SalaryServiceImpl implements SalaryService {
@@ -28,6 +33,9 @@ public class SalaryServiceImpl implements SalaryService {
 
     @Autowired
     private PlaceDao placeDao;
+
+    @Autowired
+    private RewardDao rewardDao;
 
     @Override
     public Integer getSalaryIdByPersonId(Integer personId) {
@@ -65,11 +73,6 @@ public class SalaryServiceImpl implements SalaryService {
     }
 
     @Override
-    public BigDecimal getSalaryByPersonId(Integer id) {
-        return salaryDao.getSalaryByPersonId(id);
-    }
-
-    @Override
     public Person getPersonBySalaryId(Integer id) {
         return salaryDao.getPersonBySalaryId(id);
     }
@@ -93,6 +96,15 @@ public class SalaryServiceImpl implements SalaryService {
     @Override
     public List<SalaryVo> getSalaryVOs(int pageNum, int pageSize) {
         return this.transFormData(this.getSalaries(pageNum, pageSize));
+    }
+
+    @Override
+    public int getSalaryCount(int totalCount, int pageSize) {
+        int pageCount = totalCount / pageSize;
+        if (totalCount % pageSize != 0) {
+            pageCount += 1;
+        }
+        return pageCount;
     }
 
     @Override
@@ -120,13 +132,13 @@ public class SalaryServiceImpl implements SalaryService {
         for (Integer id : personIds) {
             person = personDao.getById(id);
             baseSalary = placeDao.getSalaryByPlaceId(placeId);
-            onDutyRate = person.getOnDutyRate();
-            overTimeRate = person.getOverTimeRate();
+//            onDutyRate = person.getOnDutyRate();
+//            overTimeRate = person.getOverTimeRate();
 
-            BigDecimal computeSalary = CommonUtils.computeSalary(baseSalary, onDutyRate, overTimeRate);
+//            BigDecimal computeSalary = CommonUtils.computeSalary(baseSalary, onDutyRate, overTimeRate);
 
 
-            this.updateById(new Salary(this.getSalaryIdByPersonId(id), null, computeSalary));
+//            this.updateById(new Salary(this.getSalaryIdByPersonId(id), null, computeSalary));
         }
 
         return true;
@@ -140,21 +152,52 @@ public class SalaryServiceImpl implements SalaryService {
     public void generateSalary() {
         Person person;
         BigDecimal baseSalary;
-        Float onDutyRate;
-        Float overTimeRate;
+        BigDecimal finalSalary;
+        BigDecimal cutSalary;
+        BigDecimal overTimeSalary;
+        int absenceDays;
+        int overTimeDays;
+        int monthDays;
         Salary salary;
+        Calendar calendar = Calendar.getInstance();
+        Timestamp recordDate;
+
+        /*当前人员在reward中记录的条数*/
+        int rewardRecordCount = 0;
 
         List<Integer> personIds = personDao.getAllId();
 
         for (Integer id : personIds) {
             person = personDao.getById(id);
             baseSalary = placeDao.getSalaryByPlaceId(person.getPlaceId());
-            onDutyRate = person.getOnDutyRate();
-            overTimeRate = person.getOverTimeRate();
 
-            BigDecimal computeSalary = CommonUtils.computeSalary(baseSalary, onDutyRate, overTimeRate);
+            /*获得人员的入职时间*/
+            calendar.setTime(person.getEnterTime());
 
-            this.insert(new Salary(id, computeSalary));
+
+            rewardRecordCount = rewardDao.getRecordCount(id);
+            for (int i = 0; i < rewardRecordCount; i++) {
+                calendar.set(Calendar.DATE, 1);
+                calendar.roll(Calendar.DATE, -1);
+                monthDays = calendar.get(Calendar.DATE);
+
+                recordDate = new Timestamp(calendar.getTime().getTime());
+
+                Map absenceAndOver = rewardDao.getAbsenceAndOver(id,recordDate.toString());
+                absenceDays = (Integer) absenceAndOver.get("absence");
+                overTimeDays = (Integer) absenceAndOver.get("overtime");
+                cutSalary = BigDecimal.valueOf(baseSalary.floatValue() * (absenceDays / (float) monthDays));
+                overTimeSalary = BigDecimal.valueOf(baseSalary.floatValue() * (overTimeDays / (float) monthDays));
+
+                finalSalary = BigDecimal.valueOf(baseSalary.floatValue() - cutSalary.floatValue() + overTimeSalary.floatValue());
+
+                salary = new Salary(id, baseSalary, overTimeSalary, cutSalary, finalSalary, recordDate);
+                this.insert(salary);
+
+                /*月份增加一*/
+                calendar.add(Calendar.MONTH, 1);
+            }
+
         }
     }
 
@@ -167,9 +210,22 @@ public class SalaryServiceImpl implements SalaryService {
         SalaryVo vo = new SalaryVo();
         BeanUtils.copyProperties(salary, vo);
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
         vo.setPersonName(personDao.getById(vo.getPersonId()).getName());
+        vo.setRecordDateStr(sdf.format(vo.getRecordDate()));
 
         return vo;
+    }
+
+    @Override
+    public List<Salary> getSalaryByPersonId(int pageNum, int pageSize, Integer personId) {
+        return salaryDao.getSalaryByPersonId((pageNum - 1)* pageSize, pageSize, personId);
+    }
+
+    @Override
+    public int getSalaryCountByPersonId(Integer personId) {
+        return salaryDao.getSalaryCountByPersonId(personId);
     }
 
     public List<SalaryVo> transFormData(List<Salary> salaries) {
