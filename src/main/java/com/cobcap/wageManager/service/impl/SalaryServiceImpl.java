@@ -99,6 +99,21 @@ public class SalaryServiceImpl implements SalaryService {
     }
 
     @Override
+    public int getCountByYear(Integer personId, Integer year) {
+        return salaryDao.getCountByYear(personId, year);
+    }
+
+    @Override
+    public List<Integer> getMonthsByPersonIdOrYear(Integer personId, Integer year) {
+        return salaryDao.getMonthsByPersonIdOrYear(personId, year);
+    }
+
+    @Override
+    public List<Salary> getSalaryByPersonIdAndYearAndMonth(Integer personId, Integer year, Integer month) {
+        return salaryDao.getSalaryByPersonIdAndYearAndMonth(personId, year, month);
+    }
+
+    @Override
     public int getSalaryCount(int totalCount, int pageSize) {
         int pageCount = totalCount / pageSize;
         if (totalCount % pageSize != 0) {
@@ -221,6 +236,11 @@ public class SalaryServiceImpl implements SalaryService {
     @Override
     public List<Salary> getSalaryByPersonId(int pageNum, int pageSize, Integer personId) {
         return salaryDao.getSalaryByPersonId((pageNum - 1)* pageSize, pageSize, personId);
+    }
+
+    @Override
+    public List<Integer> getYearByPersonId(Integer personId) {
+        return salaryDao.getYearByPersonId(personId);
     }
 
     @Override

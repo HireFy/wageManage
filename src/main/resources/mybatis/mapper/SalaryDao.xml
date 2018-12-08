@@ -54,7 +54,8 @@
     <insert id="insertSalaries" useGeneratedKeys="true" keyProperty="id">
         insert into salary (p_id, base_salary, overtime_salary, cut_salary, final_salary, record_date) values
         <foreach collection="list" item="item" separator=",">
-            (#{item.personId}, #{item.baseSalary}, #{item.overTimeSalary}, #{item.cutSalary}, #{item.finalSalary}, #{item.recordDate})
+            (#{item.personId}, #{item.baseSalary}, #{item.overTimeSalary}, #{item.cutSalary}, #{item.finalSalary},
+            #{item.recordDate})
         </foreach>
     </insert>
 
@@ -95,25 +96,53 @@
         delete
         from salary
         where p_id in
-              (select p_id from person where person.pl_id
-                                               in (select pl_id from place where pl_dept_id = #{id}))
+              (select p_id
+               from person
+               where person.pl_id
+                   in (select pl_id from place where pl_dept_id = #{id}))
     </delete>
 
     <delete id="deleteByPlaceId">
         delete
-        from salary where p_id in (select p_id from person where pl_id = #{id})
+        from salary
+        where p_id in (select p_id from person where pl_id = #{id})
     </delete>
 
     <select id="getSalaryByPersonId" resultMap="salaryMap">
         select top ${size} *
         from (select * from salary where p_id = #{personId}) as temp
         where sa_id not in (
-        select top ${offset} sa_id
-        from (select * from salary where p_id = #{personId}) as temp
+            select top ${offset} sa_id
+            from (select * from salary where p_id = #{personId}) as temp
         )
     </select>
 
     <select id="getSalaryCountByPersonId" resultType="Integer">
-        select count(*) from salary where p_id = #{personId}
+        select count(*)
+        from salary
+        where p_id = #{personId}
+    </select>
+
+    <select id="getYearByPersonId" resultType="Integer">
+        select distinct year(record_date)
+        from salary
+        where p_id = #{id}
+    </select>
+
+    <select id="getSalaryByPersonIdAndYearAndMonth" resultMap="salaryMap">
+        select *
+        from salary
+        where p_id = #{personId} <if test="year != null">and year (record_date)=#{year} </if> <if test="month != null"> and month(record_date) = #{month}</if>
+    </select>
+
+    <select id="getCountByYear" resultType="Integer">
+        select count(*)
+        from salary
+        where p_id = #{personId} and year (record_date)=#{year}
+    </select>
+
+    <select id="getMonthsByPersonIdOrYear" resultType="Integer">
+        select distinct month(record_date) from salary where p_id = #{personId}
+        <if test="year != null">and year(record_date)=#{year}</if>
     </select>
 </mapper>

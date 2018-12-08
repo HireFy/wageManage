@@ -152,6 +152,23 @@
             <div class="uk-card uk-card-default uk-card-body" v-show="showSalaryHead">
                 <div class="uk-text-left">人员编号:<span class="uk-text-large">{{personNum}}</span></div>
                 <div class="uk-text-center"><span class="uk-text-large">{{personName}}</span></div>
+                <hr>
+                <div class="uk-margin" uk-grid>
+                    <div>
+                        <label class="uk-form-label" for="year-select">年份</label>
+                        <select class="uk-select" id="year-select" v-model="selectYear">
+                            <option></option>
+                            <option v-for="year in years" :value="year">{{year}}</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="uk-form-label" for="month-select">月份</label>
+                        <select class="uk-select" id="month-select" v-model="selectMonth">
+                            <option></option>
+                            <option v-for="month in months" :value="month">{{month}}</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="uk-card uk-card-default uk-card-body">
                 <table class="uk-table uk-table-hover uk-table-divider">

@@ -45,5 +45,13 @@ public interface SalaryService {
 
     int getSalaryCountByPersonId(Integer personId);
 
+    List<Integer> getYearByPersonId(Integer personId);
+
     int getSalaryCount(int totalCount, int pageSize);
+
+    List<Salary> getSalaryByPersonIdAndYearAndMonth(Integer personId, Integer year, Integer month);
+
+    int getCountByYear(Integer personId, Integer year);
+
+    List<Integer> getMonthsByPersonIdOrYear(Integer personId, Integer year);
 }

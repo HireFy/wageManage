@@ -217,4 +217,13 @@ public class CommonUtils {
         calendar.setTime(timestamp);
         return calendar.get(Calendar.YEAR);
     }
+
+    /*获得分页数*/
+    public static int getPageCount(int total, int pageSize) {
+        int pageCount = total / pageSize;
+        if (total % pageSize != 0) {
+            pageCount += 1;
+        }
+        return pageCount;
+    }
 }

@@ -1,7 +1,9 @@
 package com.cobcap.wageManager.controller;
 
+import com.cobcap.wageManager.pojo.Salary;
 import com.cobcap.wageManager.service.PersonService;
 import com.cobcap.wageManager.service.SalaryService;
+import com.cobcap.wageManager.util.CommonUtils;
 import com.cobcap.wageManager.vo.SalaryVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,37 @@ public class SalaryController {
         int totalCount = salaryService.getSalaryCountByPersonId(personId);
         return salaryService.getSalaryCount(totalCount, 10);
     }
+
+
+    /*获得指定id的用户的工资表的年份*/
+    @RequestMapping("/person/{personId}/year")
+    public List<Integer> getYearByPersonId(@PathVariable Integer personId) {
+        return salaryService.getYearByPersonId(personId);
+    }
+
+    /*获得指定id的用户的指定年份的工资*/
+    @RequestMapping(path={"/person/{personId}/year/{year}",
+            "/person/{personId}/month/{month}",
+            "/person/{personId}/year/{year}/month/{month}"})
+    public Map getSalaryVoByPersonIdAndYear(@PathVariable Integer personId,
+                                            @PathVariable(required = false) Integer year,
+                                            @PathVariable(required = false) Integer month) {
+        Map<String, Object> map = new HashMap<>();
+        List<SalaryVo> vos = salaryService.transFormData(salaryService.getSalaryByPersonIdAndYearAndMonth(personId, year, month));
+        map.put("count", 1);
+        map.put("data", vos);
+        return map;
+    }
+
+
+    /*获得月份*/
+    @RequestMapping(path = {"/person/{personId}/year/{year}/month", "/person/{personId}/month"})
+    public List<Integer> getMonthsByPersonIdOrYear(@PathVariable Integer personId,
+                                                   @PathVariable(required = false) Integer year) {
+        return salaryService.getMonthsByPersonIdOrYear(personId, year);
+    }
+
+
 
 
 

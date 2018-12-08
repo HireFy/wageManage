@@ -288,6 +288,95 @@ function getPersonNameById(id) {
     })
 }
 
+
+/*获得指定Id的用户的工资报表的年份*/
+function getYearByPersonId(personId, years) {
+    $.ajax({
+        type:"post",
+        url: "/salary/person/" + personId + "/year",
+        dataType:"json",
+        success:function (data) {
+            /*清空datalist中已有的元素再添加*/
+            if (years != null) {
+                dataLen = years.length;
+                for (i = 0; i < dataLen; i++) {
+                    years.pop()
+                }
+            }
+            /*添加获取的datas到空的datalist中*/
+            for (x in data) {
+                years.push(data[x]);
+            }
+            console.log(years)
+        }
+    })
+}
+
+/*根据peronsId和year和month获得工资信息*/
+function getSalaryByPersonIdAndYearAndMonth(personId, year, month, datalist) {
+    urlstr = ''
+    if (year === '' && month === '') {
+        vm.searchSalary()
+        return
+    }
+    if(year === null || year === ''){
+        urlstr = '/salary/person/' + personId + '/month/' + month;
+    }else if (month === null || month === '') {
+        urlstr = '/salary/person/' + personId + '/year/' + year;
+    }else {
+        urlstr = '/salary/person/' + personId + '/year/' + year + '/month/' + month;
+    }
+    $.ajax({
+        type:"post",
+        url: urlstr,
+        dataType:"json",
+        success:function (result) {
+
+            pagenation.pages = result.count
+
+            /*清空datalist中已有的元素再添加*/
+            if (datalist != null) {
+                dataLen = datalist.length;
+                for (i = 0; i < dataLen; i++) {
+                    datalist.pop()
+                }
+            }
+            /*添加获取的datas到空的datalist中*/
+            for (x in result.data) {
+                datalist.push(result.data[x]);
+            }
+        }
+    });
+}
+
+
+function getMonthsByPersonIdYear(personId, year, datalist) {
+    if (year === null) {
+        urlstr = '/salary/person/'+personId+'/month'
+    }else
+        urlstr = '/salary/person/' + personId + '/year/' + year + '/month'
+    $.ajax({
+        type:'post',
+        url: urlstr,
+        dataType:'json',
+        success:function (result) {
+            /*清空datalist中已有的元素再添加*/
+            if (datalist != null) {
+                dataLen = datalist.length;
+                for (i = 0; i < dataLen; i++) {
+                    datalist.pop()
+                }
+            }
+            /*添加获取的datas到空的datalist中*/
+            for (x in result) {
+                datalist.push(result[x]);
+            }
+        }
+    });
+}
+
+
+
 /**
  * 分页操作
  */
@@ -402,7 +491,11 @@ var vm = new Vue({
             3: '工资'
         },
         personNum: 0,
-        personName: ''
+        personName: '',
+        years:new Array(),
+        selectYear:'',
+        months:new Array(),
+        selectMonth:'',
     },
     methods: {
         showmodal: function (event) {
@@ -465,6 +558,12 @@ var vm = new Vue({
                     '</div>');
                 return
             }
+
+            getYearByPersonId(this.personNum, this.years)
+            getMonthsByPersonIdYear(this.personNum, null, this.months)
+
+            console.log("vm.years: " + this.years)
+
             getSalaryCountByPersonId(this.personNum)
             this.showSalary = true;
             pagenation.showPagenation = true
@@ -518,6 +617,13 @@ var vm = new Vue({
                 return
             }
             getData(val, this.dataType[this.navIdInTb], this.datas);
+        },
+        selectYear:function (val) {
+            getSalaryByPersonIdAndYearAndMonth(this.personNum, this.selectYear, this.selectMonth, this.datas)
+            getMonthsByPersonIdYear(this.personNum, val, this.months)
+        },
+        selectMonth: function (val) {
+            getSalaryByPersonIdAndYearAndMonth(this.personNum, this.selectYear, this.selectMonth, this.datas)
         }
     }
 })

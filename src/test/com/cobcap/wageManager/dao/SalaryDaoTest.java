@@ -58,4 +58,20 @@ public class SalaryDaoTest {
         List<Salary> salaries = salaryDao.getSalaryByPersonId(1, 12, 1106);
         System.out.println(salaries);
     }
+
+    @Test
+    public void getYearByPersonId() {
+        System.out.println(salaryDao.getYearByPersonId(1106));
+    }
+
+    @Test
+    public void getSalaryByPersonIdAndYearAndMonth() {
+        System.out.println(salaryDao.getSalaryByPersonIdAndYearAndMonth(1106, 2017, 1));
+    }
+
+    @Test
+    public void getMonthsByPersonIdOrYear() {
+        System.out.println(salaryDao.getMonthsByPersonIdOrYear(1106, 2015));
+    }
+
 }
