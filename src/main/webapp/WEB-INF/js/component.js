@@ -50,7 +50,7 @@ Vue.component('salary-head', {
 
 /*person的模态(modal)框*/
 Vue.component('person-modal', {
-    props: ['id', 'name', 'salary', 'selectvalue', 'datatype', 'person_places', 'pass', 'born', 'age'],
+    props: ['id', 'name', 'salary', 'selectvalue', 'datatype', 'person_places', 'pass', 'born', 'age','deptname'],
     data: function () {
         return {
             childSelectVal: this.selectvalue,
@@ -58,7 +58,8 @@ Vue.component('person-modal', {
             childPlaces: this.person_places,
             childPass: this.pass,
             childBorn:this.born,
-            childAge:this.age
+            childAge:this.age,
+            childDeptName:this.deptname
         }
     },
     computed:{
@@ -103,6 +104,9 @@ Vue.component('person-modal', {
         },
         childAge:function (val) {
             this.$emit('on-age-change', val)
+        },
+        deptname:function (val) {
+            this.childDeptName = val
         }
     },
     methods: {
@@ -159,6 +163,12 @@ Vue.component('person-modal', {
         '    <option v-for="place in childPlaces" :value="place.id">{{place.name}}</option>\n' +
         '  \n' +
         '</select>' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <div class="uk-margin">\n' +
+        '                <label class="uk-form-label" for="deptname-text">所属部门</label>\n' +
+        '                <div class="uk-form-controls">\n' +
+        '                    <input v-model="childDeptName" class="uk-input" id="deptname-text" type="text" disabled="disabled">\n' +
         '                </div>\n' +
         '            </div>\n' +
         '        </form>\n' + '<button class="uk-button uk-button-danger" @click="deleteData">删除</button>' +

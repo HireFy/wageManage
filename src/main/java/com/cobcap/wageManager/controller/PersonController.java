@@ -85,4 +85,12 @@ public class PersonController {
         map.put("name", personService.getNameById(id));
         return map;
     }
+
+    /*根据id获得person*/
+    @RequestMapping("/get/{id}")
+    public PersonVo getPerson(@PathVariable Integer id) {
+       PersonVo vo = personService.transFormData(personService.getById(id));
+        return vo;
+
+    }
 }

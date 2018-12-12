@@ -52,6 +52,9 @@ var Depts;
 
 var personName
 
+var Person
+var DeptName
+
 /**
  * 从数据库获取Place信息，生成id和name对应的Place对象
  */
@@ -375,6 +378,31 @@ function getMonthsByPersonIdYear(personId, year, datalist) {
     });
 }
 
+function getDeptNameByPlaceId(placeId) {
+    $.ajax({
+        type:'post',
+        url:'/dept/name/place/'+placeId,
+        dataType:'json',
+        async:false,
+        success:function (data) {
+            modal.deptName = data.deptName
+        }
+    })
+}
+
+function getPersonById(personId) {
+    $.ajax({
+        type:'post',
+        url:'/person/get/'+personId,
+        dataType:'json',
+        async:false,
+        success:function (data) {
+            Person = data
+            console.log("ajax中:" + Person.name);
+        }
+    })
+}
+
 
 
 /**
@@ -517,8 +545,14 @@ var vm = new Vue({
                 modal.age = dataArr[3]
                 modal.born = dataArr[5]
                 modal.enterTime = dataArr[6]
-                modal.placeSelectValue = getIdByName(dataArr[7], Places)
+
+                getPersonById(modal.id)
+                console.log("person: " + Person)
+                modal.placeSelectValue =Person.placeId
                 modal.deleteInfo = '确认删除吗？'
+
+                getDeptNameByPlaceId(Person.placeId)
+
             }
             /*当前nav的值为部门*/
             if (this.navIdInTb === 1) {
@@ -641,6 +675,7 @@ var modal = new Vue({
         depts: Depts,
         navId: vm.navIdInTb,
         placeSelectValue: '',
+        deptName:'',
         born: '',
         enterTime: '',
         fatherId: 0,
@@ -665,6 +700,7 @@ var modal = new Vue({
     },
     methods: {
         onSelectValueChange: function (val) {
+            getDeptNameByPlaceId(val)
             console.log("父组件接收到调用函数")
             this.placeSelectValue = val
             console.log("新的selectValue: " + val)

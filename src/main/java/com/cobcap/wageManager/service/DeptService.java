@@ -24,4 +24,6 @@ public interface DeptService {
     void generateDept();
 
     List<Dept> getDeptBykw(String kw);
+
+    String getDeptNameByPlaceId(Integer placeId);
 }

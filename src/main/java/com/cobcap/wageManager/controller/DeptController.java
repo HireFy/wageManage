@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/dept")
@@ -56,5 +58,13 @@ public class DeptController {
     @RequestMapping("/add")
     public Boolean insert(@RequestBody Dept dept) {
         return deptService.insert(dept);
+    }
+
+    /*根据职位id获取dept名字*/
+    @RequestMapping("/name/place/{id}")
+    public Map getNameByPlaceId(@PathVariable Integer id) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("deptName", deptService.getDeptNameByPlaceId(id));
+        return map;
     }
 }

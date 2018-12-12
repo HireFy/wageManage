@@ -27,4 +27,6 @@ public interface DeptDao {
     Integer getIdByDeptName(String name);
 
     List<Dept> getDeptBykw(String kw);
+
+    String getDeptNameByPlaceId(Integer placeId);
 }

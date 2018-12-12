@@ -64,4 +64,7 @@
         where d_name like '%' + #{kw} + '%'
     </select>
 
+    <select id="getDeptNameByPlaceId" resultType="String">
+        select d_name from dept,place where pl_id = #{placeId} and pl_dept_id = d_id
+    </select>
 </mapper>

@@ -69,6 +69,7 @@
                       :pass="pass"
                       :born="born"
                       :age="age"
+                      :deptname="deptName"
                       :datatype="dataType"
                       :person_places="places"
                       :selectvalue="placeSelectValue"
