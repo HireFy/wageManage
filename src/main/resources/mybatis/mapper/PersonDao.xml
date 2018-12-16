@@ -125,4 +125,12 @@
           and person.pl_id = place.pl_id
           and pl_dept_id = d_id
     </select>
+
+    <select id="isPersonIdExist" resultType="Boolean">
+        select
+            case when count(*) = 0
+                     then 0 else 1 end
+        from Person
+        where p_id=#{id}
+    </select>
 </mapper>

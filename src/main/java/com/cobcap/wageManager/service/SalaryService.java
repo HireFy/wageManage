@@ -1,6 +1,7 @@
 package com.cobcap.wageManager.service;
 
 import com.cobcap.wageManager.pojo.Person;
+import com.cobcap.wageManager.pojo.Reward;
 import com.cobcap.wageManager.pojo.Salary;
 import com.cobcap.wageManager.vo.SalaryVo;
 import org.apache.ibatis.annotations.Param;
@@ -54,4 +55,8 @@ public interface SalaryService {
     int getCountByYear(Integer personId, Integer year);
 
     List<Integer> getMonthsByPersonIdOrYear(Integer personId, Integer year);
+
+    Boolean isPersonSalaryExist(Integer personId);
+
+    Boolean insertReward(Reward reward);
 }

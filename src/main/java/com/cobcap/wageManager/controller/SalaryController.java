@@ -1,5 +1,6 @@
 package com.cobcap.wageManager.controller;
 
+import com.cobcap.wageManager.pojo.Reward;
 import com.cobcap.wageManager.pojo.Salary;
 import com.cobcap.wageManager.service.PersonService;
 import com.cobcap.wageManager.service.SalaryService;
@@ -8,6 +9,7 @@ import com.cobcap.wageManager.vo.SalaryVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -91,8 +93,16 @@ public class SalaryController {
         return salaryService.getMonthsByPersonIdOrYear(personId, year);
     }
 
+    /*判断指定id的person是否存在工资信息*/
+    @RequestMapping("/person/{personId}/exist")
+    public Boolean isPersonSalaryExist(@PathVariable Integer personId) {
+        return salaryService.isPersonSalaryExist(personId);
+    }
 
-
+    @RequestMapping("/add")
+    public Boolean addSalary(@RequestBody Reward reward) {
+        return salaryService.insertReward(reward);
+    }
 
 
 

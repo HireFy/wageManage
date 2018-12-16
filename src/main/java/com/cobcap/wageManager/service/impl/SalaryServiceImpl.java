@@ -5,6 +5,7 @@ import com.cobcap.wageManager.dao.PlaceDao;
 import com.cobcap.wageManager.dao.RewardDao;
 import com.cobcap.wageManager.dao.SalaryDao;
 import com.cobcap.wageManager.pojo.Person;
+import com.cobcap.wageManager.pojo.Reward;
 import com.cobcap.wageManager.pojo.Salary;
 import com.cobcap.wageManager.service.SalaryService;
 import com.cobcap.wageManager.util.CommonUtils;
@@ -104,6 +105,11 @@ public class SalaryServiceImpl implements SalaryService {
     }
 
     @Override
+    public Boolean isPersonSalaryExist(Integer personId) {
+        return salaryDao.isPersonSalaryExist(personId);
+    }
+
+    @Override
     public List<Integer> getMonthsByPersonIdOrYear(Integer personId, Integer year) {
         return salaryDao.getMonthsByPersonIdOrYear(personId, year);
     }
@@ -189,7 +195,6 @@ public class SalaryServiceImpl implements SalaryService {
             /*获得人员的入职时间*/
             calendar.setTime(person.getEnterTime());
 
-
             rewardRecordCount = rewardDao.getRecordCount(id);
             for (int i = 0; i < rewardRecordCount; i++) {
                 calendar.set(Calendar.DATE, 1);
@@ -255,5 +260,37 @@ public class SalaryServiceImpl implements SalaryService {
         }
 
         return salaryVoList;
+    }
+
+    /**
+     * 插入奖惩
+     * @param reward
+     * @return
+     */
+    @Override
+    public Boolean insertReward(Reward reward) {
+        /*插入加班，缺勤天数*/
+        rewardDao.insert(reward);
+
+        Person person = personDao.getById(reward.getPersonId());
+        BigDecimal baseSalary = placeDao.getSalaryByPlaceId(person.getPlaceId());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(reward.getRecordDate());
+
+        calendar.set(Calendar.DATE, 1);
+        calendar.roll(Calendar.DATE, -1);
+        int monthDays = calendar.get(Calendar.DATE);
+        Timestamp recordDate = new Timestamp(calendar.getTime().getTime());
+
+        int absenceDays = reward.getAbsenceDays();
+        int overTimeDays = reward.getOverTimeDays();
+
+        BigDecimal cutSalary = BigDecimal.valueOf(baseSalary.floatValue() * (absenceDays / (float) monthDays));
+        BigDecimal overTimeSalary = BigDecimal.valueOf(baseSalary.floatValue() * (overTimeDays / (float) monthDays));
+
+        BigDecimal finalSalary = BigDecimal.valueOf(baseSalary.floatValue() - cutSalary.floatValue() + overTimeSalary.floatValue());
+
+        return this.insert(new Salary(reward.getPersonId(), baseSalary, overTimeSalary, cutSalary, finalSalary, recordDate));
     }
 }

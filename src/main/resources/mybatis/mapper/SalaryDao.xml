@@ -145,4 +145,12 @@
         select distinct month(record_date) from salary where p_id = #{personId}
         <if test="year != null">and year(record_date)=#{year}</if>
     </select>
+
+    <select id="isPersonSalaryExist" resultType="Boolean">
+        select
+            case when count(*) = 0
+                     then 0 else 1 end
+        from salary
+        where p_id=#{personId}
+    </select>
 </mapper>

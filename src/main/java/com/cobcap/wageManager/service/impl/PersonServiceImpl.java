@@ -40,6 +40,12 @@ public class PersonServiceImpl implements PersonService {
     private static String beginDataEnter = "2015-01-01";
     private static String endDateEnter = "2015-12-31";
 
+    /*判断指定id的person是否存在*/
+    @Override
+    public Boolean isPersonIdExist(Integer id) {
+        return personDao.isPersonIdExist(id);
+    }
+
     @Override
     public Person getById(Integer id) {
         return personDao.getById(id);

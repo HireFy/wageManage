@@ -93,4 +93,10 @@ public class PersonController {
         return vo;
 
     }
+
+    /*判断指定id的person是否存在*/
+    @RequestMapping("/exist/{id}")
+    public Boolean isPersonExist(@PathVariable Integer id) {
+        return personService.isPersonIdExist(id);
+    }
 }

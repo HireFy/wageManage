@@ -178,14 +178,12 @@ function add(dataType, data) {
             getPageCount(dataType)
             pagenation.pages = pageCount
             UIkit.modal.dialog('<div class="uk-alert-success" uk-alert>\n' +
-                '    <a class="uk-alert-close" uk-close></a>\n' +
                 '    <p>已成功添加</p>\n' +
                 '</div>');
         },
         error: function (error) {
             vm.refreshCurrentPage()
             UIkit.modal.dialog('<div class="uk-alert-danger" uk-alert>\n' +
-                '    <a class="uk-alert-close" uk-close></a>\n' +
                 '    <p>添加数据失败</p>\n' +
                 '</div>');
         },
@@ -291,14 +289,13 @@ function getPersonNameById(id) {
     })
 }
 
-
 /*获得指定Id的用户的工资报表的年份*/
 function getYearByPersonId(personId, years) {
     $.ajax({
-        type:"post",
+        type: "post",
         url: "/salary/person/" + personId + "/year",
-        dataType:"json",
-        success:function (data) {
+        dataType: "json",
+        success: function (data) {
             /*清空datalist中已有的元素再添加*/
             if (years != null) {
                 dataLen = years.length;
@@ -322,18 +319,18 @@ function getSalaryByPersonIdAndYearAndMonth(personId, year, month, datalist) {
         vm.searchSalary()
         return
     }
-    if(year === null || year === ''){
+    if (year === null || year === '') {
         urlstr = '/salary/person/' + personId + '/month/' + month;
-    }else if (month === null || month === '') {
+    } else if (month === null || month === '') {
         urlstr = '/salary/person/' + personId + '/year/' + year;
-    }else {
+    } else {
         urlstr = '/salary/person/' + personId + '/year/' + year + '/month/' + month;
     }
     $.ajax({
-        type:"post",
+        type: "post",
         url: urlstr,
-        dataType:"json",
-        success:function (result) {
+        dataType: "json",
+        success: function (result) {
 
             pagenation.pages = result.count
 
@@ -352,17 +349,17 @@ function getSalaryByPersonIdAndYearAndMonth(personId, year, month, datalist) {
     });
 }
 
-
+/*TODO:*/
 function getMonthsByPersonIdYear(personId, year, datalist) {
     if (year === null) {
-        urlstr = '/salary/person/'+personId+'/month'
-    }else
+        urlstr = '/salary/person/' + personId + '/month'
+    } else
         urlstr = '/salary/person/' + personId + '/year/' + year + '/month'
     $.ajax({
-        type:'post',
+        type: 'post',
         url: urlstr,
-        dataType:'json',
-        success:function (result) {
+        dataType: 'json',
+        success: function (result) {
             /*清空datalist中已有的元素再添加*/
             if (datalist != null) {
                 dataLen = datalist.length;
@@ -378,31 +375,100 @@ function getMonthsByPersonIdYear(personId, year, datalist) {
     });
 }
 
+/*TODO:*/
 function getDeptNameByPlaceId(placeId) {
     $.ajax({
-        type:'post',
-        url:'/dept/name/place/'+placeId,
-        dataType:'json',
-        async:false,
-        success:function (data) {
+        type: 'post',
+        url: '/dept/name/place/' + placeId,
+        dataType: 'json',
+        async: false,
+        success: function (data) {
             modal.deptName = data.deptName
         }
     })
 }
 
+/*TODO:*/
 function getPersonById(personId) {
     $.ajax({
-        type:'post',
-        url:'/person/get/'+personId,
-        dataType:'json',
-        async:false,
-        success:function (data) {
+        type: 'post',
+        url: '/person/get/' + personId,
+        dataType: 'json',
+        async: false,
+        success: function (data) {
             Person = data
             console.log("ajax中:" + Person.name);
         }
     })
 }
 
+/**
+ * 根据指定id判断person时候存在
+ * @param personId
+ * @returns {boolean} 返回true存在，false不存在
+ */
+function isPersonExist(personId) {
+    isExist = false
+    $.ajax({
+        type: 'post',
+        url: '/person/exist/' + personId,
+        dataType: 'json',
+        async: false,
+        error: function () {
+            /*如果服务器出错了，没有正常返回信息*/
+            UIkit.modal.dialog('<div class="uk-alert-danger" uk-alert>\n' +
+                '    <p>出了点问题，请重试</p>\n' +
+                '</div>');
+        },
+        success: function (data) {
+            if (data) {
+                /*如果data为true, 那么person存在*/
+                isExist = true
+            } else {
+                /*不存在则报错提示*/
+                UIkit.modal.dialog('<div class="uk-alert-danger" uk-alert>\n' +
+                    '    <p>该编号人员不存在</p>\n' +
+                    '</div>');
+            }
+        }
+    })
+
+    return isExist
+}
+
+/**
+ * 判断指定id的person是否存在工资信息
+ * @param personId
+ * @returns {boolean}
+ */
+function isPersonSalaryExist(personId) {
+    isSalaryExist = false
+    $.ajax({
+        type: 'post',
+        url: '/salary/person/' + personId + '/exist',
+        dataType: 'json',
+        async: false,
+        error: function () {
+            /*如果服务器出错了，没有正常返回信息*/
+            UIkit.modal.dialog('<div class="uk-alert-danger" uk-alert>\n' +
+                '    <p>出了点问题，请重试</p>\n' +
+                '</div>');
+        },
+        success: function (data) {
+            if (data) {
+                /*如果person存在，工资存在*/
+                isSalaryExist = true
+            } else {
+                /*如果person存在，工资不存在*/
+                UIkit.modal.dialog('<div class="uk-alert-warning" uk-alert>\n' +
+                    '    <p>该人员不存在工资记录</p>\n' +
+                    '    <p>请添加工资记录</p>\n' +
+                    '</div>');
+            }
+        }
+    })
+    return isSalaryExist
+}
 
 
 /**
@@ -470,7 +536,7 @@ var navbar = new Vue({
         showAddModal: function () {
             /*如果当前是添加人员。那么获取当前的时间作为入职时间*/
             console.log("this.navId == " + this.navId)
-            if (this.navId === 0) {
+            if (this.navId === 0 || this.navId === 3) {
                 getCurrentDate()
             }
             UIkit.modal(modal.modalAddType[this.navId]).show();
@@ -520,10 +586,10 @@ var vm = new Vue({
         },
         personNum: 0,
         personName: '',
-        years:new Array(),
-        selectYear:'',
-        months:new Array(),
-        selectMonth:'',
+        years: new Array(),
+        selectYear: '',
+        months: new Array(),
+        selectMonth: '',
     },
     methods: {
         showmodal: function (event) {
@@ -548,7 +614,7 @@ var vm = new Vue({
 
                 getPersonById(modal.id)
                 console.log("person: " + Person)
-                modal.placeSelectValue =Person.placeId
+                modal.placeSelectValue = Person.placeId
                 modal.deleteInfo = '确认删除吗？'
 
                 getDeptNameByPlaceId(Person.placeId)
@@ -580,30 +646,43 @@ var vm = new Vue({
             getData(this.currentPage, this.dataType[this.navIdInTb], this.datas)
         },
         searchSalary: function () {
-            getSalaryByPersonId(this.personNum, this.currentPage, this.datas)
-            console.log("this.datas: " + this.datas)
-            /*如果返回的数据为空，提示没有找到信息*/
-            if (this.datas.length === 0) {
+            /*如果person存在，查询该person的工资*/
+            if (isPersonExist(this.personNum)) {
+                /*如果person存在，工资不存在的情况是新增的用户*/
+                getSalaryByPersonId(this.personNum, this.currentPage, this.datas);
+
+                /*如果返回的数据为空，提示没有找到信息*/
+                if (this.datas.length === 0) {
+                    this.showSalary = false;
+                    pagenation.showPagenation = false
+                    UIkit.modal.dialog('<div class="uk-alert-danger" uk-alert>\n' +
+                        '    <a class="uk-alert-close" uk-close></a>\n' +
+                        '    <p>没有找到人员工资信息</p>\n' +
+                        '</div>');
+                    return
+                }
+
+                getYearByPersonId(this.personNum, this.years)
+                getMonthsByPersonIdYear(this.personNum, null, this.months)
+
+                console.log("vm.years: " + this.years)
+
+                getSalaryCountByPersonId(this.personNum)
+                this.showSalary = true;
+                pagenation.showPagenation = true
+                this.showSalaryHead = true
+                getPersonNameById(this.personNum)
+                this.personName = personName
+            } else {
                 this.showSalary = false;
                 pagenation.showPagenation = false
-                UIkit.modal.dialog('<div class="uk-alert-danger" uk-alert>\n' +
-                    '    <a class="uk-alert-close" uk-close></a>\n' +
-                    '    <p>没有找到人员工资信息</p>\n' +
-                    '</div>');
                 return
             }
 
-            getYearByPersonId(this.personNum, this.years)
-            getMonthsByPersonIdYear(this.personNum, null, this.months)
+            console.log("this.datas: " + this.datas);
 
-            console.log("vm.years: " + this.years)
 
-            getSalaryCountByPersonId(this.personNum)
-            this.showSalary = true;
-            pagenation.showPagenation = true
-            this.showSalaryHead = true
-            getPersonNameById(this.personNum)
-            this.personName = personName
+
         }
     },
     watch: {
@@ -652,7 +731,7 @@ var vm = new Vue({
             }
             getData(val, this.dataType[this.navIdInTb], this.datas);
         },
-        selectYear:function (val) {
+        selectYear: function (val) {
             getSalaryByPersonIdAndYearAndMonth(this.personNum, this.selectYear, this.selectMonth, this.datas)
             getMonthsByPersonIdYear(this.personNum, val, this.months)
         },
@@ -675,7 +754,7 @@ var modal = new Vue({
         depts: Depts,
         navId: vm.navIdInTb,
         placeSelectValue: '',
-        deptName:'',
+        deptName: '',
         born: '',
         enterTime: '',
         fatherId: 0,
@@ -695,7 +774,8 @@ var modal = new Vue({
         modalAddType: {
             0: '#personAddMo',
             1: '#deptAddMo',
-            2: '#placeAddMo'
+            2: '#placeAddMo',
+            3: '#salaryAddMo'
         }
     },
     methods: {

@@ -74,4 +74,8 @@ public class SalaryDaoTest {
         System.out.println(salaryDao.getMonthsByPersonIdOrYear(1106, 2015));
     }
 
+    @Test
+    public void isPersonSalaryExist() {
+        System.out.println(salaryDao.isPersonSalaryExist(1111));
+    }
 }

@@ -47,4 +47,5 @@ public interface PersonService {
 
     List<Person> getPersonBykw(String kw);
 
+    Boolean isPersonIdExist(Integer id);
 }

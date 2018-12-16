@@ -51,4 +51,6 @@ public interface SalaryDao {
     int getCountByYear(@Param("personId") Integer personId, @Param("year") Integer year);
 
     List<Integer> getMonthsByPersonIdOrYear(@Param("personId") Integer personId, @Param("year") Integer year);
+
+    Boolean isPersonSalaryExist(Integer personId);
 }

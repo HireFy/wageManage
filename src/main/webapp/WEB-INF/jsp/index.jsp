@@ -113,7 +113,7 @@
     <%--更新modal END--%>
 
 
-    <%--增加modal--%>
+    <%--person增加modal--%>
     <div id="personAddMo" uk-modal>
         <person-add-modal
                 :currentdate="currentDate"
@@ -121,16 +121,25 @@
         </person-add-modal>
     </div>
 
+    <%--dept增加modal--%>
     <div id="deptAddMo" uk-modal>
         <dept-add-modal>
         </dept-add-modal>
     </div>
 
+    <%--place增加modal--%>
     <div id="placeAddMo" uk-modal>
         <place-add-modal
                 :deptlist="depts"
         >
         </place-add-modal>
+    </div>
+
+    <%--salary增加modal--%>
+    <div id="salaryAddMo" uk-modal>
+        <salary-add-modal
+                :currentdate="currentDate"
+        ></salary-add-modal>
     </div>
 
 

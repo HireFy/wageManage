@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.beans.Transient;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -92,5 +93,15 @@ public class PersonDaoTest {
     @Test
     public void getPersonBykw() {
         System.out.println(personDao.getPersonBykw("产品"));
+    }
+
+    @Test
+    public void isPersonIdExist() {
+        System.out.println(personDao.isPersonIdExist(12312));
+    }
+
+    @Test
+    public void getNameById() {
+        System.out.println(personDao.getNameById(1101));
     }
 }

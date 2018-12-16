@@ -50,20 +50,20 @@ Vue.component('salary-head', {
 
 /*person的模态(modal)框*/
 Vue.component('person-modal', {
-    props: ['id', 'name', 'salary', 'selectvalue', 'datatype', 'person_places', 'pass', 'born', 'age','deptname'],
+    props: ['id', 'name', 'salary', 'selectvalue', 'datatype', 'person_places', 'pass', 'born', 'age', 'deptname'],
     data: function () {
         return {
             childSelectVal: this.selectvalue,
             childName: this.name,
             childPlaces: this.person_places,
             childPass: this.pass,
-            childBorn:this.born,
-            childAge:this.age,
-            childDeptName:this.deptname
+            childBorn: this.born,
+            childAge: this.age,
+            childDeptName: this.deptname
         }
     },
-    computed:{
-        isEverythingOK:function () {
+    computed: {
+        isEverythingOK: function () {
             return this.childName != ''
                 && this.childPass != ''
                 && this.childBorn != ''
@@ -89,23 +89,23 @@ Vue.component('person-modal', {
         childPass: function (val) {
             this.$emit('on-pass-change', val)
         },
-        person_places:function (val) {
+        person_places: function (val) {
             this.childPlaces = val
         },
-        born:function (val) {
+        born: function (val) {
             this.childBorn = val
         },
-        childBorn:function (val) {
+        childBorn: function (val) {
             this.childAge = 2018 - val.substring(0, 4)
             this.$emit('on-born-change', val)
         },
-        age:function (val) {
+        age: function (val) {
             this.childAge = val
         },
-        childAge:function (val) {
+        childAge: function (val) {
             this.$emit('on-age-change', val)
         },
-        deptname:function (val) {
+        deptname: function (val) {
             this.childDeptName = val
         }
     },
@@ -116,8 +116,8 @@ Vue.component('person-modal', {
                 name: this.name,
                 placeId: this.childSelectVal,
                 pass: this.pass,
-                born:this.childBorn,
-                age:this.childAge
+                born: this.childBorn,
+                age: this.childAge
             })
 
             update(vm.dataType[vm.navIdInTb], data)
@@ -125,7 +125,7 @@ Vue.component('person-modal', {
         deleteData: function () {
             deleteAlert();
         },
-        checkDateComp:function (date) {
+        checkDateComp: function (date) {
             console.log("checkDateComp: " + checkDate(date))
             return checkDate(date)
         },
@@ -227,8 +227,8 @@ Vue.component('place-modal', {
         return {
             childName: this.name,
             childDeptSelect: this.deptselect,
-            childDepts:this.deptlist,
-            childSalary:this.salary
+            childDepts: this.deptlist,
+            childSalary: this.salary
         }
     },
     methods: {
@@ -252,7 +252,7 @@ Vue.component('place-modal', {
         deptselect: function (val) {
             this.childDeptSelect = val
         },
-        salary:function(val){
+        salary: function (val) {
             this.childSalary = val
         },
         childName: function (val) {
@@ -261,7 +261,7 @@ Vue.component('place-modal', {
         childDeptSelect: function (val) {
             this.$emit('on-dept-select-change', val)
         },
-        childSalary:function (val) {
+        childSalary: function (val) {
             this.$emit('on-salary-change', val)
         }
     },
@@ -332,10 +332,10 @@ Vue.component('person-add-modal', {
             name: '',
             pass: '',
             salary: '',
-            born:'',
-            sex:'',
-            enterTime:this.currentdate,
-            age:0,
+            born: '',
+            sex: '',
+            enterTime: this.currentdate,
+            age: 0,
             childPlaces: this.person_places,
             childSelectVal: 0
         }
@@ -353,23 +353,23 @@ Vue.component('person-add-modal', {
                 }
             })
         },
-        born:function (val) {
+        born: function (val) {
             console.log("born watch!")
-            if(this.checkDateComp(val)){
+            if (this.checkDateComp(val)) {
                 console.log("born判断正确")
 
                 this.age = 2018 - val.substring(0, 4)
             }
         },
-        person_places:function (val) {
+        person_places: function (val) {
             this.childPlaces = val
         },
-        currentdate:function (val) {
+        currentdate: function (val) {
             this.enterTime = val
         }
     },
-    computed:{
-        isEverythingOK:function () {
+    computed: {
+        isEverythingOK: function () {
             return this.name != ''
                 && this.pass != ''
                 && this.born != ''
@@ -388,13 +388,13 @@ Vue.component('person-add-modal', {
                 salary: this.salary,
                 sex: this.sex,
                 age: this.age,
-                born:this.born,
-                enterTime:this.enterTime,
+                born: this.born,
+                enterTime: this.enterTime,
                 placeId: this.childSelectVal
             })
             add(vm.dataType[vm.navIdInTb], data)
         },
-        checkDateComp:function (date) {
+        checkDateComp: function (date) {
             console.log("checkDateComp: " + checkDate(date))
             return checkDate(date)
         },
@@ -455,21 +455,21 @@ Vue.component('person-add-modal', {
 })
 
 /*dept 添加 modal*/
-Vue.component('dept-add-modal',{
-    data:function(){
+Vue.component('dept-add-modal', {
+    data: function () {
         return {
-            name:''
+            name: ''
         }
     },
-    computed:{
-        isEverythingOK:function () {
+    computed: {
+        isEverythingOK: function () {
             return this.name != ''
         }
     },
-    methods:{
-        add:function () {
+    methods: {
+        add: function () {
             data = JSON.stringify({
-                "name":this.name
+                "name": this.name
             })
             add(vm.dataType[vm.navIdInTb], data)
         }
@@ -489,16 +489,16 @@ Vue.component('dept-add-modal',{
 
 /*place 添加 modal*/
 Vue.component('place-add-modal', {
-    props:['deptlist'],
-    data:function(){
+    props: ['deptlist'],
+    data: function () {
         return {
-            placeName:'',
-            baseSalary:'',
-            deptSelect:0,
-            existInvalidChar:false
+            placeName: '',
+            baseSalary: '',
+            deptSelect: 0,
+            existInvalidChar: false
         }
     },
-    watch:{
+    watch: {
         baseSalary: function (val) {
             /*如果不全是数字，existInvalidChar返回true*/
             for (var i = 0; i < val.length; i++) {
@@ -510,19 +510,19 @@ Vue.component('place-add-modal', {
             this.existInvalidChar = false
         }
     },
-    computed:{
-      isEverythingOK:function () {
-          return this.placeName != ''
-              && this.baseSalary != ''
-              && this.deptSelect != 0
-      }
+    computed: {
+        isEverythingOK: function () {
+            return this.placeName != ''
+                && this.baseSalary != ''
+                && this.deptSelect != 0
+        }
     },
-    methods:{
-        add:function () {
+    methods: {
+        add: function () {
             data = JSON.stringify({
-                "name":this.placeName,
-                "salary":this.baseSalary,
-                "deptId":this.deptSelect
+                "name": this.placeName,
+                "salary": this.baseSalary,
+                "deptId": this.deptSelect
             })
             add(vm.dataType[vm.navIdInTb], data)
         }
@@ -556,5 +556,159 @@ Vue.component('place-add-modal', {
         '\n' +
         '</form>\n' +
         '<button class="uk-button uk-button-primary uk-align-right" @click="add" :disabled="!isEverythingOK || existInvalidChar">添加</button>\n' +
+        '</div>'
+})
+
+/*salary 添加 modal*/
+Vue.component('salary-add-modal', {
+    props: ['currentdate'],
+    data: function () {
+        return {
+            person_id: null,
+            ab_days: 0,
+            ov_days: 0,
+            person_id_invalid: false,
+            ab_days_invalid: false,
+            ov_days_invalid: false,
+            person_exist: true,
+            person_name: '',
+        }
+    },
+    computed: {
+        is_everthing_ok:function () {
+            return this.person_id != null &&
+                this.person_name != '' &&
+                this.person_name != null &&
+                this.person_id_invalid != true &&
+                this.ab_days_invalid != true &&
+                this.ov_days_invalid != true
+        }
+    },
+    methods: {
+        add:function () {
+            // console.log("小青好傻")
+            payload = {
+                "personId":this.person_id,
+                "absenceDays":this.ab_days,
+                "overTimeDays":this.ov_days,
+                "recordDate":this.currentdate
+            }
+
+            $.ajax({
+                type:'post',
+                url:'/salary/add',
+                contentType:'application/json',
+                data:JSON.stringify(payload),
+                dataType:'json',
+                success:function (data) {
+                    if (data) {
+                        UIkit.modal.dialog('<div class="uk-alert-success" uk-alert>\n' +
+                            '    <p>已成功添加</p>\n' +
+                            '</div>');
+                    } else {
+                        UIkit.modal.dialog('<div class="uk-alert-danger" uk-alert>\n' +
+                            '    <p>添加失败</p>\n' +
+                            '</div>');
+                    }
+                }
+            })
+        }
+    },
+    watch: {
+        person_id: function (val) {
+            /*如果不全是数字，existInvalidChar返回true*/
+            for (var i = 0; i < val.length; i++) {
+                if (isNaN(parseInt(val.charAt(i)))) {
+                    this.person_id_invalid = true
+                    return
+                }
+            }
+            this.person_id_invalid = false
+
+            /*如果全是数字，发送ajax请求获取指定id的名字*/
+            if (!this.person_id_invalid) {
+                var name
+                $.ajax({
+                    type: 'post',
+                    url: '/person/name/' + this.person_id,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        name = data.name
+                    }
+                })
+                this.person_name = name
+            }
+        },
+        ab_days:function (val) {
+            /*如果不全是数字，existInvalidChar返回true*/
+            for (var i = 0; i < val.length; i++) {
+                if (isNaN(parseInt(val.charAt(i)))) {
+                    this.ab_days_invalid = true
+                    return
+                }
+            }
+            this.ab_days_invalid = false
+
+            /*缺勤天数不超过30天*/
+            if (val > 30) {
+                this.ab_days_invalid = true
+            } else {
+                this.ab_days_invalid = false
+            }
+        },
+        ov_days: function (val) {
+            /*如果不全是数字，existInvalidChar返回true*/
+            for (var i = 0; i < val.length; i++) {
+                if (isNaN(parseInt(val.charAt(i)))) {
+                    this.ov_days_invalid = true
+                    return
+                }
+            }
+            this.ov_days_invalid = false
+
+            /*加班天数不超过30天*/
+            if (val > 30) {
+                this.ov_days_invalid = true
+            } else {
+                this.ov_days_invalid = false
+            }
+        }
+    },
+    template: '<div class="uk-modal-dialog uk-modal-body">\n' +
+        '    <form class="uk-form-stacked">\n' +
+        '    <div class="uk-margin">\n' +
+        '        <label class="uk-form-label" for="form-stacked-text">人员编号</label>\n' +
+        '        <div class="uk-form-controls">\n' +
+        '            <input v-model="person_id" class="uk-input" :class="{\'uk-form-danger\' : person_id_invalid}" id="form-stacked-text" type="text" placeholder="">\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '    <div class="uk-margin">\n' +
+        '        <label class="uk-form-label" for="form-stacked-text">名称</label>\n' +
+        '        <div class="uk-form-controls">\n' +
+        '            <input v-model="person_name" class="uk-input" id="form-stacked-text" type="text" placeholder="" disabled="disabled">\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '     <div class="uk-margin">\n' +
+        '        <label class="uk-form-label" for="form-stacked-text">缺勤天数</label>\n' +
+        '        <div class="uk-form-controls">\n' +
+        '            <input v-model="ab_days" class="uk-input" :class="{\'uk-form-danger\' : ab_days_invalid}" id="form-stacked-text" type="text" placeholder="">\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '     <div class="uk-margin">\n' +
+        '        <label class="uk-form-label" for="form-stacked-text">加班天数</label>\n' +
+        '        <div class="uk-form-controls">\n' +
+        '            <input v-model="ov_days" class="uk-input" :class="{\'uk-form-danger\' : ov_days_invalid}" id="form-stacked-text" type="text" placeholder="">\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '     <div class="uk-margin">\n' +
+        '        <label class="uk-form-label" for="form-stacked-text">记录时间</label>\n' +
+        '        <div class="uk-form-controls">\n' +
+        '            <input v-model="this.currentdate" class="uk-input" id="form-stacked-text" type="text" disabled="disabled">\n' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '\n' +
+        '</form>\n' +
+        '<button class="uk-button uk-button-primary uk-align-right" :disabled="!is_everthing_ok" @click="add">添加</button>\n' +
         '</div>'
 })

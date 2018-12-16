@@ -37,4 +37,6 @@ public interface PersonDao {
     Boolean deleteByPlaceId(Integer id);
 
     List<Person> getPersonBykw(@Param("kw") String kw);
+
+    Boolean isPersonIdExist(Integer id);
 }
