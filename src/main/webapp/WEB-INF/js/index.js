@@ -28,7 +28,7 @@ function getData(num, dataType, datalist) {
     $.ajax({
         type: "post",
         url: '/' + dataType + '/page/' + num,
-        dataＴype: "json",
+        dataType: "json",
         async: false,
         success: function (datas) {
             /*清空datalist中已有的元素再添加*/
