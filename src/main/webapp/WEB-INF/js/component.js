@@ -573,8 +573,8 @@ Vue.component('salary-add-modal', {
     data: function () {
         return {
             person_id: null,
-            ab_days: 0,
-            ov_days: 0,
+            ab_days: '',
+            ov_days: '',
             person_id_invalid: false,
             ab_days_invalid: false,
             ov_days_invalid: false,
@@ -661,7 +661,7 @@ Vue.component('salary-add-modal', {
             this.ab_days_invalid = false
 
             /*缺勤天数不超过30天*/
-            if (val > 30) {
+            if (val > 30 || (parseInt(val) + parseInt(this.ov_days)) > 30) {
                 this.ab_days_invalid = true
             } else {
                 this.ab_days_invalid = false
@@ -678,7 +678,7 @@ Vue.component('salary-add-modal', {
             this.ov_days_invalid = false
 
             /*加班天数不超过30天*/
-            if (val > 30) {
+            if (val > 30 || (parseInt(val) + parseInt(this.ab_days)) > 30) {
                 this.ov_days_invalid = true
             } else {
                 this.ov_days_invalid = false
@@ -702,13 +702,13 @@ Vue.component('salary-add-modal', {
         '     <div class="uk-margin">\n' +
         '        <label class="uk-form-label" for="form-stacked-text">缺勤天数</label>\n' +
         '        <div class="uk-form-controls">\n' +
-        '            <input v-model="ab_days" class="uk-input" :class="{\'uk-form-danger\' : ab_days_invalid}" id="form-stacked-text" type="text" placeholder="">\n' +
+        '            <input v-model="ab_days" class="uk-input" :class="{\'uk-form-danger\' : ab_days_invalid}" id="form-stacked-text" type="text" :placeholder="ab_days">\n' +
         '        </div>\n' +
         '    </div>\n' +
         '     <div class="uk-margin">\n' +
         '        <label class="uk-form-label" for="form-stacked-text">加班天数</label>\n' +
         '        <div class="uk-form-controls">\n' +
-        '            <input v-model="ov_days" class="uk-input" :class="{\'uk-form-danger\' : ov_days_invalid}" id="form-stacked-text" type="text" placeholder="">\n' +
+        '            <input v-model="ov_days" class="uk-input" :class="{\'uk-form-danger\' : ov_days_invalid}" id="form-stacked-text" type="text" :placeholder="ov_days">\n' +
         '        </div>\n' +
         '    </div>\n' +
         '     <div class="uk-margin">\n' +
