@@ -52,7 +52,7 @@ public class RewardDaoTest {
 
     @Test
     public void getAbsenceAndOver() {
-        Map map = rewardDao.getAbsenceAndOver(906, Timestamp.valueOf("2015-09-30 02:40:53.583").toString());
+        Map map = rewardDao.getAbsenceAndOver(1106, Timestamp.valueOf("2015-09-30").toString());
 
         System.out.println(map);
     }

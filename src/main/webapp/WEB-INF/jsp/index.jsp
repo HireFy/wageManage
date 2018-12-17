@@ -185,7 +185,10 @@
                     <thead is="person-head" v-if="navIdInTb === 0"></thead>
                     <thead is="dept-head" v-if="navIdInTb === 1"></thead>
                     <thead is="place-head" v-if="navIdInTb === 2"></thead>
-                    <thead is="salary-head" v-if="navIdInTb === 3"></thead>
+                    <thead is="salary-head" v-if="navIdInTb === 3"
+                           :ov_days="ov_days"
+                           :ab_days="ab_days"
+                    ></thead>
                     <tbody>
                     <tr v-for="data in datas" v-if="navIdInTb === 0" @click="showmodal">
                         <td>{{data.id}}</td>
@@ -207,7 +210,7 @@
                         <td>{{data.salary}}</td>
                         <td>{{data.deptName}}</td>
                     </tr>
-                    <tr v-for="data in datas" v-if="navIdInTb === 3" @click="showmodal">
+                    <tr v-for="data in datas" v-if="navIdInTb === 3" @mouseover="getReward">
                         <td>{{data.id}}</td>
                         <%--<td>{{data.personName}}</td>--%>
                         <td>{{data.baseSalary}}</td>

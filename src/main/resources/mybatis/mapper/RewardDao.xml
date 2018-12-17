@@ -69,7 +69,15 @@
     </select>
 
     <select id="getAbsenceAndOver" resultMap="absenceAndOver">
-      select ab_days as absence, ov_days as overtime from reward where p_id = #{personId} and record_date = #{recordDate}
+      select ab_days as absence, ov_days as overtime from reward
+      where p_id = #{personId} and record_date = #{recordDate}
+    </select>
+
+    <select id="getAbsenceAndOverByYearAndMonth" resultMap="absenceAndOver">
+        select ab_days as absence, ov_days as overtime from reward
+        where p_id = #{personId}
+        and year(record_date) = #{year}
+        and month(record_date) = #{month}
     </select>
 
 </mapper>

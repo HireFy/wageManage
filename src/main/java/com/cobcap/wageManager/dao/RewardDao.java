@@ -4,6 +4,7 @@ import com.cobcap.wageManager.pojo.Reward;
 import org.apache.ibatis.annotations.Param;
 import org.omg.PortableInterceptor.INACTIVE;
 
+import java.beans.IntrospectionException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -37,4 +38,8 @@ public interface RewardDao {
     int getRecordCount(Integer personId);
 
     Map<String, Integer> getAbsenceAndOver(@Param("personId") Integer personId, @Param("recordDate") String recordDate);
+
+    Map<String, Integer> getAbsenceAndOverByYearAndMonth(@Param("personId") Integer personId,
+                                                         @Param("year") Integer year,
+                                                         @Param("month") Integer month);
 }

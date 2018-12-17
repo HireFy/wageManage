@@ -590,6 +590,8 @@ var vm = new Vue({
         selectYear: '',
         months: new Array(),
         selectMonth: '',
+        ab_days:'',
+        ov_days:''
     },
     methods: {
         showmodal: function (event) {
@@ -683,6 +685,31 @@ var vm = new Vue({
 
 
 
+        },
+        getReward:function (event) {
+            var nodes = event.currentTarget.childNodes
+            var dataArr = new Array()
+            for (let i = 0; i < nodes.length; i++) {
+                data = nodes[i].innerText
+                if (data != null) {
+                    dataArr.push(data)
+                }
+            }
+            var id = dataArr[0]
+            var record_time = dataArr[5]
+            var year = record_time.split('-')[0]
+            var month = record_time.split('-')[1]
+            var _this = this
+            $.ajax({
+                type:'post',
+                url:'/reward/' + this.personNum + '/' + year + '/' + month,
+                dataType:'json',
+                async:false,
+                success:function (data) {
+                    _this.ab_days = data.absence + '天'
+                    _this.ov_days = data.overtime + '天';
+                }
+            })
         }
     },
     watch: {

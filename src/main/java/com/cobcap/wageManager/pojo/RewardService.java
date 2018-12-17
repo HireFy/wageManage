@@ -1,6 +1,7 @@
 package com.cobcap.wageManager.pojo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RewardService {
 
@@ -17,4 +18,6 @@ public interface RewardService {
     int getTotalCount();
 
     void generateReward();
+
+    Map<String, Integer> getAbsenceAndOverByYearAndMonth(Integer personId, Integer year, Integer month);
 }

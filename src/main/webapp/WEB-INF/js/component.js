@@ -34,13 +34,21 @@ Vue.component('place-head', {
 })
 
 Vue.component('salary-head', {
+    props:['ov_days', 'ab_days'],
+    watch: {
+        // ov_days:function (val) {
+        //     this.ov_days = val
+        // },
+        // ab_days:function (val) {
+        //     this.ab_days = val
+        // }
+    },
     template: ' <thead>\n' +
         '        <tr>\n' +
         '            <th>工资编号</th>\n' +
-        // '            <th>姓名</th>\n' +
         '            <th>应发薪水</th>\n' +
-        '            <th>加班补贴</th>\n' +
-        '            <th>缺勤扣除</th>\n' +
+        '            <th>加班补贴  <span class="uk-label uk-label-success">{{ov_days}}</span></th>\n' +
+        '            <th>缺勤扣除  <span class="uk-label uk-label-danger">{{ab_days}}</span></th>\n' +
         '            <th>实发薪水</th>\n' +
         '            <th>记录日期</th>\n' +
         '        </tr>\n' +

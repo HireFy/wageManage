@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -55,6 +56,11 @@ public class RewardServiceImpl implements RewardService {
     @Override
     public int getTotalCount() {
         return rewardDao.getTotalCount();
+    }
+
+    @Override
+    public Map<String, Integer> getAbsenceAndOverByYearAndMonth(Integer personId, Integer year, Integer month) {
+        return rewardDao.getAbsenceAndOverByYearAndMonth(personId, year, month);
     }
 
     /**
