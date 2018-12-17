@@ -103,16 +103,5 @@ public class SalaryController {
     public Boolean addSalary(@RequestBody Reward reward) {
         return salaryService.insertReward(reward);
     }
-
-
-
-//    @RequestMapping("/delete/{id}")
-//    public Boolean deleteById(@PathVariable Integer id) {
-//        return salaryService.delete(id);
-//    }
-//
-//    @RequestMapping("/update")
-//    public Boolean update(@RequestBody Salary salary) {
-//        return salaryService.update(bonus);
-//    }
+    
 }

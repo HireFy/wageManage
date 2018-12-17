@@ -7,10 +7,10 @@ import com.cobcap.wageManager.vo.SalaryVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface SalaryService {
-    Integer getSalaryIdByPersonId(Integer personId);
 
     Salary getById(Integer id);
 
@@ -59,4 +59,6 @@ public interface SalaryService {
     Boolean isPersonSalaryExist(Integer personId);
 
     Boolean insertReward(Reward reward);
+
+    Salary getSalaryByPersonIdAndRecordDate(Integer personId, String recordDate);
 }

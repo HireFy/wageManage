@@ -39,11 +39,6 @@ public class SalaryServiceImpl implements SalaryService {
     private RewardDao rewardDao;
 
     @Override
-    public Integer getSalaryIdByPersonId(Integer personId) {
-        return salaryDao.getSalaryIdByPersonId(personId);
-    }
-
-    @Override
     public Salary getById(Integer id) {
         return salaryDao.getById(id);
     }
@@ -262,6 +257,11 @@ public class SalaryServiceImpl implements SalaryService {
         return salaryVoList;
     }
 
+    @Override
+    public Salary getSalaryByPersonIdAndRecordDate(Integer personId, String recordDate) {
+        return salaryDao.getSalaryByPersonIdAndRecordDate(personId, recordDate);
+    }
+
     /**
      * 插入奖惩
      * @param reward
@@ -290,6 +290,18 @@ public class SalaryServiceImpl implements SalaryService {
         BigDecimal overTimeSalary = BigDecimal.valueOf(baseSalary.floatValue() * (overTimeDays / (float) monthDays));
 
         BigDecimal finalSalary = BigDecimal.valueOf(baseSalary.floatValue() - cutSalary.floatValue() + overTimeSalary.floatValue());
+
+        Salary salary = this.getSalaryByPersonIdAndRecordDate(reward.getPersonId(), recordDate.toString());
+
+        /*如果工资表里面已经有了相同人相同时间下的工资记录
+        * 就更新这条记录*/
+        if (salary != null) {
+            salary.setBaseSalary(baseSalary);
+            salary.setCutSalary(cutSalary);
+            salary.setOverTimeSalary(overTimeSalary);
+            salary.setFinalSalary(finalSalary);
+            return this.updateById(salary);
+        }
 
         return this.insert(new Salary(reward.getPersonId(), baseSalary, overTimeSalary, cutSalary, finalSalary, recordDate));
     }

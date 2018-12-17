@@ -86,12 +86,6 @@
         where p_id = #{id}
     </delete>
 
-    <select id="getSalaryIdByPersonId" resultType="Integer">
-        select sa_id
-        from salary
-        where p_id = #{personId}
-    </select>
-
     <delete id="deleteByDeptId">
         delete
         from salary
@@ -152,5 +146,9 @@
                      then 0 else 1 end
         from salary
         where p_id=#{personId}
+    </select>
+
+    <select id="getSalaryByPersonIdAndRecordDate" resultMap="salaryMap">
+        select * from salary where p_id = #{personId} and record_date = #{recordDate}
     </select>
 </mapper>

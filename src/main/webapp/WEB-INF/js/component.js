@@ -589,7 +589,9 @@ Vue.component('salary-add-modal', {
                 this.person_name != null &&
                 this.person_id_invalid != true &&
                 this.ab_days_invalid != true &&
-                this.ov_days_invalid != true
+                this.ov_days_invalid != true &&
+                this.ab_days != '' &&
+                this.ov_days != ''
         }
     },
     methods: {
