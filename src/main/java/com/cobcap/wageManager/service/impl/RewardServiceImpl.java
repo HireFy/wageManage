@@ -59,6 +59,11 @@ public class RewardServiceImpl implements RewardService {
     }
 
     @Override
+    public Reward getRewardByPersonIdAndRecordDate(Integer personId, String recordDate) {
+        return rewardDao.getRewardByPersonIdAndRecordDate(personId, recordDate);
+    }
+
+    @Override
     public Map<String, Integer> getAbsenceAndOverByYearAndMonth(Integer personId, Integer year, Integer month) {
         return rewardDao.getAbsenceAndOverByYearAndMonth(personId, year, month);
     }

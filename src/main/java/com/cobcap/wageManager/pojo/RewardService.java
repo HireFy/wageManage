@@ -20,4 +20,7 @@ public interface RewardService {
     void generateReward();
 
     Map<String, Integer> getAbsenceAndOverByYearAndMonth(Integer personId, Integer year, Integer month);
+
+    /*根据personId和recordDate可以唯一确定一条reward记录*/
+    Reward getRewardByPersonIdAndRecordDate(Integer personId, String recordDate);
 }

@@ -37,6 +37,8 @@ public interface RewardDao {
      */
     int getRecordCount(Integer personId);
 
+    Reward getRewardByPersonIdAndRecordDate(@Param("personId") Integer personId, @Param("recordDate") String recordDate);
+
     Map<String, Integer> getAbsenceAndOver(@Param("personId") Integer personId, @Param("recordDate") String recordDate);
 
     Map<String, Integer> getAbsenceAndOverByYearAndMonth(@Param("personId") Integer personId,

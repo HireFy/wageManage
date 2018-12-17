@@ -269,9 +269,6 @@ public class SalaryServiceImpl implements SalaryService {
      */
     @Override
     public Boolean insertReward(Reward reward) {
-        /*插入加班，缺勤天数*/
-        rewardDao.insert(reward);
-
         Person person = personDao.getById(reward.getPersonId());
         BigDecimal baseSalary = placeDao.getSalaryByPlaceId(person.getPlaceId());
 
@@ -283,6 +280,9 @@ public class SalaryServiceImpl implements SalaryService {
         int monthDays = calendar.get(Calendar.DATE);
         Timestamp recordDate = new Timestamp(calendar.getTime().getTime());
 
+        /*将reward中的记录时间修改为月底*/
+        reward.setRecordDate(recordDate);
+
         int absenceDays = reward.getAbsenceDays();
         int overTimeDays = reward.getOverTimeDays();
 
@@ -291,10 +291,22 @@ public class SalaryServiceImpl implements SalaryService {
 
         BigDecimal finalSalary = BigDecimal.valueOf(baseSalary.floatValue() - cutSalary.floatValue() + overTimeSalary.floatValue());
 
-        Salary salary = this.getSalaryByPersonIdAndRecordDate(reward.getPersonId(), recordDate.toString());
+
+
+        /*如果reward表已经有了相同人相同时间的记录,就更新这条记录*/
+        Reward reward1 = rewardDao.getRewardByPersonIdAndRecordDate(reward.getPersonId(), recordDate.toString());
+        if (reward1 != null) {
+            reward1.setAbsenceDays(absenceDays);
+            reward1.setOverTimeDays(overTimeDays);
+            rewardDao.update(reward1);
+        } else {
+            /*如果没有记录,就插入当前的reward*/
+            rewardDao.insert(reward);
+        }
 
         /*如果工资表里面已经有了相同人相同时间下的工资记录
         * 就更新这条记录*/
+        Salary salary = this.getSalaryByPersonIdAndRecordDate(reward.getPersonId(), recordDate.toString());
         if (salary != null) {
             salary.setBaseSalary(baseSalary);
             salary.setCutSalary(cutSalary);
@@ -302,7 +314,6 @@ public class SalaryServiceImpl implements SalaryService {
             salary.setFinalSalary(finalSalary);
             return this.updateById(salary);
         }
-
         return this.insert(new Salary(reward.getPersonId(), baseSalary, overTimeSalary, cutSalary, finalSalary, recordDate));
     }
 }

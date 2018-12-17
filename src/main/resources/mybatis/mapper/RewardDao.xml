@@ -80,4 +80,9 @@
         and month(record_date) = #{month}
     </select>
 
+    <select id="getRewardByPersonIdAndRecordDate" resultMap="rewardMap">
+        select * from reward
+        where p_id = #{personId} and record_date = #{recordDate}
+    </select>
+
 </mapper>
