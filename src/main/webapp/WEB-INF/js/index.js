@@ -680,11 +680,14 @@ var vm = new Vue({
                 pagenation.showPagenation = false
                 return
             }
-
-            console.log("this.datas: " + this.datas);
-
-
-
+        },
+        clearRewardTip: function () {
+            /*鼠标离开了表格部分,执行函数,清空加班信息,缺勤信息*/
+            /*如果当前标签页是工资*/
+            if (this.navIdInTb === 3) {
+                this.ab_days = ''
+                this.ov_days = ''
+            }
         },
         getReward:function (event) {
             var nodes = event.currentTarget.childNodes

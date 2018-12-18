@@ -159,6 +159,7 @@
     <div class="uk-flex uk-flex-center">
         <div id="my-table"
              v-show="showSalary"
+             @mouseleave="clearRewardTip"
              :class="{'uk-width-1-2@m': navIdInTb != 0}">
             <div class="uk-card uk-card-default uk-card-body" v-show="showSalaryHead">
                 <div class="uk-text-left">人员编号:<span class="uk-text-large">{{personNum}}</span></div>
