@@ -139,6 +139,7 @@
     <div id="salaryAddMo" uk-modal>
         <salary-add-modal
                 :currentdate="currentDate"
+                @on-refresh-salary="refreshSalary"
         ></salary-add-modal>
     </div>
 

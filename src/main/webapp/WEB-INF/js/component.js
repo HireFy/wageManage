@@ -603,7 +603,7 @@ Vue.component('salary-add-modal', {
                 "overTimeDays":this.ov_days,
                 "recordDate":this.currentdate
             }
-
+            _this = this
             $.ajax({
                 type:'post',
                 url:'/salary/add',
@@ -612,6 +612,8 @@ Vue.component('salary-add-modal', {
                 dataType:'json',
                 success:function (data) {
                     if (data) {
+                        /*当数据成功添加,重新获取工资信息*/
+                        _this.$emit('on-refresh-salary')
                         UIkit.modal.dialog('<div class="uk-alert-success" uk-alert>\n' +
                             '    <p>已成功添加</p>\n' +
                             '</div>');

@@ -847,6 +847,10 @@ var modal = new Vue({
         },
         onAgeChange: function (val) {
             this.age = val
+        },
+        refreshSalary:function () {
+            console.log('refreshSalary调用成功')
+            getSalaryByPersonIdAndYearAndMonth(vm.personNum, vm.selectYear, vm.selectMonth, vm.datas)
         }
     }
 })
